@@ -1,0 +1,645 @@
+[
+  {
+    "_id": "64c9b50f452c1b1d4f234f01",
+    "title": "اجاره ویلا در شمال تهران",
+    "description": "ویلا دوبلکس با استخر و حیاط بزرگ",
+    "location": "منطقه زعفرانیه",
+    "phone": "09127654321",
+    "realState": "املاک سروش",
+    "price": 200000,
+    "constructionDate": "2015-09-20T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "استخر",
+      "سونا",
+      "جکوزی"
+    ],
+    "rules": [
+      "بدون مهمانی"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e89",
+    "published": false,
+    "imagePath": "/images/villa1.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f02",
+    "title": "فروش مغازه در مرکز شهر",
+    "description": "مغازه 30 متری با موقعیت عالی برای کسب و کار",
+    "location": "میدان انقلاب",
+    "phone": "09129876543",
+    "realState": "املاک کاوه",
+    "price": 150000,
+    "constructionDate": "2010-03-15T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "آب",
+      "برق",
+      "گاز"
+    ],
+    "rules": [
+      "بدون تغییر کاربری"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e90",
+    "published": true,
+    "imagePath": "/images/store1.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f03",
+    "title": "اجاره دفتر اداری",
+    "description": "دفتر کار 80 متری مناسب برای شرکت‌های کوچک",
+    "location": "خیابان سهروردی",
+    "phone": "09121234567",
+    "realState": "املاک دیبا",
+    "price": 120000,
+    "constructionDate": "2017-12-01T00:00:00Z",
+    "category": "office",
+    "amenities": [
+      "اینترنت پرسرعت",
+      "پارکینگ"
+    ],
+    "rules": [
+      "ساعت کاری مشخص"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e91",
+    "published": false,
+    "imagePath": "/images/office1.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f04",
+    "title": "فروش آپارتمان نوساز",
+    "description": "آپارتمان 150 متری با امکانات مدرن",
+    "location": "خیابان سعادت آباد",
+    "phone": "09124567890",
+    "realState": "املاک شایان",
+    "price": 700000,
+    "constructionDate": "2022-04-05T00:00:00Z",
+    "category": "apartment",
+    "amenities": [
+      "باشگاه",
+      "استخر",
+      "پارکینگ"
+    ],
+    "rules": [
+      "مناسب برای خانواده‌ها"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e92",
+    "published": true,
+    "imagePath": "/images/apartment2.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f05",
+    "title": "فروش ویلا با باغ بزرگ",
+    "description": "ویلا 300 متری با باغ و استخر",
+    "location": "منطقه لواسان",
+    "phone": "09127678901",
+    "realState": "املاک آفتاب",
+    "price": 1500000,
+    "constructionDate": "2012-08-17T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "باغ",
+      "استخر",
+      "سونا"
+    ],
+    "rules": [
+      "بدون اجاره به مجردها"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e93",
+    "published": true,
+    "imagePath": "/images/villa2.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f06",
+    "title": "اجاره مغازه تجاری",
+    "description": "مغازه 40 متری در بازار تهران",
+    "location": "بازار بزرگ تهران",
+    "phone": "09123450987",
+    "realState": "املاک آراد",
+    "price": 80000,
+    "constructionDate": "2005-06-12T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "برق",
+      "آب",
+      "گاز"
+    ],
+    "rules": [
+      "بدون فروش کالاهای غیرمجاز"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e94",
+    "published": false,
+    "imagePath": "/images/store2.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f07",
+    "title": "فروش دفتر کار لوکس",
+    "description": "دفتر 100 متری با طراحی مدرن",
+    "location": "خیابان ملاصدرا",
+    "phone": "09127894561",
+    "realState": "املاک پایتخت",
+    "price": 180000,
+    "constructionDate": "2019-11-22T00:00:00Z",
+    "category": "office",
+    "amenities": [
+      "اینترنت فیبر نوری",
+      "آسانسور"
+    ],
+    "rules": [
+      "بدون تغییر دکوراسیون"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e95",
+    "published": true,
+    "imagePath": "/images/office2.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f08",
+    "title": "اجاره آپارتمان مبله",
+    "description": "آپارتمان 70 متری با وسایل کامل",
+    "location": "خیابان مطهری",
+    "phone": "09125556789",
+    "realState": "املاک اندیشه",
+    "price": 60000,
+    "constructionDate": "2016-07-01T00:00:00Z",
+    "category": "apartment",
+    "amenities": [
+      "مبلمان",
+      "ماشین لباسشویی",
+      "تلویزیون"
+    ],
+    "rules": [
+      "غیر سیگاری"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e96",
+    "published": false,
+    "imagePath": "/images/apartment3.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f09",
+    "title": "فروش مغازه با درآمد بالا",
+    "description": "مغازه 50 متری با موقعیت تجاری عالی",
+    "location": "خیابان جمهوری",
+    "phone": "09129987654",
+    "realState": "املاک نور",
+    "price": 220000,
+    "constructionDate": "2008-02-10T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "دوربین مداربسته",
+      "سیستم امنیتی"
+    ],
+    "rules": [
+      "بدون تغییرات ساختاری"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e97",
+    "published": true,
+    "imagePath": "/images/store3.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0a",
+    "title": "فروش ویلا در منطقه فرحزاد",
+    "description": "ویلا 250 متری با فضای سبز و دید کوهستانی",
+    "location": "منطقه فرحزاد",
+    "phone": "09127894532",
+    "realState": "املاک مهر",
+    "price": 1400000,
+    "constructionDate": "2014-10-05T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "فضای سبز",
+      "استخر",
+      "پارکینگ"
+    ],
+    "rules": [
+      "بدون تغییر دکوراسیون"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e98",
+    "published": true,
+    "imagePath": "/images/villa3.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0b",
+    "title": "اجاره آپارتمان در مرکز شهر",
+    "description": "آپارتمان 90 متری در مرکز شهر با دسترسی آسان",
+    "location": "خیابان انقلاب",
+    "phone": "09121112233",
+    "realState": "املاک آسمان",
+    "price": 85000,
+    "constructionDate": "2013-11-30T00:00:00Z",
+    "category": "apartment",
+    "amenities": [
+      "پارکینگ",
+      "آسانسور",
+      "دسترسی به مترو"
+    ],
+    "rules": [
+      "غیر سیگاری"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e99",
+    "published": false,
+    "imagePath": "/images/apartment4.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0c",
+    "title": "فروش دفتر اداری نوساز",
+    "description": "دفتر کار 120 متری با امکانات مدرن",
+    "location": "خیابان ونک",
+    "phone": "09122233445",
+    "realState": "املاک بهار",
+    "price": 200000,
+    "constructionDate": "2021-06-15T00:00:00Z",
+    "category": "office",
+    "amenities": [
+      "اینترنت پرسرعت",
+      "پارکینگ"
+    ],
+    "rules": [
+      "بدون تغییر دکوراسیون"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e100",
+    "published": true,
+    "imagePath": "/images/office3.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0d",
+    "title": "اجاره ویلا با دید دریاچه",
+    "description": "ویلا 200 متری با دید عالی و آرامش‌بخش",
+    "location": "منطقه چیتگر",
+    "phone": "09126677889",
+    "realState": "املاک کیان",
+    "price": 100000,
+    "constructionDate": "2011-09-25T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "دید دریاچه",
+      "حیاط",
+      "باربیکیو"
+    ],
+    "rules": [
+      "بدون مهمانی"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e101",
+    "published": false,
+    "imagePath": "/images/villa4.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0e",
+    "title": "فروش مغازه در پاساژ",
+    "description": "مغازه 20 متری با مشتری ثابت",
+    "location": "خیابان تجریش",
+    "phone": "09121234598",
+    "realState": "املاک نامی",
+    "price": 100000,
+    "constructionDate": "2007-04-17T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "سیستم تهویه",
+      "دوربین مداربسته"
+    ],
+    "rules": [
+      "بدون تغییر دکوراسیون"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e102",
+    "published": true,
+    "imagePath": "/images/store4.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f0f",
+    "title": "فروش آپارتمان لوکس در سعادت آباد",
+    "description": "آپارتمان 200 متری با دید عالی و امکانات لوکس",
+    "location": "خیابان سعادت آباد",
+    "phone": "09121114455",
+    "realState": "املاک تهران",
+    "price": 900000,
+    "constructionDate": "2023-02-20T00:00:00Z",
+    "category": "apartment",
+    "amenities": [
+      "استخر",
+      "سونا",
+      "باشگاه"
+    ],
+    "rules": [
+      "بدون حیوان خانگی"
+    ],
+    "province": "تهران",
+    "city": "تهران",
+    "userId": "64c9b50f452c1b1d4f234e103",
+    "published": true,
+    "imagePath": "/images/apartment5.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f10",
+    "title": "اجاره ویلا در لواسان",
+    "description": "ویلا 150 متری با منظره زیبا",
+    "location": "منطقه لواسان",
+    "phone": "09126654321",
+    "realState": "املاک سپهر",
+    "price": 120000,
+    "constructionDate": "2018-05-25T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "حیاط",
+      "باربیکیو",
+      "باغچه"
+    ],
+    "rules": [
+      "بدون اجاره به مجردها"
+    ],
+    "province": "تهران",
+    "city": "ابعلی",
+    "userId": "64c9b50f452c1b1d4f234e104",
+    "published": false,
+    "imagePath": "/images/villa5.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f11",
+    "title": "فروش مغازه در بازار مبل",
+    "description": "مغازه 60 متری با موقعیت تجاری عالی",
+    "location": "بازار مبل تهران",
+    "phone": "09124567891",
+    "realState": "املاک سرای",
+    "price": 300000,
+    "constructionDate": "2009-07-10T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "سیستم امنیتی",
+      "برق سه فاز"
+    ],
+    "rules": [
+      "بدون تغییر کاربری"
+    ],
+    "province": "تهران",
+    "city": "ابعلی",
+    "userId": "64c9b50f452c1b1d4f234e105",
+    "published": true,
+    "imagePath": "/images/store5.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f12",
+    "title": "اجاره دفتر در خیابان گاندی",
+    "description": "دفتر کار 70 متری مناسب برای استارتاپ‌ها",
+    "location": "خیابان گاندی",
+    "phone": "09127778900",
+    "realState": "املاک مهتاب",
+    "price": 100000,
+    "constructionDate": "2020-11-11T00:00:00Z",
+    "category": "office",
+    "amenities": [
+      "اینترنت پرسرعت",
+      "آسانسور"
+    ],
+    "rules": [
+      "بدون تغییر دکوراسیون"
+    ],
+    "province": "تهران",
+    "city": "ابعلی",
+    "userId": "64c9b50f452c1b1d4f234e106",
+    "published": false,
+    "imagePath": "/images/office4.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f13",
+    "title": "فروش آپارتمان دوبلکس",
+    "description": "آپارتمان 180 متری دوبلکس با امکانات لوکس",
+    "location": "خیابان ولنجک",
+    "phone": "09125543210",
+    "realState": "املاک سپنتا",
+    "price": 850000,
+    "constructionDate": "2023-03-03T00:00:00Z",
+    "category": "apartment",
+    "amenities": [
+      "استخر",
+      "سونا",
+      "باشگاه"
+    ],
+    "rules": [
+      "بدون حیوان خانگی"
+    ],
+    "province": "تهران",
+    "city": "ری",
+    "userId": "64c9b50f452c1b1d4f234e107",
+    "published": true,
+    "imagePath": "/images/apartment6.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f14",
+    "title": "اجاره ویلا در دربند",
+    "description": "ویلا 100 متری با فضای سبز و آرام",
+    "location": "منطقه دربند",
+    "phone": "09127778899",
+    "realState": "املاک نگین",
+    "price": 90000,
+    "constructionDate": "2016-02-15T00:00:00Z",
+    "category": "villa",
+    "amenities": [
+      "حیاط",
+      "باربیکیو",
+      "پارکینگ"
+    ],
+    "rules": [
+      "بدون اجاره به مجردها"
+    ],
+    "province": "تهران",
+    "city": "ری",
+    "userId": "64c9b50f452c1b1d4f234e108",
+    "published": false,
+    "imagePath": "/images/villa6.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "64c9b50f452c1b1d4f234f15",
+    "title": "فروش مغازه با موقعیت عالی",
+    "description": "مغازه 25 متری در مرکز خرید معروف",
+    "location": "خیابان شریعتی",
+    "phone": "09125566544",
+    "realState": "املاک پارسا",
+    "price": 150000,
+    "constructionDate": "2010-10-10T00:00:00Z",
+    "category": "store",
+    "amenities": [
+      "دوربین مداربسته",
+      "سیستم امنیتی"
+    ],
+    "rules": [
+      "بدون تغییر کاربری"
+    ],
+    "province": "تهران",
+    "city": "ری",
+    "userId": "64c9b50f452c1b1d4f234e109",
+    "published": true,
+    "imagePath": "/images/store6.jpg",
+    "createdAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "updatedAt": {
+      "$date": "2024-08-16T12:59:11.208Z"
+    },
+    "__v": 1
+  }
+]

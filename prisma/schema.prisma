@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mongodb"
+  url          = env("DATABASE_URL") // uses connection pooling
+  directUrl    = env("DATABASE_URL") // uses a direct connection
+  relationMode = "prisma"
+}
+
+enum Role {
+  ADMIN_OWNER
+  ADMIN
+  USER
+  GUEST
+}
+
+model Users {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  avatarUrl String?
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+}
+
+model Profile {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  description      String
+  location         String
+  phone            String
+  realState        String
+  price            Int
+  constructionDate String
+  category         String
+  province         String
+  city             String
+  amenities        String[] @default([])
+  rules            String[] @default([])
+  published        Boolean? @default(false)
+  imagePath        String?
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

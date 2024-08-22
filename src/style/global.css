@@ -2,27 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-weight: 200;
+}
+
 html,
 body {
-  height: 100vh;
+  max-width: 1200px;
+  overflow-x: hidden;
+  margin: auto;
+  padding: 0 10px;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  /* background-color: rgb(226, 226, 226); */
-}
-::-webkit-scrollbar {
-  height: 0px;
-  width: 0px;
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-/* 
-R (0)
-G (110)
-B (255 */
-
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src:
+    url('../../public/fonts/YekanBakh-Bold.woff2') format('woff2'),
+    url('../../public/fonts/YekanBakh-Fat.woff2') format('woff2'),
+    url('../../public/fonts/YekanBakh-Heavy.woff2') format('woff2'),
+    url('../../public/fonts/YekanBakh-Light.woff2') format('woff2'),
+    url('../../public/fonts/YekanBakh-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 @layer base {
   :root {
     --background: 216 100% 98.04%;
@@ -88,16 +104,6 @@ B (255 */
     --ring: 220 100% 44%;
   }
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 .dotPattern {
   background-image: radial-gradient(rgb(35, 40, 68) 1px, transparent 1px);
   background-size: 25px 25px;

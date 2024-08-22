@@ -1,0 +1,90 @@
+.adCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid blue;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  height: 100px;
+  margin: 5px;
+  padding: 10px;
+}
+
+.adImgContainer {
+  position: relative;
+  flex-shrink: 0;
+  width: 150px; /* عرض مناسب برای تصویر آگهی */
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.adImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-bottom: -60px;
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  padding-right: 10px; /* فاصله از سمت راست برای هماهنگی با جهت rtl */
+}
+
+.title {
+  display: flex;
+  flex-wrap: nowrap;
+  font-size: 12px;
+  font-family: 'YekanBakh', bold;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.price {
+  font-size: 12px;
+  color: #555;
+  margin: 0px;
+  font-weight: 500;
+}
+.location {
+  font-size: 12px;
+  color: #555;
+  margin: 0px;
+  font-weight: 500;
+}
+.username {
+  font-size: 12px;
+  font-weight: 400px;
+}
+@media (max-width: 768px) {
+  .adCard {
+    display: flex;
+    align-items: center;
+    border: 1px solid blue;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 150px;
+    margin: 5px;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,84 @@
+/* navbar.module.css */
+.navbarContainer {
+  display: flex;
+  justify-content: center; /* مرکزیت نوار ناوبری */
+  background-color: #f8f8f8; /* رنگ پس‌زمینه به دلخواه شما */
+  margin-top: 20px;
+  height: 50px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1200px; /* تنظیم عرض نوار ناوبری */
+  padding: 10px 20px;
+  background-color: #fff; /* رنگ پس‌زمینه نوار ناوبری */
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1); /* افزودن سایه به نوار ناوبری */
+  direction: rtl; /* تنظیم جهت به راست به چپ */
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  width: 300px;
+}
+
+.centerSection {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.searchForm input {
+  padding: 5px;
+  margin-left: 5px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  font-family: 'YekanBakh', bold;  
+}
+
+.searchForm button {
+  display: none;
+}
+
+.navbarButton {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.navbarButton button {
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'YekanBakh', bold;  
+  font-size: 12px; 
+}
+
+.login{
+  padding-right: 10px;
+}
+@media (max-width: 768px) {
+.navbarContainer {
+  display: none;
+}
+}

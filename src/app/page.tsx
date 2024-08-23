@@ -3,7 +3,14 @@ import { db } from "@/lib/db";
 import { Profile } from "@prisma/client";
 async function BuyResidentials({ searchParams }: { searchParams: any }) {
   let data: Profile[] = [];
-  if (searchParams.category) {
+  if (searchParams.category && searchParams.search) {
+    data = await db.profile.findMany({
+      where: {
+        title: { contains: searchParams.search },
+        category: searchParams.category,
+      },
+    });
+  } else if (searchParams.category) {
     data = await db.profile.findMany({
       where: { category: searchParams.category },
     });

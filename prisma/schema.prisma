@@ -17,14 +17,15 @@ enum Role {
 }
 
 model Users {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String?
   avatarUrl String?
-  email     String   @unique
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  role      Role      @default(USER)
+  Profile   Profile[]
 }
 
 model Profile {
@@ -35,7 +36,7 @@ model Profile {
   phone            String
   realState        String
   price            Int
-  constructionDate String
+  constructionDate DateTime
   category         String
   province         String
   city             String
@@ -43,7 +44,10 @@ model Profile {
   rules            String[] @default([])
   published        Boolean? @default(false)
   imagePath        String?
-  userId           String
+  userId           String   @db.ObjectId
+  Users            Users    @relation(fields: [userId], references: [id])
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([userId])
 }

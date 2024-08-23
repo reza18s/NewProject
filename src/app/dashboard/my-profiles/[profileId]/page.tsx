@@ -1,12 +1,16 @@
-import Profile from "@/models/Profile";
-import AddProfilePage from "@/template/AddProfilePage";
-import connectDB from "@/utils/connectDB";
+import { AddProfilePage } from "@/components/forms/AddProfilePage";
+import { db } from "@/lib/db";
 
-async function Edit({ params: { profileId } }) {
-  await connectDB();
-  const profile = await Profile.findOne({ _id: profileId });
+async function Edit({
+  params: { profileId },
+}: {
+  params: { profileId: string };
+}) {
+  const profile = await db.profile.findUnique({ where: { id: profileId } });
 
-  if (!profile) {return <h3>مشکلی پیش آمده است. لطفا دوباره امتحان کنید ...</h3>;}
+  if (!profile) {
+    return <h3>مشکلی پیش آمده است. لطفا دوباره امتحان کنید ...</h3>;
+  }
 
   return <AddProfilePage data={JSON.parse(JSON.stringify(profile))} />;
 }

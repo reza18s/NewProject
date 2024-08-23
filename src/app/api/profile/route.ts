@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
-import { createProfileObject } from "@/validator";
+import { createProfileObject, updateProfileObject } from "@/validator";
 
 export async function GET(req: NextRequest) {
   try {
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const {
-      _id,
+      id,
       title,
       description,
       location,
@@ -119,7 +119,7 @@ export async function PATCH(req: NextRequest) {
       rules,
       province,
       city,
-    } = await req.json();
+    } = updateProfileObject.parse(await req.json());
     // @ts-ignore
     const session = await getServerSession(req);
     if (!session?.user?.email) {
@@ -141,11 +141,11 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const profile = await db.profile.findUnique({ where: { id: _id } });
+    const profile = await db.profile.findUnique({ where: { id: id } });
     if (!profile) {
       return NextResponse.json({ error: "پروفایل یافت نشد" }, { status: 404 });
     }
-    if (user.id === profile?.userId) {
+    if (user.id !== profile?.userId) {
       return NextResponse.json(
         {
           error: "دستری شما به این آگهی محدود شده است",
@@ -153,19 +153,23 @@ export async function PATCH(req: NextRequest) {
         { status: 403 },
       );
     }
-
-    profile.title = title;
-    profile.description = description;
-    profile.location = location;
-    profile.phone = phone;
-    profile.realState = realState;
-    profile.price = price;
-    profile.constructionDate = constructionDate;
-    profile.amenities = amenities;
-    profile.rules = rules;
-    profile.category = category;
-    profile.province = province;
-    profile.city = city;
+    const newProfile = await db.profile.update({
+      where: { id: id },
+      data: {
+        title,
+        description,
+        location,
+        phone,
+        realState,
+        constructionDate,
+        amenities,
+        rules,
+        province,
+        city,
+        category,
+        price,
+      },
+    });
 
     return NextResponse.json(
       {

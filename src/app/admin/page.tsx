@@ -19,9 +19,9 @@ async function Admin() {
   const user = await db.users.findUnique({
     where: { email: session.user.email },
   });
-  if (user?.role !== "ADMIN") {
-    redirect("/dashboard");
-  }
+  // if (user?.role !== "ADMIN") {
+  //   redirect("/dashboard");
+  // }
 
   const profiles = await db.profile.findMany({ where: { published: false } });
 

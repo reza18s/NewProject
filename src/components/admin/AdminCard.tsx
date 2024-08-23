@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { sp } from "@/utils/replaceNumber";
-import styles from "./AdminCard.module.css";
 import { Profile } from "@prisma/client";
 
 function AdminCard({
@@ -23,15 +22,23 @@ function AdminCard({
   };
 
   return (
-    <div className={styles.container}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div className={styles.properties}>
-        <span>{location}</span>
-        <span>{sp(price)}</span>
+    <div className="mb-20 border-b-2 border-primary/60 pb-[10px]">
+      <h3 className="mb-5 text-lg font-normal text-primary">{title}</h3>
+      <p className="mb-5 text-justify">{description}</p>
+      <div className="mb-5 flex">
+        <span className="ml-[15px] rounded-sm bg-primary/30 px-[10px] py-[5px] text-primary">
+          {location}
+        </span>
+        <span className="ml-[15px] rounded-sm bg-primary/30 px-[10px] py-[5px] text-primary">
+          {sp(price)}
+        </span>
       </div>
-      <button onClick={publishHandler}>انتشار</button>
-      <Toaster />
+      <button
+        className="mt-5 cursor-pointer rounded-md border-none bg-green-400 px-[10px] py-[5px] text-sm text-background transition-all duration-100 ease-in hover:text-foreground"
+        onClick={publishHandler}
+      >
+        انتشار
+      </button>
     </div>
   );
 }

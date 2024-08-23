@@ -21,6 +21,8 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
+import { Profile } from "@prisma/client";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   title: z.string(),
@@ -28,7 +30,7 @@ const formSchema = z.object({
   location: z.string(),
   phone: z.string(),
   price: z.number(),
-  // realState: z.string(),
+  realState: z.string(),
   constructionDate: z.date(),
   province: z.string(),
   city: z.string(),
@@ -37,37 +39,52 @@ const formSchema = z.object({
   amenities: z.array(z.string()),
 });
 
-export const AddProfilePage = () => {
+export const AddProfilePage = ({ data }: { data?: Profile }) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      location: "",
-      phone: "",
-      price: 0,
-      // realState: "",
-      constructionDate: new Date(),
-      province: "",
-      city: "",
-      category: "",
-      rules: ["no", "no"],
-      amenities: [],
+      title: data?.title || "",
+      description: data?.description || "",
+      location: data?.location || "",
+      phone: data?.phone || "",
+      price: data?.price || 0,
+      realState: data?.realState || "",
+      constructionDate: new Date(data?.constructionDate) || new Date(),
+      province: data?.province || "",
+      city: data?.city || "",
+      category: data?.category || "",
+      rules: data?.rules || [],
+      amenities: data?.amenities || [],
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("/api/profile", {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    if (data.error) {
-      toast.error(data.error);
+    if (data) {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        body: JSON.stringify({ ...values, id: data.id }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const newData = await res.json();
+      if (newData.error) {
+        toast.error(newData.error);
+      } else {
+        toast.success(newData.message);
+        router.refresh();
+      }
     } else {
-      toast.success(data.message);
-      router.refresh();
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success(data.message);
+        router.refresh();
+      }
     }
   }
   return (
@@ -89,6 +106,19 @@ export const AddProfilePage = () => {
         <FormField
           control={form.control}
           name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>توضیحات</FormLabel>
+              <FormControl>
+                <Input placeholder="توضیحات" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="realState"
           render={({ field }) => (
             <FormItem>
               <FormLabel>توضیحات</FormLabel>
@@ -132,7 +162,14 @@ export const AddProfilePage = () => {
             <FormItem>
               <FormLabel>قیمت(تومان)</FormLabel>
               <FormControl>
-                <Input placeholder="قیمت(تومان)" type="number" {...field} />
+                <Input
+                  placeholder="قیمت(تومان)"
+                  value={field.value}
+                  onChange={(e) => {
+                    field.onChange(Number(e.target.value));
+                  }}
+                  type="number"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -241,7 +278,10 @@ export const AddProfilePage = () => {
                   calendar={persian}
                   locale={persian_fa}
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    // @ts-ignore
+                    field.onChange(new Date(e));
+                  }}
                   calendarPosition="bottom-right"
                 />
               </FormControl>

@@ -12,25 +12,17 @@ async function Myprofiles() {
     redirect("/signin");
   }
 
-  const user = await db.users.aggregateRaw({
-    pipeline: [
-      {
-        $match: {
-          email: session.user.email,
-        },
-      },
-      {
-        $lookup: {
-          from: "profiles",
-          localField: "profiles",
-          foreignField: "_id",
-          as: "profiles",
-        },
-      },
-    ],
+  const user = await db.users.findUnique({
+    where: { email: session?.user?.email },
+  });
+  if (!user) {
+    redirect("/signin");
+  }
+  const profile = await db.profile.findMany({
+    where: { userId: user?.id },
   });
   // @ts-ignore
-  return <MyProfilesPage profiles={user[0].profiles as Profile[]} />;
+  return <MyProfilesPage profiles={profile} />;
 }
 
 export default Myprofiles;

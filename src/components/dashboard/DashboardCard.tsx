@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
-import styles from "./DashboardCard.module.css";
 import { Profile } from "@prisma/client";
 
 function DashboardCard({ data }: { data: Profile }) {
@@ -29,14 +28,20 @@ function DashboardCard({ data }: { data: Profile }) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="mb-5 flex rounded-2xl border-2 border-primary/30">
       {/* <AdCard data={data} /> */}
-      <div className={styles.main}>
-        <button onClick={editHandler}>
+      <div className="flex w-full items-end justify-between p-[10px]">
+        <button
+          onClick={editHandler}
+          className="flex h-10 w-[48%] cursor-pointer items-center justify-center rounded-md border border-green-400 bg-background text-sm text-green-400"
+        >
           ویرایش
           <FiEdit />
         </button>
-        <button onClick={deleteHandler}>
+        <button
+          onClick={deleteHandler}
+          className="flex h-10 w-[48%] cursor-pointer items-center justify-center rounded-md border border-destructive bg-background text-sm text-destructive"
+        >
           حذف آگهی
           <AiOutlineDelete />
         </button>

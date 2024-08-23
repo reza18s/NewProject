@@ -1,13 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-export async function PATCH(req, context) {
+import { db } from "@/lib/db";
+export async function PATCH(req: NextRequest, context: any) {
   try {
-    await connectDB();
-
     const id = context.params.profileId;
-
+    //@ts-ignore
     const session = await getServerSession(req);
-    if (!session) {
+    if (!session?.user?.email) {
       return NextResponse.json(
         {
           error: "لطفا وارد حساب کاربری خود شوید",
@@ -16,7 +15,9 @@ export async function PATCH(req, context) {
       );
     }
 
-    const user = await User.findOne({ email: session.user.email });
+    const user = await db.users.findUnique({
+      where: { email: session.user.email },
+    });
     if (!user) {
       return NextResponse.json(
         {
@@ -34,9 +35,10 @@ export async function PATCH(req, context) {
       );
     }
 
-    const profile = await Profile.findOne({ _id: id });
-    profile.published = true;
-    profile.save();
+    const profile = await db.profile.update({
+      where: { id: id },
+      data: { published: true },
+    });
 
     return NextResponse.json({ message: "آگهی منتشر شد" }, { status: 200 });
   } catch (err) {

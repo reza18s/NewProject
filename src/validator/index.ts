@@ -89,3 +89,6 @@ export const createProfileObject = z.object({
   amenities: z.array(z.string()),
   rules: z.array(z.string()),
 });
+export const updateProfileObject = createProfileObject.extend({
+  id: z.string(),
+});

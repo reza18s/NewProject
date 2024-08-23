@@ -31,14 +31,14 @@ export async function DELETE(req: NextRequest, context: any) {
     const profile = await db.profile.delete({
       where: { id: id },
     });
-    // if (!user.id.equals(profile.userId)) {
-    //   return NextResponse.json(
-    //     {
-    //       error: 'دستری شما به این آگهی محدود شده است',
-    //     },
-    //     { status: 403 },
-    //   );
-    // }
+    if (user.id === profile.userId) {
+      return NextResponse.json(
+        {
+          error: "دستری شما به این آگهی محدود شده است",
+        },
+        { status: 403 },
+      );
+    }
 
     return NextResponse.json(
       { message: "آگهی موردنظر حذف شد" },

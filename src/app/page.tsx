@@ -7,6 +7,10 @@ async function BuyResidentials({ searchParams }: { searchParams: any }) {
     data = await db.profile.findMany({
       where: { category: searchParams.category },
     });
+  } else if (searchParams.search) {
+    data = await db.profile.findMany({
+      where: { title: { contains: searchParams.search } },
+    });
   } else {
     data = await db.profile.findMany({});
   }

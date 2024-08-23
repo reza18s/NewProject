@@ -28,10 +28,7 @@ function Header() {
           <Button
             onClick={() => {
               store.setOpen(
-                <CustomModal
-                  title="Create a Subaccount"
-                  subheading="You can switch between"
-                >
+                <CustomModal title="" subheading="">
                   <CityFilter />
                 </CustomModal>,
               );

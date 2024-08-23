@@ -1,10 +1,15 @@
 import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
 import { db } from "@/lib/db";
+import { Profile } from "@prisma/client";
 async function BuyResidentials({ searchParams }: { searchParams: any }) {
-  const normalizeSearchQuery = Object.keys(searchParams)
-    .map((el) => el + "=" + searchParams[el])
-    .join("&");
-  const data = await db.profile.findMany({});
+  let data: Profile[] = [];
+  if (searchParams.category) {
+    data = await db.profile.findMany({
+      where: { category: searchParams.category },
+    });
+  } else {
+    data = await db.profile.findMany({});
+  }
 
   if (!data) {
     return <h3>مشکلی پیش آمده است</h3>;

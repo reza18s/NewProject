@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 interface IStore {
+  originData: Profile[];
   data: Profile[];
   filters: { [key: string]: boolean };
 }
@@ -15,22 +16,40 @@ export type Actions = {
 export type Store = IStore & Actions;
 
 export const defaultInitState: IStore = {
+  originData: [],
   data: [],
-  filters: {},
+  filters: {
+    تهران: false,
+    ری: false,
+    ابعلی: false,
+  },
 };
 
 export const useData = create<Store>()(
-  devtools((set) => ({
+  devtools((set, get) => ({
     ...defaultInitState,
     setData: (data) => {
-      const newObj: { [key: string]: boolean } = {};
-      data.map((el) => {
-        if (!newObj[el.city]) {
-          newObj[el.city] = false;
+      let filterData = data.filter((el) => {
+        if (get().filters[el.city]) {
+          return el;
         }
       });
-      set({ data, filters: newObj });
+      if (filterData.length === 0) {
+        filterData = data;
+      }
+      set({ data: filterData, originData: data });
     },
-    setFilters: (filter) => {},
+    setFilters: (filter) => {
+      let filterData = get().originData.filter((el) => {
+        if (filter[el.city]) {
+          return el;
+        }
+      });
+      if (filterData.length === 0) {
+        filterData = get().originData;
+      }
+      console.log(filterData);
+      set({ data: filterData, filters: filter });
+    },
   })),
 );

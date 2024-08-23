@@ -9,7 +9,9 @@
     "phone": "09127654321",
     "realState": "املاک سروش",
     "price": 200000,
-    "constructionDate": "2015-09-20T00:00:00Z",
+    "constructionDate": {
+      "$date": "2015-09-20T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "استخر",
@@ -42,7 +44,9 @@
     "phone": "09129876543",
     "realState": "املاک کاوه",
     "price": 150000,
-    "constructionDate": "2010-03-15T00:00:00Z",
+    "constructionDate": {
+      "$date": "2010-03-15T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "آب",
@@ -75,7 +79,9 @@
     "phone": "09121234567",
     "realState": "املاک دیبا",
     "price": 120000,
-    "constructionDate": "2017-12-01T00:00:00Z",
+    "constructionDate": {
+      "$date": "2017-12-01T00:00:00Z"
+    },
     "category": "office",
     "amenities": [
       "اینترنت پرسرعت",
@@ -107,7 +113,9 @@
     "phone": "09124567890",
     "realState": "املاک شایان",
     "price": 700000,
-    "constructionDate": "2022-04-05T00:00:00Z",
+    "constructionDate": {
+      "$date": "2022-04-05T00:00:00Z"
+    },
     "category": "apartment",
     "amenities": [
       "باشگاه",
@@ -140,7 +148,9 @@
     "phone": "09127678901",
     "realState": "املاک آفتاب",
     "price": 1500000,
-    "constructionDate": "2012-08-17T00:00:00Z",
+    "constructionDate": {
+      "$date": "2012-08-17T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "باغ",
@@ -173,7 +183,9 @@
     "phone": "09123450987",
     "realState": "املاک آراد",
     "price": 80000,
-    "constructionDate": "2005-06-12T00:00:00Z",
+    "constructionDate": {
+      "$date": "2005-06-12T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "برق",
@@ -206,7 +218,9 @@
     "phone": "09127894561",
     "realState": "املاک پایتخت",
     "price": 180000,
-    "constructionDate": "2019-11-22T00:00:00Z",
+    "constructionDate": {
+      "$date": "2019-11-22T00:00:00Z"
+    },
     "category": "office",
     "amenities": [
       "اینترنت فیبر نوری",
@@ -238,7 +252,9 @@
     "phone": "09125556789",
     "realState": "املاک اندیشه",
     "price": 60000,
-    "constructionDate": "2016-07-01T00:00:00Z",
+    "constructionDate": {
+      "$date": "2016-07-01T00:00:00Z"
+    },
     "category": "apartment",
     "amenities": [
       "مبلمان",
@@ -271,7 +287,9 @@
     "phone": "09129987654",
     "realState": "املاک نور",
     "price": 220000,
-    "constructionDate": "2008-02-10T00:00:00Z",
+    "constructionDate": {
+      "$date": "2008-02-10T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "دوربین مداربسته",
@@ -303,7 +321,9 @@
     "phone": "09127894532",
     "realState": "املاک مهر",
     "price": 1400000,
-    "constructionDate": "2014-10-05T00:00:00Z",
+    "constructionDate": {
+      "$date": "2014-10-05T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "فضای سبز",
@@ -336,7 +356,9 @@
     "phone": "09121112233",
     "realState": "املاک آسمان",
     "price": 85000,
-    "constructionDate": "2013-11-30T00:00:00Z",
+    "constructionDate": {
+      "$date": "2013-11-30T00:00:00Z"
+    },
     "category": "apartment",
     "amenities": [
       "پارکینگ",
@@ -369,7 +391,9 @@
     "phone": "09122233445",
     "realState": "املاک بهار",
     "price": 200000,
-    "constructionDate": "2021-06-15T00:00:00Z",
+    "constructionDate": {
+      "$date": "2021-06-15T00:00:00Z"
+    },
     "category": "office",
     "amenities": [
       "اینترنت پرسرعت",
@@ -401,7 +425,9 @@
     "phone": "09126677889",
     "realState": "املاک کیان",
     "price": 100000,
-    "constructionDate": "2011-09-25T00:00:00Z",
+    "constructionDate": {
+      "$date": "2011-09-25T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "دید دریاچه",
@@ -434,7 +460,9 @@
     "phone": "09121234598",
     "realState": "املاک نامی",
     "price": 100000,
-    "constructionDate": "2007-04-17T00:00:00Z",
+    "constructionDate": {
+      "$date": "2007-04-17T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "سیستم تهویه",
@@ -466,7 +494,9 @@
     "phone": "09121114455",
     "realState": "املاک تهران",
     "price": 900000,
-    "constructionDate": "2023-02-20T00:00:00Z",
+    "constructionDate": {
+      "$date": "2023-02-20T00:00:00Z"
+    },
     "category": "apartment",
     "amenities": [
       "استخر",
@@ -499,7 +529,9 @@
     "phone": "09126654321",
     "realState": "املاک سپهر",
     "price": 120000,
-    "constructionDate": "2018-05-25T00:00:00Z",
+    "constructionDate": {
+      "$date": "2018-05-25T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "حیاط",
@@ -532,7 +564,9 @@
     "phone": "09124567891",
     "realState": "املاک سرای",
     "price": 300000,
-    "constructionDate": "2009-07-10T00:00:00Z",
+    "constructionDate": {
+      "$date": "2009-07-10T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "سیستم امنیتی",
@@ -564,7 +598,9 @@
     "phone": "09127778900",
     "realState": "املاک مهتاب",
     "price": 100000,
-    "constructionDate": "2020-11-11T00:00:00Z",
+    "constructionDate": {
+      "$date": "2020-11-11T00:00:00Z"
+    },
     "category": "office",
     "amenities": [
       "اینترنت پرسرعت",
@@ -596,7 +632,9 @@
     "phone": "09125543210",
     "realState": "املاک سپنتا",
     "price": 850000,
-    "constructionDate": "2023-03-03T00:00:00Z",
+    "constructionDate": {
+      "$date": "2023-03-03T00:00:00Z"
+    },
     "category": "apartment",
     "amenities": [
       "استخر",
@@ -629,7 +667,9 @@
     "phone": "09127778899",
     "realState": "املاک نگین",
     "price": 90000,
-    "constructionDate": "2016-02-15T00:00:00Z",
+    "constructionDate": {
+      "$date": "2016-02-15T00:00:00Z"
+    },
     "category": "villa",
     "amenities": [
       "حیاط",
@@ -662,7 +702,9 @@
     "phone": "09125566544",
     "realState": "املاک پارسا",
     "price": 150000,
-    "constructionDate": "2010-10-10T00:00:00Z",
+    "constructionDate": {
+      "$date": "2010-10-10T00:00:00Z"
+    },
     "category": "store",
     "amenities": [
       "دوربین مداربسته",

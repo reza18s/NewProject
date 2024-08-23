@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'react-hot-toast';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi';
-import styles from './DashboardCard.module.css';
-import { Profile } from '@prisma/client';
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import styles from "./DashboardCard.module.css";
+import { Profile } from "@prisma/client";
 
 function DashboardCard({ data }: { data: Profile }) {
   const router = useRouter();
@@ -16,7 +16,7 @@ function DashboardCard({ data }: { data: Profile }) {
 
   const deleteHandler = async () => {
     const res = await fetch(`/api/profile/delete/${data.id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     const result = await res.json();
     console.log(result);

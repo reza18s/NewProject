@@ -1,4 +1,4 @@
-import styles from './DashboardPage.module.css';
+import styles from "./DashboardPage.module.css";
 
 function DashboardPage({ createdAt }: { createdAt: Date }) {
   return (
@@ -7,7 +7,7 @@ function DashboardPage({ createdAt }: { createdAt: Date }) {
       <p>آگهی های خود را ثبت کنید تا هزاران نفر آن را مشاهده کنند</p>
       <div className={styles.createdAt}>
         <p>تاریخ عضویت:</p>
-        <span>{new Date(createdAt).toLocaleDateString('fa-IR')}</span>
+        <span>{new Date(createdAt).toLocaleDateString("fa-IR")}</span>
       </div>
     </div>
   );

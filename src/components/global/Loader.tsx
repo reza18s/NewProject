@@ -1,4 +1,4 @@
-import { ThreeDots } from 'react-loader-spinner';
+import { ThreeDots } from "react-loader-spinner";
 
 function Loader() {
   return (
@@ -7,7 +7,7 @@ function Loader() {
       height={45}
       ariaLabel="three-dots-loading"
       visible={true}
-      wrapperStyle={{ margin: 'auto' }}
+      wrapperStyle={{ margin: "auto" }}
     />
   );
 }

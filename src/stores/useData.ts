@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Profile } from '@prisma/client';
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { Profile } from "@prisma/client";
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface IStore {
   data: Profile[];
@@ -20,21 +20,17 @@ export const defaultInitState: IStore = {
 };
 
 export const useData = create<Store>()(
-  devtools(
-    persist(
-      (set) => ({
-        ...defaultInitState,
-        setData: (data) => {
-          const newObj: { [key: string]: boolean } = {};
-          data.map((el) => {
-            if (!newObj[el.city]) newObj[el.city] = false;
-          });
-          set({ data, filters: newObj });
-        },
-        setFilters: (filter) => {},
-      }),
-
-      { name: 'board-user' },
-    ),
-  ),
+  devtools((set) => ({
+    ...defaultInitState,
+    setData: (data) => {
+      const newObj: { [key: string]: boolean } = {};
+      data.map((el) => {
+        if (!newObj[el.city]) {
+          newObj[el.city] = false;
+        }
+      });
+      set({ data, filters: newObj });
+    },
+    setFilters: (filter) => {},
+  })),
 );

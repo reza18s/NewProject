@@ -1,10 +1,10 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { verifyPassword } from '@/utils/auth';
-import { db } from '@/lib/db';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { verifyPassword } from "@/utils/auth";
+import { db } from "@/lib/db";
 
 export const authOptions = {
-  session: { strategy: 'jwt' },
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
       // @ts-ignore
@@ -12,16 +12,16 @@ export const authOptions = {
         // @ts-ignore
         const { email, password } = credentials;
         if (!email || !password) {
-          throw new Error('لطفا اطلاعات معتبر وارد کنید');
+          throw new Error("لطفا اطلاعات معتبر وارد کنید");
         }
         const user = await db.users.findUnique({ where: { email } });
         if (!user) {
-          throw new Error('لطفا ابتدا حساب کاربری ایجاد کنید');
+          throw new Error("لطفا ابتدا حساب کاربری ایجاد کنید");
         }
         const isValid = await verifyPassword(password, user.password);
 
         if (!isValid) {
-          throw new Error('ایمیل یا رمز عبور اشتباه است');
+          throw new Error("ایمیل یا رمز عبور اشتباه است");
         }
 
         return { email };

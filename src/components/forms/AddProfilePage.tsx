@@ -17,11 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import RadioList from "../forms/RadioList";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
-import TextList from "../forms/TextList";
+import TextList from "./TextList";
 
 const formSchema = z.object({
   title: z.string(),

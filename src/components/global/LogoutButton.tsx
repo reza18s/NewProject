@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { signOut } from 'next-auth/react';
-import { FiLogOut } from 'react-icons/fi';
-import styles from './LogoutButton.module.css';
+import { signOut } from "next-auth/react";
+import { FiLogOut } from "react-icons/fi";
 
 function LogoutButton() {
   return (
     <button
-      className={styles.button}
-      onClick={() => signOut({ callbackUrl: '/' })}
+      className="mt-[20px] flex w-full cursor-pointer border-none bg-none text-right text-base text-destructive"
+      onClick={() => signOut({ callbackUrl: "/" })}
     >
-      <FiLogOut />
+      <FiLogOut className="ml-2 text-xl text-destructive" />
       خروج
     </button>
   );

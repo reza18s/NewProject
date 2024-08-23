@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-import { toast, Toaster } from 'react-hot-toast';
-import styles from './SignupPage.module.css';
-import Loader from '../global/Loader';
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { toast, Toaster } from "react-hot-toast";
+import styles from "./SignupPage.module.css";
+import Loader from "../global/Loader";
 
 function SigninPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -18,7 +18,7 @@ function SigninPage() {
   const signinHandler = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
@@ -27,7 +27,7 @@ function SigninPage() {
     if (res?.error) {
       toast.error(res.error);
     } else {
-      router.push('/');
+      router.push("/");
     }
   };
 

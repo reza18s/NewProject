@@ -1,4 +1,4 @@
-import { AddProfilePage } from "@/components/dashboard/AddProfilePage";
+import { AddProfilePage } from "@/components/forms/AddProfilePage";
 
 function AddProfile() {
   return <AddProfilePage />;

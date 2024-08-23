@@ -1,22 +1,24 @@
-import Link from 'next/link';
-import { HiFilter } from 'react-icons/hi';
-import { categories } from '@/constants/strings';
-import styles from './Sidebar.module.css';
+import Link from "next/link";
+import { HiFilter } from "react-icons/hi";
+import { categories } from "@/constants/strings";
 
 function Sidebar() {
   return (
-    <div className={styles.container}>
-      <div className={styles.container}>
-        <p>
-          <HiFilter />
+    <div className="flex flex-col">
+      <div className="flex flex-col">
+        <p className="ml-1 flex text-base font-normal text-foreground">
+          <HiFilter className="ml-1 text-primary" />
           دسته بندی
         </p>
-        <Link href="/">همه</Link>
+        <Link href="/" className="m-1 text-sm font-normal text-foreground/60">
+          همه
+        </Link>
         {Object.keys(categories).map((i) => (
           <Link
+            className="m-1 text-sm font-normal text-foreground/60"
             key={i}
             href={{
-              pathname: '/',
+              pathname: "/",
               query: { category: i },
             }}
           >

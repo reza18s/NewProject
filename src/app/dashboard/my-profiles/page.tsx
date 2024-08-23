@@ -1,15 +1,15 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { db } from '@/lib/db';
-import { redirect } from 'next/navigation';
-import MyProfilesPage from '@/components/dashboard/MyProfilesPage';
-import { Profile } from '@prisma/client';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+import MyProfilesPage from "@/components/dashboard/MyProfilesPage";
+import { Profile } from "@prisma/client";
 
 async function Myprofiles() {
   // @ts-ignore
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
-    redirect('/signin');
+    redirect("/signin");
   }
 
   const user = await db.users.aggregateRaw({
@@ -21,10 +21,10 @@ async function Myprofiles() {
       },
       {
         $lookup: {
-          from: 'profiles',
-          localField: 'profiles',
-          foreignField: '_id',
-          as: 'profiles',
+          from: "profiles",
+          localField: "profiles",
+          foreignField: "_id",
+          as: "profiles",
         },
       },
     ],

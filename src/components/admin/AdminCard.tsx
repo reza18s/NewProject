@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'react-hot-toast';
-import { sp } from '@/utils/replaceNumber';
-import styles from './AdminCard.module.css';
-import { Profile } from '@prisma/client';
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import { sp } from "@/utils/replaceNumber";
+import styles from "./AdminCard.module.css";
+import { Profile } from "@prisma/client";
 
 function AdminCard({
   data: { id, title, description, location, price },
@@ -14,7 +14,7 @@ function AdminCard({
   const router = useRouter();
 
   const publishHandler = async () => {
-    const res = await fetch(`/api/profile/publish/${id}`, { method: 'PATCH' });
+    const res = await fetch(`/api/profile/publish/${id}`, { method: "PATCH" });
     const result = await res.json();
     if (result.message) {
       toast.success(result.message);

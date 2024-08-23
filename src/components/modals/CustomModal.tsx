@@ -1,14 +1,14 @@
-'use client';
-import React from 'react';
+"use client";
+import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog';
-import { useStore } from 'zustand';
-import { useModal } from '@/stores/useModal';
+} from "../ui/dialog";
+import { useStore } from "zustand";
+import { useModal } from "@/stores/useModal";
 
 type Props = {
   title: string;

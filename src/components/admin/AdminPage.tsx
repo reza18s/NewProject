@@ -1,6 +1,6 @@
-import styles from './AdminPage.module.css';
-import AdminCard from './AdminCard';
-import { Profile } from '@prisma/client';
+import styles from "./AdminPage.module.css";
+import AdminCard from "./AdminCard";
+import { Profile } from "@prisma/client";
 
 function AdminPage({ profiles }: { profiles: Profile[] }) {
   return (

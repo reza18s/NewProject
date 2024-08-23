@@ -1,21 +1,21 @@
-'use client';
-import styles from './BuyResidentialsPage.module.css';
-import Sidebar from '../sidebar/Sidebar';
-import { Profile } from '@prisma/client';
-import AdList from '../Ads/AdList';
-
+"use client";
+import Sidebar from "../sidebar/Sidebar";
+import AdList from "./AdList";
+import { useData } from "@/stores/useData";
+import { useEffect } from "react";
+import { Profile } from "@prisma/client";
 function BuyResidentialsPage({ data }: { data: Profile[] }) {
+  const { setData } = useData((state) => state);
+  useEffect(() => {
+    setData(data);
+  }, [data]);
   return (
-    <div className={styles.container}>
-      <div className={styles.sidebar}>
+    <div className="mt-20 flex">
+      <div className="ml-10 mt-1 flex h-fit w-[220px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50">
         <Sidebar />
       </div>
-      <div className={styles.main}>
-        {!data || data.length === 0 ? (
-          <p className={styles.text}>هیچ آگهی ثبت نشده است</p>
-        ) : (
-          data.map((profile) => <AdList key={profile.id} data={profile} />)
-        )}
+      <div className="flex w-full flex-wrap justify-start">
+        <AdList />
       </div>
     </div>
   );

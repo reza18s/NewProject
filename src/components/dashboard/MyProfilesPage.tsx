@@ -1,6 +1,6 @@
-import styles from './MyProfilesPage.module.css';
-import DashboardCard from './DashboardCard';
-import { Profile } from '@prisma/client';
+import styles from "./MyProfilesPage.module.css";
+import DashboardCard from "./DashboardCard";
+import { Profile } from "@prisma/client";
 
 function MyProfilesPage({ profiles }: { profiles: Profile[] }) {
   return (

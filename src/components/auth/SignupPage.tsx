@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'react-hot-toast';
-import styles from './SignupPage.module.css';
-import Loader from '../global/Loader';
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import styles from "./SignupPage.module.css";
+import Loader from "../global/Loader";
 
 function SignupPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -19,19 +19,19 @@ function SignupPage() {
     e.preventDefault();
 
     if (password !== rePassword) {
-      toast.error('رمز و تکرار آن برابر نیست');
+      toast.error("رمز و تکرار آن برابر نیست");
       return;
     }
     setLoading(true);
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
       body: JSON.stringify({ email, password, passwordConfirm: rePassword }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
     setLoading(false);
     if (res.status === 201) {
-      router.push('/signin');
+      router.push("/signin");
     } else {
       toast.error(data.error);
     }

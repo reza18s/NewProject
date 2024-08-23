@@ -1,20 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { db } from '@/lib/db';
-import { createProfileObject } from '@/validator';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { db } from "@/lib/db";
+import { createProfileObject } from "@/validator";
 
 export async function GET(req: NextRequest) {
   try {
-    const searchParams = new URLSearchParams(req.url?.split('?')[1]);
+    const searchParams = new URLSearchParams(req.url?.split("?")[1]);
     const query = [
-      { name: 'category', value: 'category' },
-      { name: 'search', value: 'title', op: true },
+      { name: "category", value: "category" },
+      { name: "search", value: "title", op: true },
     ];
     const searchObj: { [key: string]: any } = {};
     query.map((el) => {
       if (searchParams.get(el.name)) {
         searchObj[el.value] = el.op
-          ? { $in: new RegExp(searchParams.get(el.name)!, 'i') }
+          ? { $in: new RegExp(searchParams.get(el.name)!, "i") }
           : searchParams.get(el.name);
       }
     });
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.log(err);
     return NextResponse.json(
-      { error: 'مشکلی در سرور رخ داده است' },
+      { error: "مشکلی در سرور رخ داده است" },
       { status: 500 },
     );
   }
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     if (!session?.user) {
       return NextResponse.json(
         {
-          error: 'لطفا وارد حساب کاربری خود شوید',
+          error: "لطفا وارد حساب کاربری خود شوید",
         },
         { status: 401 },
       );
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     });
     if (!user) {
       return NextResponse.json(
-        { error: 'حساب کاربری یافت نشد' },
+        { error: "حساب کاربری یافت نشد" },
         { status: 404 },
       );
     }
@@ -91,13 +91,13 @@ export async function POST(req: NextRequest) {
     });
     console.log(newProfile);
     return NextResponse.json(
-      { message: 'آگهی جدید اضافه شد' },
+      { message: "آگهی جدید اضافه شد" },
       { status: 201 },
     );
   } catch (err) {
     console.log(err);
     return NextResponse.json(
-      { error: 'مشکلی در سرور رخ داده است' },
+      { error: "مشکلی در سرور رخ داده است" },
       { status: 500 },
     );
   }
@@ -125,7 +125,7 @@ export async function PATCH(req: NextRequest) {
     if (!session?.user?.email) {
       return NextResponse.json(
         {
-          error: 'لطفا وارد حساب کاربری خود شوید',
+          error: "لطفا وارد حساب کاربری خود شوید",
         },
         { status: 401 },
       );
@@ -136,19 +136,19 @@ export async function PATCH(req: NextRequest) {
     });
     if (!user) {
       return NextResponse.json(
-        { error: 'حساب کاربری یافت نشد' },
+        { error: "حساب کاربری یافت نشد" },
         { status: 404 },
       );
     }
 
     const profile = await db.profile.findUnique({ where: { id: _id } });
     if (!profile) {
-      return NextResponse.json({ error: 'پروفایل یافت نشد' }, { status: 404 });
+      return NextResponse.json({ error: "پروفایل یافت نشد" }, { status: 404 });
     }
     if (user.id === profile?.userId) {
       return NextResponse.json(
         {
-          error: 'دستری شما به این آگهی محدود شده است',
+          error: "دستری شما به این آگهی محدود شده است",
         },
         { status: 403 },
       );
@@ -169,7 +169,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json(
       {
-        message: 'آگهی با موفقیت ویرایش شد',
+        message: "آگهی با موفقیت ویرایش شد",
       },
       {
         status: 200,
@@ -178,7 +178,7 @@ export async function PATCH(req: NextRequest) {
   } catch (err) {
     console.log(err);
     return NextResponse.json(
-      { error: 'مشکلی در سرور رخ داده است' },
+      { error: "مشکلی در سرور رخ داده است" },
       { status: 500 },
     );
   }

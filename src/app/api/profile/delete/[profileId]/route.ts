@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { db } from '@/lib/db';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { db } from "@/lib/db";
 
 export async function DELETE(req: NextRequest, context: any) {
   try {
@@ -10,7 +10,7 @@ export async function DELETE(req: NextRequest, context: any) {
     if (!session?.user?.email) {
       return NextResponse.json(
         {
-          error: 'لطفا وارد حساب کاربری خود شوید',
+          error: "لطفا وارد حساب کاربری خود شوید",
         },
         { status: 401 },
       );
@@ -22,7 +22,7 @@ export async function DELETE(req: NextRequest, context: any) {
     if (!user) {
       return NextResponse.json(
         {
-          error: 'حساب کاربری یافت نشد',
+          error: "حساب کاربری یافت نشد",
         },
         { status: 404 },
       );
@@ -41,13 +41,13 @@ export async function DELETE(req: NextRequest, context: any) {
     // }
 
     return NextResponse.json(
-      { message: 'آگهی موردنظر حذف شد' },
+      { message: "آگهی موردنظر حذف شد" },
       { status: 200 },
     );
   } catch (err) {
     console.log(err);
     return NextResponse.json(
-      { error: 'مشکلی در سرور رخ داده است' },
+      { error: "مشکلی در سرور رخ داده است" },
       { status: 500 },
     );
   }

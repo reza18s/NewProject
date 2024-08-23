@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import connectDB from "@/utils/connectDB";
-import Profile from "@/models/Profile";
-import User from "@/models/User";
-
 export async function PATCH(req, context) {
   try {
     await connectDB();
@@ -16,7 +12,7 @@ export async function PATCH(req, context) {
         {
           error: "لطفا وارد حساب کاربری خود شوید",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -26,7 +22,7 @@ export async function PATCH(req, context) {
         {
           error: "حساب کاربری یافت نشد",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
     if (user.role !== "ADMIN") {
@@ -34,7 +30,7 @@ export async function PATCH(req, context) {
         { error: "دسترسی محدود" },
         {
           status: 403,
-        }
+        },
       );
     }
 
@@ -47,7 +43,7 @@ export async function PATCH(req, context) {
     console.log(err);
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

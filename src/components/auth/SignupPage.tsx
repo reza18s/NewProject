@@ -8,7 +8,7 @@ import styles from "./SignupPage.module.css";
 import Loader from "../global/Loader";
 
 function SignupPage() {
-  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,11 @@ function SignupPage() {
     setLoading(true);
     const res = await fetch("/api/auth/signup", {
       method: "POST",
-      body: JSON.stringify({ email, password, passwordConfirm: rePassword }),
+      body: JSON.stringify({
+        phoneNumber,
+        password,
+        passwordConfirm: rePassword,
+      }),
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
@@ -41,11 +45,11 @@ function SignupPage() {
     <div className={styles.form}>
       <h4>فرم ثبت نام</h4>
       <form>
-        <label>ایمیل:</label>
+        <label>شماره:</label>
         <input
           type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label>رمز عبور:</label>
         <input

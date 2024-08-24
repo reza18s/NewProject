@@ -5,10 +5,10 @@ import { signupObject } from "@/validator";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, name } = signupObject.parse(await req.json());
-    console.log({ email, password });
+    const { phoneNumber, password } = signupObject.parse(await req.json());
+    console.log({ phoneNumber, password });
 
-    if (!email || !password) {
+    if (!phoneNumber || !password) {
       return NextResponse.json(
         { error: "لطفا اطلاعات معتبر وارد کنید" },
         { status: 422 },
@@ -16,9 +16,8 @@ export async function POST(req: NextRequest) {
     }
 
     const existingUser = await db.users.findUnique({
-      where: { email },
+      where: { phoneNumber },
     });
-    console.log(existingUser);
 
     if (existingUser) {
       return NextResponse.json(
@@ -31,13 +30,10 @@ export async function POST(req: NextRequest) {
 
     const newUser = await db.users.create({
       data: {
-        name,
-        email: email,
+        phoneNumber: phoneNumber,
         password: hashedPassword,
       },
     });
-    console.log(newUser);
-
     return NextResponse.json(
       { message: "حساب کاربری ایجاد شد" },
       { status: 201 },

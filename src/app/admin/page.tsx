@@ -10,14 +10,13 @@ export const metadata = {
 };
 
 async function Admin() {
-  // @ts-ignore
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
+  if (!session?.user) {
     redirect("/signin");
   }
 
   const user = await db.users.findUnique({
-    where: { email: session.user.email },
+    where: { phoneNumber: session.user.phoneNumber },
   });
   if (user?.role !== "ADMIN") {
     redirect("/dashboard");
@@ -26,7 +25,7 @@ async function Admin() {
   const profiles = await db.profile.findMany({ where: { published: false } });
 
   return (
-    <DashboardSidebar role={user?.role} email={user?.email}>
+    <DashboardSidebar role={user?.role} phoneNumber={user.phoneNumber}>
       <AdminPage profiles={profiles} />
     </DashboardSidebar>
   );

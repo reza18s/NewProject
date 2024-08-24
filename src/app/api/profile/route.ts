@@ -19,7 +19,6 @@ export async function GET(req: NextRequest) {
       }
     });
     const profiles = await db.profile.findMany({ where: searchObj });
-    console.log(profiles);
     return NextResponse.json(
       {
         data: profiles,
@@ -27,6 +26,7 @@ export async function GET(req: NextRequest) {
       { status: 200 },
     );
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await db.users.findUnique({
-      where: { email: session.user.email! },
+      where: { phoneNumber: session.user.phoneNumber! },
     });
     if (!user) {
       return NextResponse.json(
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newProfile = await db.profile.create({
+    await db.profile.create({
       data: {
         title,
         description,
@@ -89,12 +89,12 @@ export async function POST(req: NextRequest) {
         userId: user.id,
       },
     });
-    console.log(newProfile);
     return NextResponse.json(
       { message: "آگهی جدید اضافه شد" },
       { status: 201 },
     );
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },
@@ -122,7 +122,7 @@ export async function PATCH(req: NextRequest) {
     } = updateProfileObject.parse(await req.json());
     // @ts-ignore
     const session = await getServerSession(req);
-    if (!session?.user?.email) {
+    if (!session?.user) {
       return NextResponse.json(
         {
           error: "لطفا وارد حساب کاربری خود شوید",
@@ -132,7 +132,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const user = await db.users.findUnique({
-      where: { email: session.user.email! },
+      where: { phoneNumber: session.user.phoneNumber! },
     });
     if (!user) {
       return NextResponse.json(
@@ -153,7 +153,7 @@ export async function PATCH(req: NextRequest) {
         { status: 403 },
       );
     }
-    const newProfile = await db.profile.update({
+    await db.profile.update({
       where: { id: id },
       data: {
         title,
@@ -180,6 +180,7 @@ export async function PATCH(req: NextRequest) {
       },
     );
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },

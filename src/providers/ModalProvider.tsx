@@ -12,7 +12,9 @@ export const ModalProvider = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {return null;}
+  if (!isMounted) {
+    return null;
+  }
 
-  return <>{Model}</>;
+  return <div className="absolute">{Model}</div>;
 };

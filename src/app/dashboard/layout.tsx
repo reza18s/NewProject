@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import DashboardSidebar from "@/components/layout/DashboardSidebar";
 import { db } from "@/lib/db";
+import React from "react";
 
 export const metadata = {
   title: "پنل کاربری املاک | پروژه بوتواستارت",
@@ -11,12 +12,12 @@ export const metadata = {
 async function DashboardLayout({ children }: { children: React.ReactNode }) {
   // @ts-ignore
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
+  if (!session?.user) {
     redirect("/signin");
   }
 
   const user = await db.users.findUnique({
-    where: { email: session.user.email },
+    where: { phoneNumber: session.user.phoneNumber },
   });
 
   if (!user) {
@@ -24,7 +25,7 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <DashboardSidebar role={user.role} email={user.email}>
+    <DashboardSidebar role={user.role} phoneNumber={user.phoneNumber}>
       {children}
     </DashboardSidebar>
   );

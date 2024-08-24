@@ -5,11 +5,11 @@ import React from "react";
 
 async function DashboardSidebar({
   children,
-  email,
+  phoneNumber,
   role,
 }: {
   children: React.ReactNode;
-  email: string;
+  phoneNumber: string;
   role: string;
 }) {
   return (
@@ -18,7 +18,7 @@ async function DashboardSidebar({
         <CgProfile className="text-5xl text-primary" />
         {role === "ADMIN" ? "ادمین" : null}
         <p className="mt-[30px] text-lg font-normal text-foreground/70">
-          {email}
+          {phoneNumber}
         </p>
         <span className="mb-[30px] h-px w-full bg-foreground/50"></span>
         <Link href="/dashboard" className="mx-2 my-0 w-full font-normal">

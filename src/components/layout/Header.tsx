@@ -10,6 +10,7 @@ import CustomModal from "../modals/CustomModal";
 import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
 import React from "react";
+import { ModeToggle } from "../global/mode-toggle";
 
 function Header() {
   const store = useStore(useModal, (state) => state);
@@ -22,7 +23,7 @@ function Header() {
   };
   return (
     <div className="mt-[20px] hidden h-[50px] justify-center md:flex">
-      <div className="flex w-[1200px] items-center justify-between divide-red-200 rounded-sm bg-white px-[20px] py-[10px] shadow-md shadow-foreground/10">
+      <div className="flex w-[1200px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
         <div className="flex w-[300px] items-center">
           <Button
             onClick={() => {
@@ -59,18 +60,19 @@ function Header() {
               پنل اختصاصی من
             </button>
             {session ? (
-              <div className="pr-3">
+              <div className="ml-3 pr-3">
                 <Link href="/dashboard">
                   <FaUserAlt />
                 </Link>
               </div>
             ) : (
-              <div className="pr-3">
+              <div className="ml-3 pr-3">
                 <Link href="/signin">
                   <span>ورود / ثبت نام</span>
                 </Link>
               </div>
             )}
+            <ModeToggle></ModeToggle>
           </div>
         </div>
       </div>

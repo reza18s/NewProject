@@ -2,12 +2,10 @@ import React from "react";
 import Header from "./Header";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const style = { minHeight: "700px" };
-
   return (
     <>
       <Header />
-      <div style={style}>{children}</div>
+      <div className="m-auto max-w-[1200px] p-3">{children}</div>
     </>
   );
 }

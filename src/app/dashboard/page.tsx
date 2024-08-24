@@ -5,13 +5,12 @@ import { redirect } from "next/navigation";
 import DashboardPage from "@/components/dashboard/DashboardPage";
 
 async function Dashboard() {
-  // @ts-ignore
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
+  if (!session?.user) {
     redirect("/signin");
   }
   const user = await db.users.findUnique({
-    where: { email: session.user.email },
+    where: { phoneNumber: session.user.phoneNumber },
   });
   return <DashboardPage createdAt={user!.createdAt} />;
 }

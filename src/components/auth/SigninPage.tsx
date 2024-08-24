@@ -9,7 +9,7 @@ import styles from "./SignupPage.module.css";
 import Loader from "../global/Loader";
 
 function SigninPage() {
-  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +19,7 @@ function SigninPage() {
     e.preventDefault();
     setLoading(true);
     const res = await signIn("credentials", {
-      email,
+      phoneNumber,
       password,
       redirect: false,
     });
@@ -35,11 +35,11 @@ function SigninPage() {
     <div className={styles.form}>
       <h4>فرم ورود</h4>
       <form>
-        <label>ایمیل:</label>
+        <label>شماره:</label>
         <input
           type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label>رمز عبور:</label>
         <input

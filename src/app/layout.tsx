@@ -37,8 +37,10 @@ export default function RootLayout({
           enableSystem
         >
           <NextAuthProvider>
-            <Layout>{children}</Layout>
-            <ModalProvider></ModalProvider>
+            <Layout>
+              {/* <ModalProvider></ModalProvider> */}
+              {children}
+            </Layout>
             <Toaster
               position="top-center"
               gutter={12}

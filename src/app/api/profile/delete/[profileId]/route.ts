@@ -7,7 +7,7 @@ export async function DELETE(req: NextRequest, context: any) {
     const id = context.params.profileId;
     // @ts-ignore
     const session = await getServerSession(req);
-    if (!session?.user?.email) {
+    if (!session?.user) {
       return NextResponse.json(
         {
           error: "لطفا وارد حساب کاربری خود شوید",
@@ -17,7 +17,7 @@ export async function DELETE(req: NextRequest, context: any) {
     }
 
     const user = await db.users.findUnique({
-      where: { email: session.user.email },
+      where: { phoneNumber: session.user.phoneNumber },
     });
     if (!user) {
       return NextResponse.json(
@@ -27,7 +27,6 @@ export async function DELETE(req: NextRequest, context: any) {
         { status: 404 },
       );
     }
-    console.log(id);
     const profile = await db.profile.delete({
       where: { id: id },
     });
@@ -45,6 +44,7 @@ export async function DELETE(req: NextRequest, context: any) {
       { status: 200 },
     );
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },

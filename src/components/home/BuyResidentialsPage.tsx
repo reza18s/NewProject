@@ -3,8 +3,8 @@ import Sidebar from "../sidebar/Sidebar";
 import AdList from "./AdList";
 import { useData } from "@/stores/useData";
 import { useEffect } from "react";
-import { Profile } from "@prisma/client";
-function BuyResidentialsPage({ data }: { data: Profile[] }) {
+import { Profiles } from "@prisma/client";
+function BuyResidentialsPage({ data }: { data: Profiles[] }) {
   const { setData } = useData((state) => state);
   useEffect(() => {
     setData(data);

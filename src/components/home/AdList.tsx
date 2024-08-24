@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import AdCard from "./Card";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 import { useData } from "@/stores/useData";
 
 const AdList = () => {
@@ -14,7 +14,7 @@ const AdList = () => {
             هیچ آگهی ثبت نشده است
           </p>
         ) : (
-          data.map((data: Profile) => (
+          data.map((data: Profiles) => (
             <AdCard
               key={data.id}
               data={data}

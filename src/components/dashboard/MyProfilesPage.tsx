@@ -1,7 +1,7 @@
 import DashboardCard from "./DashboardCard";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 
-function MyProfilesPage({ profiles }: { profiles: Profile[] }) {
+function MyProfilesPage({ profiles }: { profiles: Profiles[] }) {
   return (
     <div>
       {profiles.length ? null : (

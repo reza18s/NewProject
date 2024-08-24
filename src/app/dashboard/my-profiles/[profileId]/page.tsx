@@ -6,7 +6,7 @@ async function Edit({
 }: {
   params: { profileId: string };
 }) {
-  const profile = await db.profile.findUnique({ where: { id: profileId } });
+  const profile = await db.profiles.findUnique({ where: { id: profileId } });
 
   if (!profile) {
     return <h3>مشکلی پیش آمده است. لطفا دوباره امتحان کنید ...</h3>;

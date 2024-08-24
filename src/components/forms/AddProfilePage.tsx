@@ -20,7 +20,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 
 const formSchema = z.object({
   title: z.string(),
@@ -37,7 +37,7 @@ const formSchema = z.object({
   amenities: z.array(z.string()),
 });
 
-export const AddProfilePage = ({ data }: { data?: Profile }) => {
+export const AddProfilePage = ({ data }: { data?: Profiles }) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

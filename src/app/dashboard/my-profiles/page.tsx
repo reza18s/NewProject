@@ -16,7 +16,7 @@ async function Myprofiles() {
   if (!user) {
     redirect("/signin");
   }
-  const profile = await db.profile.findMany({
+  const profile = await db.profiles.findMany({
     where: { userId: user?.id },
   });
   return <MyProfilesPage profiles={profile} />;

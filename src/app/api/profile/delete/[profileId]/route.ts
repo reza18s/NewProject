@@ -27,7 +27,7 @@ export async function DELETE(req: NextRequest, context: any) {
         { status: 404 },
       );
     }
-    const profile = await db.profile.delete({
+    const profile = await db.profiles.delete({
       where: { id: id },
     });
     if (user.id === profile.userId) {

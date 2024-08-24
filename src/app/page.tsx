@@ -1,29 +1,29 @@
 import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
 import { db } from "@/lib/db";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 async function BuyResidentials({
   searchParams,
 }: {
   searchParams: { category?: string; search?: string };
 }) {
-  let data: Profile[] = [];
+  let data: Profiles[] = [];
   if (searchParams.category && searchParams.search) {
-    data = await db.profile.findMany({
+    data = await db.profiles.findMany({
       where: {
         title: { contains: searchParams.search },
         category: searchParams.category,
       },
     });
   } else if (searchParams.category) {
-    data = await db.profile.findMany({
+    data = await db.profiles.findMany({
       where: { category: searchParams.category },
     });
   } else if (searchParams.search) {
-    data = await db.profile.findMany({
+    data = await db.profiles.findMany({
       where: { title: { contains: searchParams.search } },
     });
   } else {
-    data = await db.profile.findMany({});
+    data = await db.profiles.findMany({});
   }
 
   if (!data) {

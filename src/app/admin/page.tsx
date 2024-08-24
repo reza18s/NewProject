@@ -22,7 +22,7 @@ async function Admin() {
     redirect("/dashboard");
   }
 
-  const profiles = await db.profile.findMany({ where: { published: false } });
+  const profiles = await db.profiles.findMany({ where: { published: false } });
 
   return (
     <DashboardSidebar role={user?.role} phoneNumber={user.phoneNumber}>

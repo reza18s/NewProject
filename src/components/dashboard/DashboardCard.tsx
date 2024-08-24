@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 
-function DashboardCard({ data }: { data: Profile }) {
+function DashboardCard({ data }: { data: Profiles }) {
   const router = useRouter();
 
   const editHandler = () => {

@@ -38,7 +38,7 @@ export async function PATCH(
       );
     }
 
-    await db.profile.update({
+    await db.profiles.update({
       where: { id: id },
       data: { published: true },
     });

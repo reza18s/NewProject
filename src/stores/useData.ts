@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface IStore {
-  originData: Profile[];
-  data: Profile[];
+  originData: Profiles[];
+  data: Profiles[];
   filters: { [key: string]: boolean };
 }
 export type Actions = {
-  setData: (data: Profile[]) => void;
+  setData: (data: Profiles[]) => void;
   setFilters: (filter: { [key: string]: boolean }) => void;
 };
 

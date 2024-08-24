@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
           : searchParams.get(el.name);
       }
     });
-    const profiles = await db.profile.findMany({ where: searchObj });
+    const profiles = await db.profiles.findMany({ where: searchObj });
     return NextResponse.json(
       {
         data: profiles,
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await db.profile.create({
+    await db.profiles.create({
       data: {
         title,
         description,
@@ -144,7 +144,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const profile = await db.profile.findUnique({ where: { id: id } });
+    const profile = await db.profiles.findUnique({ where: { id: id } });
     if (!profile) {
       return NextResponse.json({ error: "پروفایل یافت نشد" }, { status: 404 });
     }
@@ -156,7 +156,7 @@ export async function PATCH(req: NextRequest) {
         { status: 403 },
       );
     }
-    await db.profile.update({
+    await db.profiles.update({
       where: { id: id },
       data: {
         title,

@@ -1,13 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import { Profile } from "@prisma/client";
+import { Profiles } from "@prisma/client";
 
 const AdCard = ({
   data: { title, location, price },
   profileImg,
   adImg,
 }: {
-  data: Profile;
+  data: Profiles;
   adImg: string;
   profileImg: string;
 }) => {
@@ -33,7 +33,7 @@ const AdCard = ({
       <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%]">
         <Image
           src={profileImg}
-          alt="Profile"
+          alt="Profiles"
           className="size-full object-cover"
           width={50}
           height={50}

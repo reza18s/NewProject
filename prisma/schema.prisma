@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider     = "mongodb"
+  provider     = "mysql"
   url          = env("DATABASE_URL") // uses connection pooling
   directUrl    = env("DATABASE_URL") // uses a direct connection
   relationMode = "prisma"
@@ -17,20 +17,22 @@ enum Role {
 }
 
 model Users {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(cuid())
   name        String?
   avatarUrl   String?
-  phoneNumber String    @unique
+  phoneNumber String     @unique
   email       String?
   password    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  role        Role      @default(USER)
-  Profile     Profile[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  role        Role       @default(USER)
+  Profile     Profiles[]
+
+  @@index([phoneNumber])
 }
 
-model Profile {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+model Profiles {
+  id               String   @id @default(cuid())
   title            String
   description      String
   location         String
@@ -41,11 +43,11 @@ model Profile {
   category         String
   province         String
   city             String
-  amenities        String[] @default([])
-  rules            String[] @default([])
+  amenities        String
+  rules            String
   published        Boolean? @default(false)
   imagePath        String?
-  userId           String   @db.ObjectId
+  userId           String
   Users            Users    @relation(fields: [userId], references: [id])
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

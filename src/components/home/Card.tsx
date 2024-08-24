@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Profile } from "@prisma/client";
 
 const AdCard = ({
-  data: { id, title, description, location, price },
+  data: { title, location, price },
   profileImg,
   adImg,
 }: {

@@ -1,5 +1,4 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "@/utils/auth";
 import { db } from "@/lib/db";
@@ -51,14 +50,12 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async jwt({ token, user }: { token: Token; user?: any }): Promise<Token> {
+    async jwt({ token, user }: { token: Token; user?: User }): Promise<Token> {
       if (user) {
         token.accessToken = user._id;
         token.user = {
-          _id: user._id,
-          phoneNumber: user.phoneNumber,
-          role: user.role,
-          ...user, // Include any additional fields
+          id: user._id,
+          ...user,
         };
       }
       return token;
@@ -114,7 +111,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 };
-// @ts-ignore
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

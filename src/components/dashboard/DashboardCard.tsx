@@ -18,7 +18,6 @@ function DashboardCard({ data }: { data: Profile }) {
       method: "DELETE",
     });
     const result = await res.json();
-    console.log(result);
     if (result.error) {
       toast.error(result.error);
     } else {

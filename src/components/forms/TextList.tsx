@@ -8,7 +8,7 @@ function TextList({
   setData,
 }: {
   data: string[];
-  setData: (event: any) => void;
+  setData: (event: unknown) => void;
 }) {
   const changeHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     const { value } = e.target;

@@ -5,7 +5,6 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
 import NextAuthProvider from "@/providers/NextAuthProvider";
-import { ModalProvider } from "@/providers/ModalProvider";
 import Layout from "@/components/layout/Layout";
 import { Toaster } from "react-hot-toast";
 const fontSans = FontSans({

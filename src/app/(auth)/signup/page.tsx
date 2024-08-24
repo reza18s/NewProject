@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 async function Signup() {
-  // @ts-ignore
   const session = await getServerSession(authOptions);
   if (session) {
     redirect("/");

@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import MyProfilesPage from "@/components/dashboard/MyProfilesPage";
 
 async function Myprofiles() {
-  // @ts-ignore
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     redirect("/signin");
@@ -20,7 +19,6 @@ async function Myprofiles() {
   const profile = await db.profile.findMany({
     where: { userId: user?.id },
   });
-  // @ts-ignore
   return <MyProfilesPage profiles={profile} />;
 }
 

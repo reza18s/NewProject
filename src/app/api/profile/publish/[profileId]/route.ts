@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
-export async function PATCH(req: NextRequest, context: any) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { profileId: string } },
+) {
   try {
     const id = context.params.profileId;
-    //@ts-ignore
+    // @ts-expect-error bec
     const session = await getServerSession(req);
     if (!session?.user) {
       return NextResponse.json(

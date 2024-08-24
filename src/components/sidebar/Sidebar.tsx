@@ -23,7 +23,7 @@ function Sidebar() {
             }}
           >
             {
-              // @ts-ignore
+              // @ts-expect-error bec
               categories[i]
             }
           </Link>

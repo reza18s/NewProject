@@ -1,16 +1,15 @@
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import DashboardSidebar from "@/components/layout/DashboardSidebar";
 import { db } from "@/lib/db";
 import React from "react";
+import { getServerSession } from "next-auth";
 
 export const metadata = {
   title: "پنل کاربری املاک | پروژه بوتواستارت",
 };
 
 async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  // @ts-ignore
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     redirect("/signin");

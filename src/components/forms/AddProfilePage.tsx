@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,6 @@ import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
 import { Profile } from "@prisma/client";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   title: z.string(),
@@ -50,7 +48,7 @@ export const AddProfilePage = ({ data }: { data?: Profile }) => {
       phone: data?.phone || "",
       price: data?.price || 0,
       realState: data?.realState || "",
-      constructionDate: new Date(data?.constructionDate) || new Date(),
+      constructionDate: data?.constructionDate || new Date(),
       province: data?.province || "",
       city: data?.city || "",
       category: data?.category || "",
@@ -279,7 +277,7 @@ export const AddProfilePage = ({ data }: { data?: Profile }) => {
                   locale={persian_fa}
                   value={field.value}
                   onChange={(e) => {
-                    // @ts-ignore
+                    // @ts-expect-error dec
                     field.onChange(new Date(e));
                   }}
                   calendarPosition="bottom-right"

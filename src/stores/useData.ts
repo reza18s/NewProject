@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Profile } from "@prisma/client";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 interface IStore {
   originData: Profile[];
@@ -48,7 +48,6 @@ export const useData = create<Store>()(
       if (filterData.length === 0) {
         filterData = get().originData;
       }
-      console.log(filterData);
       set({ data: filterData, filters: filter });
     },
   })),

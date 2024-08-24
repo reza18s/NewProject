@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
 import styles from "./SignupPage.module.css";
@@ -15,7 +15,9 @@ function SignupPage() {
 
   const router = useRouter();
 
-  const signupHandler = async (e: any) => {
+  const signupHandler = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  ) => {
     e.preventDefault();
 
     if (password !== rePassword) {

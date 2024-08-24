@@ -10,6 +10,8 @@ export async function GET(req: NextRequest) {
       { name: "category", value: "category" },
       { name: "search", value: "title", op: true },
     ];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const searchObj: { [key: string]: any } = {};
     query.map((el) => {
       if (searchParams.get(el.name)) {
@@ -51,7 +53,8 @@ export async function POST(req: NextRequest) {
       amenities,
       rules,
     } = createProfileObject.parse(await req.json());
-    // @ts-ignore
+
+    // @ts-expect-error bec
     const session = await getServerSession(req);
     if (!session?.user) {
       return NextResponse.json(
@@ -63,7 +66,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await db.users.findUnique({
-      where: { phoneNumber: session.user.phoneNumber! },
+      where: { phoneNumber: session.user.phoneNumber },
     });
     if (!user) {
       return NextResponse.json(
@@ -120,7 +123,7 @@ export async function PATCH(req: NextRequest) {
       province,
       city,
     } = updateProfileObject.parse(await req.json());
-    // @ts-ignore
+    // @ts-expect-error bec
     const session = await getServerSession(req);
     if (!session?.user) {
       return NextResponse.json(
@@ -132,7 +135,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const user = await db.users.findUnique({
-      where: { phoneNumber: session.user.phoneNumber! },
+      where: { phoneNumber: session.user.phoneNumber },
     });
     if (!user) {
       return NextResponse.json(

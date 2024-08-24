@@ -1,7 +1,11 @@
 import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
 import { db } from "@/lib/db";
 import { Profile } from "@prisma/client";
-async function BuyResidentials({ searchParams }: { searchParams: any }) {
+async function BuyResidentials({
+  searchParams,
+}: {
+  searchParams: { category?: string; search?: string };
+}) {
   let data: Profile[] = [];
   if (searchParams.category && searchParams.search) {
     data = await db.profile.findMany({

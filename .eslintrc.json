@@ -5,21 +5,25 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "next/core-web-vitals",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:tailwindcss/recommended"
-  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
     "ecmaVersion": 12,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
-  "plugins": ["react"],
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:tailwindcss/recommended",
+    "plugin:@typescript-eslint/recommended"
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
     // Possible errors
     "no-console": "warn",
@@ -27,7 +31,10 @@
     "dot-notation": "error",
     "no-floating-decimal": "error",
     "no-sequences": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     // Stylistic
     "array-bracket-spacing": "error",
     "computed-property-spacing": ["error", "never"],
@@ -59,6 +66,7 @@
     "no-unused-expressions": "off",
     "no-prototype-builtins": "off",
     // REACT
+    "react/prop-types": "off",
     "react/jsx-uses-react": "off",
     "react/jsx-sort-props": "off",
     "react/react-in-jsx-scope": "off",

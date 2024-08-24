@@ -15,22 +15,6 @@ function SigninPage() {
 
   const router = useRouter();
 
-  const signinHandler = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    const res = await signIn("credentials", {
-      phoneNumber,
-      password,
-      redirect: false,
-    });
-    setLoading(false);
-    if (res?.error) {
-      toast.error(res.error);
-    } else {
-      router.push("/");
-    }
-  };
-
   return (
     <div className={styles.form}>
       <h4>فرم ورود</h4>
@@ -50,7 +34,24 @@ function SigninPage() {
         {loading ? (
           <Loader />
         ) : (
-          <button type="submit" onClick={signinHandler}>
+          <button
+            type="submit"
+            onClick={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+              const res = await signIn("credentials", {
+                phoneNumber,
+                password,
+                redirect: false,
+              });
+              setLoading(false);
+              if (res?.error) {
+                toast.error(res.error);
+              } else {
+                router.push("/");
+              }
+            }}
+          >
             ثبت نام
           </button>
         )}

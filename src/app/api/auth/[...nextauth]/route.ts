@@ -1,6 +1,5 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { verifyPassword } from "@/utils/auth";
 import { db } from "@/lib/db";
 interface Session {
   accessToken?: string;
@@ -14,7 +13,7 @@ interface Session {
 interface Token {
   accessToken?: string;
   user?: {
-    _id: string;
+    id: string;
     phoneNumber: string;
     role: string;
     [key: string]: string;
@@ -24,7 +23,6 @@ interface Token {
 interface User {
   id: string;
   phoneNumber: string;
-  password: string;
   role: string;
   // Add more fields if needed
 }
@@ -43,7 +41,6 @@ export const authOptions: NextAuthOptions = {
       }
       if (token.user) {
         session.user = {
-          id: token.user._id,
           ...token.user, // Include any additional fields
         };
       }
@@ -52,9 +49,8 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user }: { token: Token; user?: User }): Promise<Token> {
       if (user) {
-        token.accessToken = user._id;
+        token.accessToken = user.id;
         token.user = {
-          id: user._id,
           ...user,
         };
       }
@@ -70,22 +66,17 @@ export const authOptions: NextAuthOptions = {
           type: "text",
           placeholder: "09123456789",
         },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "••••••••",
-        },
       },
       async authorize(
-        credentials: Record<"phoneNumber" | "password", string> | undefined,
+        credentials: Record<"phoneNumber", string> | undefined,
       ): Promise<User | null> {
         if (!credentials) {
           throw new Error("Invalid credentials");
         }
 
-        const { phoneNumber, password } = credentials;
+        const { phoneNumber } = credentials;
 
-        if (!phoneNumber || !password) {
+        if (!phoneNumber) {
           throw new Error("Please enter valid information");
         }
 
@@ -94,13 +85,6 @@ export const authOptions: NextAuthOptions = {
         if (!user) {
           throw new Error("Please create an account first");
         }
-
-        const isValid = await verifyPassword(password, user.password);
-
-        if (!isValid) {
-          throw new Error("Incorrect email or password");
-        }
-
         // Return the full user object that matches the User interface
         return {
           id: user.id,

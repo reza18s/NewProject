@@ -10,7 +10,6 @@ import Loader from "../global/Loader";
 
 function SigninPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -26,11 +25,6 @@ function SigninPage() {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label>رمز عبور:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
         {loading ? (
           <Loader />
         ) : (
@@ -41,7 +35,6 @@ function SigninPage() {
               setLoading(true);
               const res = await signIn("credentials", {
                 phoneNumber,
-                password,
                 redirect: false,
               });
               setLoading(false);

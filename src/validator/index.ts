@@ -3,12 +3,6 @@ import { z } from "zod";
 export const signupObject = z
   .object({
     phoneNumber: z.string().regex(/^(?:0?|0980)?(9\d{9})$/),
-    password: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
-    passwordConfirm: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
   })
   .strict();
 export const signinObject = z

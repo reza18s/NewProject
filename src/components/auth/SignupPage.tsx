@@ -9,8 +9,6 @@ import Loader from "../global/Loader";
 
 function SignupPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -19,18 +17,11 @@ function SignupPage() {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
     e.preventDefault();
-
-    if (password !== rePassword) {
-      toast.error("رمز و تکرار آن برابر نیست");
-      return;
-    }
     setLoading(true);
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
         phoneNumber,
-        password,
-        passwordConfirm: rePassword,
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -54,17 +45,6 @@ function SignupPage() {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label>رمز عبور:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <label>تکرار رمز عبور:</label>
-        <input
-          type="password"
-          value={rePassword}
-          onChange={(e) => setRePassword(e.target.value)}
-        />
         {loading ? (
           <Loader />
         ) : (

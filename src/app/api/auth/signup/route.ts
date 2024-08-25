@@ -5,8 +5,8 @@ import { signupObject } from "@/validator";
 
 export async function POST(req: NextRequest) {
   try {
-    const { phoneNumber, password } = signupObject.parse(await req.json());
-    if (!phoneNumber || !password) {
+    const { phoneNumber } = signupObject.parse(await req.json());
+    if (!phoneNumber) {
       return NextResponse.json(
         { error: "لطفا اطلاعات معتبر وارد کنید" },
         { status: 422 },
@@ -24,12 +24,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hashedPassword = await hashPassword(password);
-
     await db.users.create({
       data: {
         phoneNumber: phoneNumber,
-        password: hashedPassword,
       },
     });
     return NextResponse.json(

@@ -1,0 +1,25 @@
+{
+   "compilerOptions": {
+      "module": "NodeNext",
+      // "noEmit": true,
+      // "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      // "allowImportingTsExtensions": true,
+      "target": "ES2022",
+      "noImplicitAny": false,
+      "moduleResolution": "NodeNext",
+      // "noUnusedLocals": true /* Report errors on unused locals. */,
+      // "noUnusedParameters": true,
+      "declaration": true,
+      // "sourceMap": true,
+      "outDir": "dist",
+      "skipLibCheck": true
+      // "rootDir": "/src/**/*"
+
+      // "esModuleInterop": true
+      // "baseUrl": "."
+      // "paths": {
+      //   "*": ["node_modules/*", "src/types/*"]
+      // }
+   }
+}

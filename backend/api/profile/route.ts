@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
           : searchParams.get(el.name);
       }
     });
-    console.log(searchObj);
     const profiles = await db.profiles.findMany({ where: searchObj });
     return NextResponse.json(
       {

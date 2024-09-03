@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:backend": "bun --watch backend/dist/app.js",
+    "dev:backend": "bun --watch backend/src/app.ts",
     "lint": "next lint"
   },
   "dependencies": {

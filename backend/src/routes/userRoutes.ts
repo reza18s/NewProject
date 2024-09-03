@@ -1,14 +1,16 @@
 import express from "express";
-import { signin, signup } from "../controllers/authController";
+import { protect, signin, signup } from "../controllers/authController";
+import { getMe, getUser, getUsers } from "../controllers/userController";
 
 const userRouter = express.Router();
 
+userRouter.get("/", getUsers);
 userRouter.post("/signup", signup);
 userRouter.post("/signin", signin);
 // userRouter.patch("/update-password", protect, updatePassword);
 // userRouter.patch("/update-me", protect, updateMyUser);
 // userRouter.delete("/delete-me", protect, DelMyUser);
-// userRouter.get("/get-me", protect, getMe, getUser);
+userRouter.get("/get-me", protect, getMe, getUser);
 // userRouter.post("/forgotpassword", forgotPassword);
 // userRouter.patch("/resetpassword/:token", resetPassword);
 

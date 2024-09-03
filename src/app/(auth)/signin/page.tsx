@@ -1,14 +1,19 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import SigninPage from "@/components/auth/SigninPage";
+import { cookies } from "next/headers";
 
 async function Signin() {
-  const session = await getServerSession(authOptions);
-  if (session) {
-    redirect("/");
-  }
-
+  const cookieStore = cookies();
+  const response = await fetch(
+    `${process.env.BACKEND_SERVER_URL}/users/get-me`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookieStore.get("jwt")?.value}`,
+      },
+    },
+  );
+  console.log(await response.json());
   return <SigninPage />;
 }
 

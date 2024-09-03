@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { catchAsync } from "../util/catchAsync";
+import { catchAsync } from "../utils/catchAsync";
 import { sign, verify } from "jsonwebtoken";
 import { signinObject, signupObject } from "../validator";
-import { db } from "../util/db";
+import { db } from "../utils/db";
 import { Users } from "@prisma/client";
-import { ErrorHandler } from "../util/ErrorHandler";
+import { ErrorHandler } from "../utils/ErrorHandler";
 import { IDecoded, IRequest } from "../types";
 export const createToken = (res: Response, statusCode: number, user: Users) => {
   const token = sign(
@@ -47,7 +47,7 @@ export const signup = catchAsync(
         phoneNumber: phoneNumber,
       },
     });
-    createToken(res, 200, user);
+    createToken(res, 201, user);
   },
 );
 export const signin = catchAsync(

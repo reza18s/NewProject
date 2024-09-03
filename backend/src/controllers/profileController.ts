@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { db } from "../util/db";
-import { catchAsync } from "../util/catchAsync";
+import { db } from "../utils/db";
+import { catchAsync } from "../utils/catchAsync";
 import { createProfileObject, updateProfileObject } from "../validator";
 import { IRequest } from "../types";
-import { ErrorHandler } from "../util/ErrorHandler";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export const getProfiles = catchAsync(async (req: Request, res: Response) => {
   const searchParams = req.query;

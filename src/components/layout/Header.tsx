@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { FaUserAlt } from "react-icons/fa";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation.js";
 import CityFilter from "../modals/CityFilter";
@@ -14,7 +13,6 @@ import { ModeToggle } from "../global/mode-toggle";
 
 function Header() {
   const store = useStore(useModal, (state) => state);
-  const { data: session } = useSession();
   const router = useRouter();
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = new URLSearchParams(window.location.search);
@@ -59,7 +57,7 @@ function Header() {
             <button className="mr-2 cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground">
               پنل اختصاصی من
             </button>
-            {session ? (
+            {/* {session ? (
               <div className="ml-3 pr-3">
                 <Link href="/dashboard">
                   <FaUserAlt />
@@ -71,7 +69,7 @@ function Header() {
                   <span>ورود / ثبت نام</span>
                 </Link>
               </div>
-            )}
+            )} */}
             <ModeToggle></ModeToggle>
           </div>
         </div>

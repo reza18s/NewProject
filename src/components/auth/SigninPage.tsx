@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 import { toast, Toaster } from "react-hot-toast";
 import styles from "./SignupPage.module.css";
 import Loader from "../global/Loader";
@@ -33,15 +32,23 @@ function SigninPage() {
             onClick={async (e) => {
               e.preventDefault();
               setLoading(true);
-              const res = await signIn("credentials", {
-                phoneNumber,
-                redirect: false,
-              });
+              const res = await fetch(
+                "http://localhost:3000/api/v1/users/signin",
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    phoneNumber,
+                  }),
+                  credentials: "include",
+                  headers: { "Content-Type": "application/json" },
+                },
+              );
+              const data = await res.json();
               setLoading(false);
-              if (res?.error) {
-                toast.error(res.error);
+              if (res.ok) {
+                // router.push("/signin");
               } else {
-                router.push("/");
+                toast.error(data.error);
               }
             }}
           >

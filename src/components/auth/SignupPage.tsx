@@ -10,7 +10,6 @@ import Loader from "../global/Loader";
 function SignupPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const signupHandler = async (
@@ -18,17 +17,18 @@ function SignupPage() {
   ) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("/api/auth/signup", {
+    const res = await fetch("http://localhost:3000/api/v1/users/signup", {
       method: "POST",
       body: JSON.stringify({
         phoneNumber,
       }),
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
     setLoading(false);
-    if (res.status === 201) {
-      router.push("/signin");
+    if (res.ok) {
+      // router.push("/signin");
     } else {
       toast.error(data.error);
     }

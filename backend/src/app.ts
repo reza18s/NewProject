@@ -2,12 +2,28 @@ import express, { NextFunction, Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import userRouter from "./routes/userRoutes";
 import { globalErrorHandler } from "./controllers/errorController";
-import { ErrorHandler } from "./util/ErrorHandler";
+import { ErrorHandler } from "./utils/ErrorHandler";
 import profilesRouter from "./routes/profileRoutes";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+const allowedOrigins = ["http://localhost:3001", "http://localhost:3001"];
+const corsOptions = {
+  origin: (origin: string | undefined, callback: any) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // This is required to allow credentials (cookies, etc.) to be sent
+};
 
+// Middleware
+app.use(cors(corsOptions));
 configDotenv({ path: "./config.env" });
 app.use(express.static(`${__dirname}/public`));
 

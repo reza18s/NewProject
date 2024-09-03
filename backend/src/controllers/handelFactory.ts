@@ -34,9 +34,7 @@ export const getOne = (model: Prisma.UsersDelegate<DefaultArgs>, popOption?) =>
     }
     res.status(200).json({
       status: "success",
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
 // export const createOne = (model: IModel) =>

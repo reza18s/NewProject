@@ -1,19 +1,12 @@
 import SigninPage from "@/components/auth/SigninPage";
-import { cookies } from "next/headers";
+import { getSession } from "@/utils/query";
+import { redirect } from "next/navigation";
 
 async function Signin() {
-  const cookieStore = cookies();
-  const response = await fetch(
-    `${process.env.BACKEND_SERVER_URL}/users/get-me`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookieStore.get("jwt")?.value}`,
-      },
-    },
-  );
-  console.log(await response.json());
+  const user = await getSession();
+  if (user) {
+    redirect("/");
+  }
   return <SigninPage />;
 }
 

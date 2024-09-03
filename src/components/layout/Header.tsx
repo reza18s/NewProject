@@ -8,10 +8,11 @@ import { Button } from "../ui/button";
 import CustomModal from "../modals/CustomModal";
 import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
-import React from "react";
+import React, { Suspense, use } from "react";
 import { ModeToggle } from "../global/mode-toggle";
+import { Users } from "@prisma/client";
 
-function Header() {
+function Header({ user }: { user: Promise<Users> }) {
   const store = useStore(useModal, (state) => state);
   const router = useRouter();
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,19 +58,9 @@ function Header() {
             <button className="mr-2 cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground">
               پنل اختصاصی من
             </button>
-            {/* {session ? (
-              <div className="ml-3 pr-3">
-                <Link href="/dashboard">
-                  <FaUserAlt />
-                </Link>
-              </div>
-            ) : (
-              <div className="ml-3 pr-3">
-                <Link href="/signin">
-                  <span>ورود / ثبت نام</span>
-                </Link>
-              </div>
-            )} */}
+            <Suspense fallback={<div>Loading...</div>}>
+              <Avatar user={user}></Avatar>
+            </Suspense>
             <ModeToggle></ModeToggle>
           </div>
         </div>
@@ -77,5 +68,22 @@ function Header() {
     </div>
   );
 }
+const Avatar = (props: { user: Promise<Users> }) => {
+  const user = use(props.user);
+  // console.log(user);
+  return user ? (
+    <div className="ml-3 pr-3">
+      <Link href="/dashboard">
+        <FaUserAlt />
+      </Link>
+    </div>
+  ) : (
+    <div className="ml-3 pr-3">
+      <Link href="/signin">
+        <span>ورود / ثبت نام</span>
+      </Link>
+    </div>
+  );
+};
 
 export default Header;

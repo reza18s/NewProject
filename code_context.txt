@@ -1,0 +1,3535 @@
+// File: src/constants/strings.ts
+const categories = {
+  apartment: "آپارتمان",
+  villa: "ویلا",
+  store: "مغازه",
+  office: "دفتر",
+};
+
+export { categories };
+
+// File: src/constants/icons.tsx
+import { RiHome3Line } from "react-icons/ri";
+import { MdApartment } from "react-icons/md";
+import { BiStore } from "react-icons/bi";
+import { GiOfficeChair } from "react-icons/gi";
+
+const icons = {
+  villa: <RiHome3Line />,
+  apartment: <MdApartment />,
+  store: <BiStore />,
+  office: <GiOfficeChair />,
+};
+
+export { icons };
+
+// File: src/app/admin/page.tsx
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import AdminPage from "@/components/admin/AdminPage";
+import DashboardSidebar from "@/components/layout/DashboardSidebar";
+import { getSession } from "@/utils/query";
+
+export const metadata = {
+  title: "پنل ادمین املاک | پروژه بوتواستارت",
+};
+
+async function Admin() {
+  const user = await getSession();
+  if (!user) {
+    redirect("/signin");
+  }
+  if (user?.role !== "ADMIN") {
+    redirect("/dashboard");
+  }
+
+  const profiles = await db.profiles.findMany({ where: { published: false } });
+
+  return (
+    <DashboardSidebar role={user?.role} phoneNumber={user.phoneNumber}>
+      <AdminPage profiles={profiles} />
+    </DashboardSidebar>
+  );
+}
+
+export default Admin;
+
+// File: src/app/layout.tsx
+import type { Metadata } from "next";
+import React from "react";
+import "@/style/global.css";
+import { Inter as FontSans } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/providers/theme-provider";
+import Layout from "@/components/layout/Layout";
+import { Toaster } from "react-hot-toast";
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description: "",
+};
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="fa" dir="rtl">
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable,
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <Layout>
+            {/* <ModalProvider></ModalProvider> */}
+            {children}
+          </Layout>
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "var(--color-grey-0)",
+                color: "var(--color-grey-700)",
+              },
+            }}
+          />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+
+// File: src/app/page.tsx
+import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
+import { db } from "@/lib/db";
+import { Profiles } from "@prisma/client";
+async function BuyResidentials({
+  searchParams,
+}: {
+  searchParams: { category?: string; search?: string };
+}) {
+  let data: Profiles[] = [];
+  if (searchParams.category && searchParams.search) {
+    data = await db.profiles.findMany({
+      where: {
+        title: { contains: searchParams.search },
+        category: searchParams.category,
+      },
+    });
+  } else if (searchParams.category) {
+    data = await db.profiles.findMany({
+      where: { category: searchParams.category },
+    });
+  } else if (searchParams.search) {
+    data = await db.profiles.findMany({
+      where: { title: { contains: searchParams.search } },
+    });
+  } else {
+    data = await db.profiles.findMany({});
+  }
+
+  if (!data) {
+    return <h3>مشکلی پیش آمده است</h3>;
+  }
+
+  return <BuyResidentialsPage data={data} />;
+}
+
+export default BuyResidentials;
+
+// File: src/app/dashboard/layout.tsx
+import DashboardSidebar from "@/components/layout/DashboardSidebar";
+import React from "react";
+import { getSession } from "@/utils/query";
+
+export const metadata = {
+  title: "پنل کاربری املاک | پروژه بوتواستارت",
+};
+
+async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const user = await getSession();
+
+  if (!user) {
+    return <h3>مشکلی پیش آمده است</h3>;
+  }
+
+  return (
+    <DashboardSidebar role={user.role} phoneNumber={user.phoneNumber}>
+      {children}
+    </DashboardSidebar>
+  );
+}
+
+export default DashboardLayout;
+
+// File: src/app/dashboard/add/page.tsx
+import { AddProfilePage } from "@/components/forms/AddProfilePage";
+
+function AddProfile() {
+  return <AddProfilePage />;
+}
+
+export default AddProfile;
+
+// File: src/app/dashboard/page.tsx
+import { redirect } from "next/navigation";
+import DashboardPage from "@/components/dashboard/DashboardPage";
+import { getSession } from "@/utils/query";
+
+async function Dashboard() {
+  const user = await getSession();
+  if (!user) {
+    redirect("/signin");
+  }
+  return <DashboardPage createdAt={user!.createdAt} />;
+}
+
+export default Dashboard;
+
+// File: src/app/dashboard/my-profiles/page.tsx
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+import MyProfilesPage from "@/components/dashboard/MyProfilesPage";
+import { getSession } from "@/utils/query";
+
+async function Myprofiles() {
+  const user = await getSession();
+  if (!user) {
+    redirect("/signin");
+  }
+  const profile = await db.profiles.findMany({
+    where: { userId: user?.id },
+  });
+  return <MyProfilesPage profiles={profile} />;
+}
+
+export default Myprofiles;
+
+// File: src/app/dashboard/my-profiles/[profileId]/page.tsx
+import { AddProfilePage } from "@/components/forms/AddProfilePage";
+import { db } from "@/lib/db";
+
+async function Edit({
+  params: { profileId },
+}: {
+  params: { profileId: string };
+}) {
+  const profile = await db.profiles.findUnique({ where: { id: profileId } });
+
+  if (!profile) {
+    return <h3>مشکلی پیش آمده است. لطفا دوباره امتحان کنید ...</h3>;
+  }
+
+  return <AddProfilePage data={JSON.parse(JSON.stringify(profile))} />;
+}
+
+export default Edit;
+
+// File: src/app/(auth)/signup/page.tsx
+import SignupPage from "@/components/auth/SignupPage";
+async function Signup() {
+  return <SignupPage />;
+}
+
+export default Signup;
+
+// File: src/app/(auth)/signin/page.tsx
+import SigninPage from "@/components/auth/SigninPage";
+import { getSession } from "@/utils/query";
+import { redirect } from "next/navigation";
+
+async function Signin() {
+  const user = await getSession();
+  if (user) {
+    redirect("/");
+  }
+  return <SigninPage />;
+}
+
+export default Signin;
+
+// File: src/style/global.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-weight: 200;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+/* @font-face {
+  font-family: "YekanBakh";
+  src:
+    url("../../public/fonts/YekanBakh-Bold.woff2") format("woff2"),
+    url("../../public/fonts/YekanBakh-Fat.woff2") format("woff2"),
+    url("../../public/fonts/YekanBakh-Heavy.woff2") format("woff2"),
+    url("../../public/fonts/YekanBakh-Light.woff2") format("woff2"),
+    url("../../public/fonts/YekanBakh-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+} */
+@layer base {
+  :root {
+    --background: 216 100% 98.04%;
+    --foreground: 213.6 100% 4.9%;
+
+    --primary: 214.12 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --card: 216 100% 98.04%;
+    --card-foreground: 213.6 100% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 213.6 100% 4.9%;
+
+    --secondary: 214.74 100% 92.55%;
+    --secondary-foreground: 216 100% 0.98%;
+
+    --muted: 213.6 100% 95.1%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 213.6 100% 95.1%;
+    --accent-foreground: 214.12 100% 50%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 90.2%;
+    --input: 0 0% 90.2%;
+    --ring: 214.12 100% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --gradient: linear-gradient(to top left, #007adf, #00ecbc);
+
+    --background: 220 65% 3.52%;
+    --foreground: 220 10% 97.2%;
+
+    --muted: 220 50% 13.2%;
+    --muted-foreground: 220 10% 54.4%;
+
+    --popover: 220 45% 5.72%;
+    --popover-foreground: 220 10% 97.2%;
+
+    --card: 220 45% 5.72%;
+    --card-foreground: 220 10% 97.2%;
+
+    --border: 220 50% 13.2%;
+    --input: 220 50% 13.2%;
+
+    --primary: 220 100% 44%;
+    --primary-foreground: 220 10% 97.2%;
+
+    --secondary: 220 50% 13.2%;
+    --secondary-foreground: 220 10% 97.2%;
+
+    --accent: 220 50% 13.2%;
+    --accent-foreground: 220 10% 97.2%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 220 10% 97.2%;
+
+    --ring: 220 100% 44%;
+  }
+}
+/* .dotPattern {
+  background-image: radial-gradient(rgb(35, 40, 68) 1px, transparent 1px);
+  background-size: 25px 25px;
+}
+
+.use-automation-zoom-in {
+  animation: automation-zoom-in 0.5s;
+}
+
+@keyframes automation-zoom-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+} */
+
+// File: src/utils/replaceNumber.ts
+const e2p = (s?: string) =>
+  s?.toString().replace(/\d/g, (d) => {
+    const digitsMap = "۰۱۲۳۴۵۶۷۸۹";
+    return digitsMap[parseInt(d, 10)];
+  });
+
+const p2e = (s: string) =>
+  s.toString().replace(/[۰-۹]/g, (d) => `${"0123456789".indexOf(d)}`);
+
+const sp = (number: number) => {
+  const seperatedNumber = number
+    .toString()
+    .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g);
+  const joinedNumber = seperatedNumber?.join(",");
+  return e2p(joinedNumber);
+};
+
+export { e2p, p2e, sp };
+
+// File: src/utils/query.ts
+import { cookies } from "next/headers";
+
+export const getSession = async () => {
+  try {
+    const cookieStore = cookies();
+    const response = await fetch(
+      `${process.env.BACKEND_SERVER_URL}/users/get-me`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookieStore.get("jwt")?.value}`,
+        },
+      },
+    );
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// File: src/utils/fonts.ts
+import localFont from "next/font/local";
+
+export const yekan = localFont({
+  src: [
+    {
+      path: "../../public/fonts/YekanBakh-Light.woff2",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/YekanBakh-Regular.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/YekanBakh-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/YekanBakh-Heavy.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/YekanBakh-Fat.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+});
+
+// File: src/stores/useData.ts
+/* eslint-disable no-unused-vars */
+import { Profiles } from "@prisma/client";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+
+interface IStore {
+  originData: Profiles[];
+  data: Profiles[];
+  filters: { [key: string]: boolean };
+}
+export type Actions = {
+  setData: (data: Profiles[]) => void;
+  setFilters: (filter: { [key: string]: boolean }) => void;
+};
+
+export type Store = IStore & Actions;
+
+export const defaultInitState: IStore = {
+  originData: [],
+  data: [],
+  filters: {
+    تهران: false,
+    ری: false,
+    ابعلی: false,
+  },
+};
+
+export const useData = create<Store>()(
+  devtools((set, get) => ({
+    ...defaultInitState,
+    setData: (data) => {
+      let filterData = data.filter((el) => {
+        if (get().filters[el.city]) {
+          return el;
+        }
+      });
+      if (filterData.length === 0) {
+        filterData = data;
+      }
+      set({ data: filterData, originData: data });
+    },
+    setFilters: (filter) => {
+      let filterData = get().originData.filter((el) => {
+        if (filter[el.city]) {
+          return el;
+        }
+      });
+      if (filterData.length === 0) {
+        filterData = get().originData;
+      }
+      set({ data: filterData, filters: filter });
+    },
+  })),
+);
+
+// File: src/stores/useModal.ts
+import React from "react";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+
+export type ModalData = {
+  BoardCard: {
+    id: string;
+    title: string;
+    authorName?: string;
+    authorId?: string;
+    createdAt?: number;
+    imageUrl?: string;
+    orgId?: string;
+    isFavorite?: boolean;
+  } | null;
+};
+interface IModal {
+  data: ModalData;
+  isOpen: boolean;
+  modal: React.ReactNode;
+}
+export type Actions = {
+  setOpen: (modal: React.ReactNode, data?: ModalData) => void;
+  setClose: () => void;
+};
+export type Store = IModal & Actions;
+const defaultValues: IModal = {
+  data: { BoardCard: null },
+  modal: null,
+  isOpen: false,
+};
+export const useModal = create<Store>()(
+  devtools(
+    (set, get) => ({
+      ...defaultValues,
+      setOpen: (modal, data) => {
+        set({ modal, isOpen: true, data: { ...get().data, ...data } });
+      },
+      setClose: () => {
+        set(defaultValues);
+      },
+    }),
+    { name: "modals" },
+  ),
+);
+
+// File: src/stores/useLocalStore.ts
+/* eslint-disable no-unused-vars */
+// import { create } from "zustand";
+// import { devtools, persist } from "zustand/middleware";
+
+// interface IStore {
+// }
+// export type Actions = {
+// };
+
+// export type Store = IStore & Actions;
+
+// export const defaultInitState: IStore = {
+// };
+
+// export const useLocalStore = create<Store>()(
+//   devtools(
+//     persist(
+//       (set) => (),
+
+//       { name: "board-user" },
+//     ),
+//   ),
+// );
+
+// File: src/stores/useStore.ts
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+
+const useStore = <T, F>(
+  store: (callback: (state: T) => unknown) => unknown,
+  callback: (state: T) => F,
+) => {
+  const result = store(callback) as F;
+  const [data, setData] = useState<F>();
+
+  useEffect(() => {
+    setData(result);
+  }, [result]);
+
+  return data;
+};
+
+export default useStore;
+
+// File: src/types/next-auth.d.ts
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import NextAuth, { DefaultSession } from "next-auth";
+declare module "next-auth" {
+  interface User {
+    phoneNumber: string;
+  }
+  interface Session {
+    user: {
+      id: string;
+      phoneNumber: string;
+      role: string;
+      [key: string]: string;
+    };
+  }
+  interface Token {
+    accessToken?: string;
+    user?: {
+      _id: string;
+      phoneNumber: string;
+      role: string;
+      [key: string]: string;
+    };
+  }
+}
+
+// File: src/validator/index.ts
+import { z } from "zod";
+
+export const signupObject = z
+  .object({
+    phoneNumber: z.string().regex(/^(?:0?|0980)?(9\d{9})$/),
+  })
+  .strict();
+export const signinObject = z
+  .object({
+    phoneNumber: z.string().regex(/^(?:0?|0980)?(9\d{9})$/),
+    password: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+  })
+  .strict();
+export const forgotPasswordObject = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict();
+export const updatePasswordObject = z
+  .object({
+    password: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+    newPassword: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+    newPasswordConfirm: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+  })
+  .strict();
+export const resetPasswordObject = z
+  .object({
+    password: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+    passwordConfirm: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/),
+  })
+  .strict();
+export const updateMyUserObject = z
+  .object({
+    name: z.string().min(4, "Please enter a valid value").optional(),
+    avatar: z.string().url("please enter a url").optional(),
+  })
+  .strict();
+export const updateUserObject = z
+  .object({
+    name: z.string().min(4, "Please enter a valid value").optional(),
+    role: z.enum(["user", "admin"]).optional(),
+    avatar: z.string().url("please enter a url").optional(),
+  })
+  .strict();
+
+export const createProfileObject = z.object({
+  title: z.string(),
+  description: z.string(),
+  location: z.string(),
+  phone: z.string(),
+  realState: z.string(),
+  price: z.number(),
+  constructionDate: z.string(),
+  category: z.string(),
+  province: z.string(),
+  city: z.string(),
+  amenities: z.array(z.string()),
+  rules: z.array(z.string()),
+});
+export const updateProfileObject = createProfileObject.extend({
+  id: z.string(),
+});
+
+// File: src/components/global/Loader.tsx
+import { ThreeDots } from "react-loader-spinner";
+
+function Loader() {
+  return (
+    <ThreeDots
+      color="#304ffe"
+      height={45}
+      ariaLabel="three-dots-loading"
+      visible={true}
+      wrapperStyle={{ margin: "auto" }}
+    />
+  );
+}
+
+export default Loader;
+
+// File: src/components/global/mode-toggle.tsx
+"use client";
+
+import * as React from "react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+export function ModeToggle() {
+  const { setTheme } = useTheme();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="icon" variant="outline">
+          <Sun className="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+// File: src/components/global/LogoutButton.tsx
+"use client";
+
+import { signOut } from "next-auth/react";
+import { FiLogOut } from "react-icons/fi";
+
+function LogoutButton() {
+  return (
+    <button
+      className="mt-[20px] flex w-full cursor-pointer border-none bg-none text-right text-base text-destructive"
+      onClick={() => signOut({ callbackUrl: "/" })}
+    >
+      <FiLogOut className="ml-2 text-xl text-destructive" />
+      خروج
+    </button>
+  );
+}
+
+export default LogoutButton;
+
+// File: src/components/admin/AdminPage.tsx
+import AdminCard from "./AdminCard";
+import { Profiles } from "@prisma/client";
+
+function AdminPage({ profiles }: { profiles: Profiles[] }) {
+  return (
+    <div>
+      {profiles.length ? null : (
+        <p className="rounded-xl bg-destructive/20 px-[15px] py-[10px] text-lg text-destructive">
+          هیچ آگهی در انتظار تاییدی وجود ندارد
+        </p>
+      )}
+      {profiles.map((i) => (
+        <AdminCard key={i.id} data={JSON.parse(JSON.stringify(i))} />
+      ))}
+    </div>
+  );
+}
+
+export default AdminPage;
+
+// File: src/components/admin/AdminCard.tsx
+"use client";
+
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { sp } from "@/utils/replaceNumber";
+import { Profiles } from "@prisma/client";
+
+function AdminCard({
+  data: { id, title, description, location, price },
+}: {
+  data: Profiles;
+}) {
+  const router = useRouter();
+
+  const publishHandler = async () => {
+    const res = await fetch(`/api/profile/publish/${id}`, { method: "PATCH" });
+    const result = await res.json();
+    if (result.message) {
+      toast.success(result.message);
+      router.refresh();
+    }
+  };
+
+  return (
+    <div className="mb-20 border-b-2 border-primary/60 pb-[10px]">
+      <h3 className="mb-5 text-lg font-normal text-primary">{title}</h3>
+      <p className="mb-5 text-justify">{description}</p>
+      <div className="mb-5 flex">
+        <span className="ml-[15px] rounded-sm bg-primary/30 px-[10px] py-[5px] text-primary">
+          {location}
+        </span>
+        <span className="ml-[15px] rounded-sm bg-primary/30 px-[10px] py-[5px] text-primary">
+          {sp(price)}
+        </span>
+      </div>
+      <button
+        className="mt-5 cursor-pointer rounded-md border-none bg-green-400 px-[10px] py-[5px] text-sm text-background transition-all duration-100 ease-in hover:text-foreground"
+        onClick={publishHandler}
+      >
+        انتشار
+      </button>
+    </div>
+  );
+}
+
+export default AdminCard;
+
+// File: src/components/modals/CustomModal.tsx
+"use client";
+import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import { useStore } from "zustand";
+import { useModal } from "@/stores/useModal";
+
+type Props = {
+  title: string;
+  subheading: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+};
+
+const CustomModal = ({ children, defaultOpen, subheading, title }: Props) => {
+  const model = useStore(useModal, (state) => state);
+  return (
+    <Dialog open={model.isOpen || defaultOpen} onOpenChange={model.setClose}>
+      <DialogContent className="h-screen overflow-scroll bg-card md:h-fit md:max-h-[700px]">
+        <DialogHeader className="pt-8 text-left">
+          <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
+          <DialogDescription>{subheading}</DialogDescription>
+          {children}
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default CustomModal;
+
+// File: src/components/modals/CityFilter.tsx
+"use client"; // components/ModalWithCheckboxes.js
+import React from "react";
+import useStore from "@/stores/useStore";
+import { useData } from "@/stores/useData";
+export default function CityFilter() {
+  const store = useStore(useData, (state) => state);
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    store?.setFilters({ ...store?.filters, [name]: checked });
+  };
+
+  return (
+    <>
+      <div className="my-[20px] flex flex-col gap-3 text-base">
+        {store &&
+          Object.keys(store.filters).map((key) => (
+            <label key={key} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name={key}
+                checked={store.filters[key]}
+                onChange={handleCheckboxChange}
+              />
+              {key}
+            </label>
+          ))}
+      </div>
+    </>
+  );
+}
+
+// File: src/components/home/AdList.tsx
+"use client";
+import React from "react";
+import AdCard from "./Card";
+import { Profiles } from "@prisma/client";
+import { useData } from "@/stores/useData";
+
+const AdList = () => {
+  const { data } = useData((state) => state);
+  return (
+    <div className="flex justify-center">
+      <div className="grid w-full max-w-[1500px] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        {!data || data.length === 0 ? (
+          <p className="h-12 rounded-lg bg-destructive/20 px-2 py-3 text-lg text-destructive">
+            هیچ آگهی ثبت نشده است
+          </p>
+        ) : (
+          data.map((data: Profiles) => (
+            <AdCard
+              key={data.id}
+              data={data}
+              adImg={"/image/1.jpeg"}
+              profileImg={"/image/2.jpg"}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AdList;
+
+// File: src/components/home/BuyResidentialsPage.tsx
+"use client";
+import Sidebar from "../sidebar/Sidebar";
+import AdList from "./AdList";
+import { useData } from "@/stores/useData";
+import { useEffect } from "react";
+import { Profiles } from "@prisma/client";
+function BuyResidentialsPage({ data }: { data: Profiles[] }) {
+  const { setData } = useData((state) => state);
+  useEffect(() => {
+    setData(data);
+  }, [data]);
+  return (
+    <div className="mt-20 flex">
+      <div className="ml-10 mt-1 flex h-fit w-[220px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50">
+        <Sidebar />
+      </div>
+      <div className="flex w-full flex-wrap justify-start">
+        <AdList />
+      </div>
+    </div>
+  );
+}
+
+export default BuyResidentialsPage;
+
+// File: src/components/home/Card.tsx
+import React from "react";
+import Image from "next/image";
+import { Profiles } from "@prisma/client";
+
+const AdCard = ({
+  data: { title, location, price },
+  profileImg,
+  adImg,
+}: {
+  data: Profiles;
+  adImg: string;
+  profileImg: string;
+}) => {
+  return (
+    <div className="m-2 flex h-[150px] w-[300px] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[120px]">
+      <div className="relative h-full w-[150px] shrink-0 overflow-hidden rounded-lg">
+        <Image
+          src={adImg}
+          alt="Ad"
+          className="size-full object-cover"
+          width={150}
+          height={100}
+        />
+      </div>
+      <div className="flex grow flex-col justify-center pr-3">
+        <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold">
+          {title}
+        </h3>
+        <p className="m-0 text-sm font-medium text-foreground/60">{price}</p>
+        <p className="m-0 text-xs font-medium text-foreground/60">{location}</p>
+        <p className="text-xs font-normal">{"user"}</p>
+      </div>
+      <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%]">
+        <Image
+          src={profileImg}
+          alt="Profiles"
+          className="size-full object-cover"
+          width={50}
+          height={50}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default AdCard;
+
+// File: src/components/auth/SignupPage.tsx
+"use client";
+
+import Link from "next/link";
+import { MouseEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import styles from "./SignupPage.module.css";
+import Loader from "../global/Loader";
+
+function SignupPage() {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const signupHandler = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  ) => {
+    e.preventDefault();
+    setLoading(true);
+    const res = await fetch("http://localhost:3000/api/v1/users/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        phoneNumber,
+      }),
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (res.ok) {
+      // router.push("/signin");
+    } else {
+      toast.error(data.error);
+    }
+  };
+
+  return (
+    <div className={styles.form}>
+      <h4>فرم ثبت نام</h4>
+      <form>
+        <label>شماره:</label>
+        <input
+          type="text"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <label>رمز عبور:</label>
+        {loading ? (
+          <Loader />
+        ) : (
+          <button type="submit" onClick={signupHandler}>
+            ثبت نام
+          </button>
+        )}
+      </form>
+      <p>
+        حساب کاربری دارید؟
+        <Link href="/signin">ورود</Link>
+      </p>
+      <Toaster />
+    </div>
+  );
+}
+
+export default SignupPage;
+
+// File: src/components/auth/SignupPage.module.css
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+.form h4 {
+  color: #304ffe;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  box-shadow: #304ffe4a 0px 4px 15px;
+  border: 2px solid #304ffe;
+  padding: 40px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.form label {
+  color: #304ffe;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.form input {
+  margin-bottom: 40px;
+  width: 250px;
+  border: 1px #304ffe dashed;
+  color: grey;
+  border-radius: 5px;
+  padding: 10px;
+  direction: ltr !important;
+  font-size: 1rem;
+  height: 40px;
+}
+
+.form input:focus {
+  border: 1px #304ffe solid;
+  outline: none;
+}
+
+.form button {
+  border: none;
+  background-color: #304ffe;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 400;
+  border-radius: 5px;
+  transition: all ease-in 0.1s;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.form button:hover {
+  transform: scale(1.05);
+}
+
+.form p {
+  color: grey;
+  font-size: 1.1rem;
+}
+
+.form a {
+  color: #304ffe;
+  margin-right: 10px;
+  border-bottom: 3px solid grey;
+}
+
+// File: src/components/auth/SigninPage.tsx
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import styles from "./SignupPage.module.css";
+import Loader from "../global/Loader";
+
+function SigninPage() {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  return (
+    <div className={styles.form}>
+      <h4>فرم ورود</h4>
+      <form>
+        <label>شماره:</label>
+        <input
+          type="text"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <label>رمز عبور:</label>
+        {loading ? (
+          <Loader />
+        ) : (
+          <button
+            type="submit"
+            onClick={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+              const res = await fetch(
+                "http://localhost:3000/api/v1/users/signin",
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    phoneNumber,
+                  }),
+                  credentials: "include",
+                  headers: { "Content-Type": "application/json" },
+                },
+              );
+              const data = await res.json();
+              setLoading(false);
+              if (res.ok) {
+                // router.push("/signin");
+              } else {
+                toast.error(data.error);
+              }
+            }}
+          >
+            ثبت نام
+          </button>
+        )}
+      </form>
+      <p>
+        حساب کاربری ندارید؟
+        <Link href="/signup">ثبت نام</Link>
+      </p>
+      <Toaster />
+    </div>
+  );
+}
+
+export default SigninPage;
+
+// File: src/components/dashboard/MyProfilesPage.tsx
+import DashboardCard from "./DashboardCard";
+import { Profiles } from "@prisma/client";
+
+function MyProfilesPage({ profiles }: { profiles: Profiles[] }) {
+  return (
+    <div>
+      {profiles.length ? null : (
+        <p className="rounded-md bg-destructive/20 px-[15px] py-[10px] text-sm text-destructive">
+          هیچ آگهی ثبت نشده است
+        </p>
+      )}
+      {profiles.map((i) => (
+        <DashboardCard key={i.id} data={JSON.parse(JSON.stringify(i))} />
+      ))}
+    </div>
+  );
+}
+
+export default MyProfilesPage;
+
+// File: src/components/dashboard/DashboardPage.tsx
+function DashboardPage({ createdAt }: { createdAt: Date }) {
+  return (
+    <div className="text-xl font-normal text-primary">
+      <h3>سلام 👋</h3>
+      <p className="text-foreground/50">
+        آگهی های خود را ثبت کنید تا هزاران نفر آن را مشاهده کنند
+      </p>
+      <div className="mt-24 flex w-fit rounded-sm bg-primary/30 px-2 py-1">
+        <p className="m-0 ml-3 font-normal">تاریخ عضویت:</p>
+        <span className="text-primary">
+          {new Date(createdAt).toLocaleDateString("fa-IR")}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;
+
+// File: src/components/dashboard/DashboardCard.tsx
+"use client";
+
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { Profiles } from "@prisma/client";
+
+function DashboardCard({ data }: { data: Profiles }) {
+  const router = useRouter();
+
+  const editHandler = () => {
+    router.push(`/dashboard/my-profiles/${data.id}`);
+  };
+
+  const deleteHandler = async () => {
+    const res = await fetch(`/api/profile/delete/${data.id}`, {
+      method: "DELETE",
+    });
+    const result = await res.json();
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      toast.success(result.message);
+      router.refresh();
+    }
+  };
+
+  return (
+    <div className="mb-5 flex rounded-2xl border-2 border-primary/30">
+      {/* <AdCard data={data} /> */}
+      <div className="flex w-full items-end justify-between p-[10px]">
+        <button
+          onClick={editHandler}
+          className="flex h-10 w-[48%] cursor-pointer items-center justify-center rounded-md border border-green-400 bg-background text-sm text-green-400"
+        >
+          ویرایش
+          <FiEdit />
+        </button>
+        <button
+          onClick={deleteHandler}
+          className="flex h-10 w-[48%] cursor-pointer items-center justify-center rounded-md border border-destructive bg-background text-sm text-destructive"
+        >
+          حذف آگهی
+          <AiOutlineDelete />
+        </button>
+      </div>
+      <Toaster />
+    </div>
+  );
+}
+
+export default DashboardCard;
+
+// File: src/components/layout/Layout.tsx
+import React from "react";
+import Header from "./Header";
+import { getSession } from "@/utils/query";
+
+function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Header user={getSession()} />
+      <div className="m-auto max-w-[1200px] p-3">{children}</div>
+    </>
+  );
+}
+
+export default Layout;
+
+// File: src/components/layout/DashboardSidebar.tsx
+import Link from "next/link";
+import { CgProfile } from "react-icons/cg";
+import LogoutButton from "../global/LogoutButton";
+import React from "react";
+
+async function DashboardSidebar({
+  children,
+  phoneNumber,
+  role,
+}: {
+  children: React.ReactNode;
+  phoneNumber: string;
+  role: string;
+}) {
+  return (
+    <div className="mt-20 flex justify-between">
+      <div className="ml-[40px] flex h-fit w-[220px] flex-col items-center rounded-md px-[15px] py-[30px] shadow-md shadow-primary/30">
+        <CgProfile className="text-5xl text-primary" />
+        {role === "ADMIN" ? "ادمین" : null}
+        <p className="mt-[30px] text-lg font-normal text-foreground/70">
+          {phoneNumber}
+        </p>
+        <span className="mb-[30px] h-px w-full bg-foreground/50"></span>
+        <Link href="/dashboard" className="mx-2 my-0 w-full font-normal">
+          حساب کاربری
+        </Link>
+        <Link
+          href="/dashboard/my-profiles"
+          className="mx-2 my-0 w-full font-normal"
+        >
+          آگهی های من
+        </Link>
+        <Link href="/dashboard/add" className="mx-2 my-0 w-full font-normal">
+          ثبت آگهی
+        </Link>
+        {role === "ADMIN" ? (
+          <Link href="/admin" className="mx-2 my-0 w-full font-normal">
+            در انتظار تایید
+          </Link>
+        ) : null}
+        <LogoutButton />
+      </div>
+      <div className="w-full">{children}</div>
+    </div>
+  );
+}
+
+export default DashboardSidebar;
+
+// File: src/components/layout/Header.tsx
+"use client";
+import Link from "next/link";
+import { FaUserAlt } from "react-icons/fa";
+import Image from "next/image";
+import { useRouter } from "next/navigation.js";
+import CityFilter from "../modals/CityFilter";
+import { Button } from "../ui/button";
+import CustomModal from "../modals/CustomModal";
+import { useStore } from "zustand";
+import { useModal } from "@/stores/useModal";
+import React, { Suspense, use } from "react";
+import { ModeToggle } from "../global/mode-toggle";
+import { Users } from "@prisma/client";
+
+function Header({ user }: { user: Promise<Users> }) {
+  const store = useStore(useModal, (state) => state);
+  const router = useRouter();
+  const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = new URLSearchParams(window.location.search);
+    url.set("search", e.target.value);
+    router.push("/?" + url.toString());
+  };
+  return (
+    <div className="mt-[20px] hidden h-[50px] justify-center md:flex">
+      <div className="flex w-[1200px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
+        <div className="flex w-[300px] items-center">
+          <Button
+            onClick={() => {
+              store.setOpen(
+                <CustomModal title="" subheading="">
+                  <CityFilter />
+                </CustomModal>,
+              );
+            }}
+          >
+            تهران
+          </Button>
+          <form className="mr-[20px] flex items-center">
+            <input
+              className="ml-2 rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold"
+              onChange={handleSearchQuery}
+              type="text"
+              placeholder="جستجوی آگهی"
+            />
+            <button type="submit" className="hidden">
+              جستجو
+            </button>
+          </form>
+        </div>
+        <div className="mr-[20px] flex flex-1 justify-center">
+          <Link href="/" legacyBehavior>
+            <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <h5 className="">021-123456</h5>
+          <div className="flex items-center">
+            <button className="mr-2 cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground">
+              پنل اختصاصی من
+            </button>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Avatar user={user}></Avatar>
+            </Suspense>
+            <ModeToggle></ModeToggle>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+const Avatar = (props: { user: Promise<Users> }) => {
+  const user = use(props.user);
+  // console.log(user);
+  return user ? (
+    <div className="ml-3 pr-3">
+      <Link href="/dashboard">
+        <FaUserAlt />
+      </Link>
+    </div>
+  ) : (
+    <div className="ml-3 pr-3">
+      <Link href="/signin">
+        <span>ورود / ثبت نام</span>
+      </Link>
+    </div>
+  );
+};
+
+export default Header;
+
+// File: src/components/layout/index.ts
+
+// File: src/components/sidebar/Sidebar.tsx
+import Link from "next/link";
+import { HiFilter } from "react-icons/hi";
+import { categories } from "@/constants/strings";
+
+function Sidebar() {
+  return (
+    <div className="flex flex-col">
+      <div className="flex flex-col">
+        <p className="ml-1 flex text-base font-normal text-foreground">
+          <HiFilter className="ml-1 text-primary" />
+          دسته بندی
+        </p>
+        <Link href="/" className="m-1 text-sm font-normal text-foreground/60">
+          همه
+        </Link>
+        {Object.keys(categories).map((i) => (
+          <Link
+            className="m-1 text-sm font-normal text-foreground/60"
+            key={i}
+            href={{
+              pathname: "/",
+              query: { category: i },
+            }}
+          >
+            {
+              // @ts-expect-error bec
+              categories[i]
+            }
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Sidebar;
+
+// File: src/components/ui/form.tsx
+"use client";
+
+import * as React from "react";
+import * as LabelPrimitive from "@radix-ui/react-label";
+import { Slot } from "@radix-ui/react-slot";
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form";
+
+import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
+
+const Form = FormProvider;
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
+  name: TName;
+};
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue,
+);
+
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) => {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  );
+};
+
+const useFormField = () => {
+  const fieldContext = React.useContext(FormFieldContext);
+  const itemContext = React.useContext(FormItemContext);
+  const { getFieldState, formState } = useFormContext();
+
+  const fieldState = getFieldState(fieldContext.name, formState);
+
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>");
+  }
+
+  const { id } = itemContext;
+
+  return {
+    id,
+    name: fieldContext.name,
+    formItemId: `${id}-form-item`,
+    formDescriptionId: `${id}-form-item-description`,
+    formMessageId: `${id}-form-item-message`,
+    ...fieldState,
+  };
+};
+
+type FormItemContextValue = {
+  id: string;
+};
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+  {} as FormItemContextValue,
+);
+
+const FormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId();
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    </FormItemContext.Provider>
+  );
+});
+FormItem.displayName = "FormItem";
+
+const FormLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId } = useFormField();
+
+  return (
+    <Label
+      ref={ref}
+      className={cn(error && "text-destructive", className)}
+      htmlFor={formItemId}
+      {...props}
+    />
+  );
+});
+FormLabel.displayName = "FormLabel";
+
+const FormControl = React.forwardRef<
+  React.ElementRef<typeof Slot>,
+  React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } =
+    useFormField();
+
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
+      {...props}
+    />
+  );
+});
+FormControl.displayName = "FormControl";
+
+const FormDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  const { formDescriptionId } = useFormField();
+
+  return (
+    <p
+      ref={ref}
+      id={formDescriptionId}
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  );
+});
+FormDescription.displayName = "FormDescription";
+
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-sm font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </p>
+  );
+});
+FormMessage.displayName = "FormMessage";
+
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+};
+
+// File: src/components/ui/alert-dialog.tsx
+"use client";
+
+import * as React from "react";
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
+
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+
+const AlertDialog = AlertDialogPrimitive.Root;
+
+const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
+
+const AlertDialogPortal = AlertDialogPrimitive.Portal;
+
+const AlertDialogOverlay = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Overlay
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className,
+    )}
+    {...props}
+    ref={ref}
+  />
+));
+AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
+
+const AlertDialogContent = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPortal>
+    <AlertDialogOverlay />
+    <AlertDialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className,
+      )}
+      {...props}
+    />
+  </AlertDialogPortal>
+));
+AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
+
+const AlertDialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-2 text-center sm:text-left",
+      className,
+    )}
+    {...props}
+  />
+);
+AlertDialogHeader.displayName = "AlertDialogHeader";
+
+const AlertDialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className,
+    )}
+    {...props}
+  />
+);
+AlertDialogFooter.displayName = "AlertDialogFooter";
+
+const AlertDialogTitle = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold", className)}
+    {...props}
+  />
+));
+AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName;
+
+const AlertDialogDescription = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+));
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName;
+
+const AlertDialogAction = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Action
+    ref={ref}
+    className={cn(buttonVariants(), className)}
+    {...props}
+  />
+));
+AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
+
+const AlertDialogCancel = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn(
+      buttonVariants({ variant: "outline" }),
+      "mt-2 sm:mt-0",
+      className,
+    )}
+    {...props}
+  />
+));
+AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+};
+
+// File: src/components/ui/sonner.tsx
+"use client";
+
+import { useTheme } from "next-themes";
+import { Toaster as Sonner } from "sonner";
+
+type ToasterProps = React.ComponentProps<typeof Sonner>;
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme();
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="group"
+      toastOptions={{
+        classNames: {
+          toast:
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-muted-foreground",
+          actionButton:
+            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
+          cancelButton:
+            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+        },
+      }}
+      {...props}
+    />
+  );
+};
+
+export { Toaster };
+
+// File: src/components/ui/card.tsx
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      className,
+    )}
+    {...props}
+  />
+));
+Card.displayName = "Card";
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+));
+CardHeader.displayName = "CardHeader";
+
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className,
+    )}
+    {...props}
+  />
+));
+CardTitle.displayName = "CardTitle";
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+));
+CardDescription.displayName = "CardDescription";
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+));
+CardContent.displayName = "CardContent";
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+));
+CardFooter.displayName = "CardFooter";
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+};
+
+// File: src/components/ui/use-toast.tsx
+"use client";
+
+// Inspired by react-hot-toast library
+import * as React from "react";
+
+import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
+
+const TOAST_LIMIT = 1;
+const TOAST_REMOVE_DELAY = 1000000;
+
+type ToasterToast = ToastProps & {
+  id: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  action?: ToastActionElement;
+};
+
+const actionTypes = {
+  ADD_TOAST: "ADD_TOAST",
+  UPDATE_TOAST: "UPDATE_TOAST",
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST",
+} as const;
+
+let count = 0;
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  return count.toString();
+}
+
+type ActionType = typeof actionTypes;
+
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"];
+      toast: ToasterToast;
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"];
+      toast: Partial<ToasterToast>;
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"];
+      toastId?: ToasterToast["id"];
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"];
+      toastId?: ToasterToast["id"];
+    };
+
+interface State {
+  toasts: ToasterToast[];
+}
+
+const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+
+const addToRemoveQueue = (toastId: string) => {
+  if (toastTimeouts.has(toastId)) {
+    return;
+  }
+
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId);
+    dispatch({
+      type: "REMOVE_TOAST",
+      toastId,
+    });
+  }, TOAST_REMOVE_DELAY);
+
+  toastTimeouts.set(toastId, timeout);
+};
+
+export const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return {
+        ...state,
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+      };
+
+    case "UPDATE_TOAST":
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === action.toast.id ? { ...t, ...action.toast } : t,
+        ),
+      };
+
+    case "DISMISS_TOAST": {
+      const { toastId } = action;
+
+      // ! Side effects ! - This could be extracted into a dismissToast() action,
+      // but I'll keep it here for simplicity
+      if (toastId) {
+        addToRemoveQueue(toastId);
+      } else {
+        state.toasts.forEach((toast) => {
+          addToRemoveQueue(toast.id);
+        });
+      }
+
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === toastId || toastId === undefined
+            ? {
+                ...t,
+                open: false,
+              }
+            : t,
+        ),
+      };
+    }
+    case "REMOVE_TOAST":
+      if (action.toastId === undefined) {
+        return {
+          ...state,
+          toasts: [],
+        };
+      }
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+      };
+  }
+};
+
+// eslint-disable-next-line no-unused-vars
+const listeners: Array<(state: State) => void> = [];
+
+let memoryState: State = { toasts: [] };
+
+function dispatch(action: Action) {
+  memoryState = reducer(memoryState, action);
+  listeners.forEach((listener) => {
+    listener(memoryState);
+  });
+}
+
+type Toast = Omit<ToasterToast, "id">;
+
+function toast({ ...props }: Toast) {
+  const id = genId();
+
+  const update = (props: ToasterToast) =>
+    dispatch({
+      type: "UPDATE_TOAST",
+      toast: { ...props, id },
+    });
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
+
+  dispatch({
+    type: "ADD_TOAST",
+    toast: {
+      ...props,
+      id,
+      open: true,
+      onOpenChange: (open) => {
+        if (!open) {
+          dismiss();
+        }
+      },
+    },
+  });
+
+  return {
+    id,
+    dismiss,
+    update,
+  };
+}
+
+function useToast() {
+  const [state, setState] = React.useState<State>(memoryState);
+
+  React.useEffect(() => {
+    listeners.push(setState);
+    return () => {
+      const index = listeners.indexOf(setState);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  }, [state]);
+
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
+  };
+}
+
+export { useToast, toast };
+
+// File: src/components/ui/skeleton.tsx
+import { cn } from "@/lib/utils"
+
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton }
+
+// File: src/components/ui/OTPInput.tsx
+"use client";
+
+import * as React from "react";
+import { OTPInput, OTPInputContext } from "input-otp";
+import { Dot } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+const InputOTP = React.forwardRef<
+  React.ElementRef<typeof OTPInput>,
+  React.ComponentPropsWithoutRef<typeof OTPInput>
+>(({ className, containerClassName, ...props }, ref) => (
+  <OTPInput
+    ref={ref}
+    containerClassName={cn(
+      "flex items-center gap-2 has-[:disabled]:opacity-50",
+      containerClassName,
+    )}
+    className={cn("disabled:cursor-not-allowed", className)}
+    {...props}
+  />
+));
+InputOTP.displayName = "InputOTP";
+
+const InputOTPGroup = React.forwardRef<
+  React.ElementRef<"div">,
+  React.ComponentPropsWithoutRef<"div">
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex items-center", className)} {...props} />
+));
+InputOTPGroup.displayName = "InputOTPGroup";
+
+const InputOTPSlot = React.forwardRef<
+  React.ElementRef<"div">,
+  React.ComponentPropsWithoutRef<"div"> & { index: number }
+>(({ index, className, ...props }, ref) => {
+  const inputOTPContext = React.useContext(OTPInputContext);
+  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index];
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+        isActive && "z-10 ring-2 ring-ring ring-offset-background",
+        className,
+      )}
+      {...props}
+    >
+      {char}
+      {hasFakeCaret && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="animate-caret-blink h-4 w-px bg-foreground duration-1000" />
+        </div>
+      )}
+    </div>
+  );
+});
+InputOTPSlot.displayName = "InputOTPSlot";
+
+const InputOTPSeparator = React.forwardRef<
+  React.ElementRef<"div">,
+  React.ComponentPropsWithoutRef<"div">
+>(({ ...props }, ref) => (
+  <div ref={ref} role="separator" {...props}>
+    <Dot />
+  </div>
+));
+InputOTPSeparator.displayName = "InputOTPSeparator";
+
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };
+
+// File: src/components/ui/toaster.tsx
+"use client";
+
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+
+export function Toaster() {
+  const { toasts } = useToast();
+
+  return (
+    <ToastProvider>
+      {toasts.map(function ({ id, title, description, action, ...props }) {
+        return (
+          <Toast key={id} {...props}>
+            <div className="grid gap-1">
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && (
+                <ToastDescription>{description}</ToastDescription>
+              )}
+            </div>
+            {action}
+            <ToastClose />
+          </Toast>
+        );
+      })}
+      <ToastViewport />
+    </ToastProvider>
+  );
+}
+
+// File: src/components/ui/dropdown-menu.tsx
+"use client";
+
+import * as React from "react";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { Check, ChevronRight, Circle } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+const DropdownMenu = DropdownMenuPrimitive.Root;
+
+const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+
+const DropdownMenuGroup = DropdownMenuPrimitive.Group;
+
+const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
+
+const DropdownMenuSub = DropdownMenuPrimitive.Sub;
+
+const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
+
+const DropdownMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
+    inset?: boolean;
+  }
+>(({ className, inset, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.SubTrigger
+    ref={ref}
+    className={cn(
+      "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent",
+      inset && "pl-8",
+      className,
+    )}
+    {...props}
+  >
+    {children}
+    <ChevronRight className="ml-auto size-4" />
+  </DropdownMenuPrimitive.SubTrigger>
+));
+DropdownMenuSubTrigger.displayName =
+  DropdownMenuPrimitive.SubTrigger.displayName;
+
+const DropdownMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
+>(({ className, ...props }, ref) => (
+  <DropdownMenuPrimitive.SubContent
+    ref={ref}
+    className={cn(
+      "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      className,
+    )}
+    {...props}
+  />
+));
+DropdownMenuSubContent.displayName =
+  DropdownMenuPrimitive.SubContent.displayName;
+
+const DropdownMenuContent = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className,
+      )}
+      {...props}
+    />
+  </DropdownMenuPrimitive.Portal>
+));
+DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
+
+const DropdownMenuItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
+    inset?: boolean;
+  }
+>(({ className, inset, ...props }, ref) => (
+  <DropdownMenuPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      inset && "pl-8",
+      className,
+    )}
+    {...props}
+  />
+));
+DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
+
+const DropdownMenuCheckboxItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
+>(({ className, children, checked, ...props }, ref) => (
+  <DropdownMenuPrimitive.CheckboxItem
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className,
+    )}
+    checked={checked}
+    {...props}
+  >
+    <span className="absolute left-2 flex size-3.5 items-center justify-center">
+      <DropdownMenuPrimitive.ItemIndicator>
+        <Check className="size-4" />
+      </DropdownMenuPrimitive.ItemIndicator>
+    </span>
+    {children}
+  </DropdownMenuPrimitive.CheckboxItem>
+));
+DropdownMenuCheckboxItem.displayName =
+  DropdownMenuPrimitive.CheckboxItem.displayName;
+
+const DropdownMenuRadioItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
+>(({ className, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.RadioItem
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className,
+    )}
+    {...props}
+  >
+    <span className="absolute left-2 flex size-3.5 items-center justify-center">
+      <DropdownMenuPrimitive.ItemIndicator>
+        <Circle className="size-2 fill-current" />
+      </DropdownMenuPrimitive.ItemIndicator>
+    </span>
+    {children}
+  </DropdownMenuPrimitive.RadioItem>
+));
+DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName;
+
+const DropdownMenuLabel = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
+    inset?: boolean;
+  }
+>(({ className, inset, ...props }, ref) => (
+  <DropdownMenuPrimitive.Label
+    ref={ref}
+    className={cn(
+      "px-2 py-1.5 text-sm font-semibold",
+      inset && "pl-8",
+      className,
+    )}
+    {...props}
+  />
+));
+DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
+
+const DropdownMenuSeparator = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <DropdownMenuPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    {...props}
+  />
+));
+DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
+
+const DropdownMenuShortcut = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) => {
+  return (
+    <span
+      className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
+      {...props}
+    />
+  );
+};
+DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
+
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+};
+
+// File: src/components/ui/toast.tsx
+"use client";
+
+import * as React from "react";
+import * as ToastPrimitives from "@radix-ui/react-toast";
+import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+const ToastProvider = ToastPrimitives.Provider;
+
+const ToastViewport = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Viewport>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Viewport
+    ref={ref}
+    className={cn(
+      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      className,
+    )}
+    {...props}
+  />
+));
+ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
+
+const toastVariants = cva(
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  {
+    variants: {
+      variant: {
+        default: "border bg-background text-foreground",
+        destructive:
+          " group border-destructive bg-destructive text-destructive-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
+const Toast = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
+    VariantProps<typeof toastVariants>
+>(({ className, variant, ...props }, ref) => {
+  return (
+    <ToastPrimitives.Root
+      ref={ref}
+      className={cn(toastVariants({ variant }), className)}
+      {...props}
+    />
+  );
+});
+Toast.displayName = ToastPrimitives.Root.displayName;
+
+const ToastAction = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Action>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Action
+    ref={ref}
+    className={cn(
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+      className,
+    )}
+    {...props}
+  />
+));
+ToastAction.displayName = ToastPrimitives.Action.displayName;
+
+const ToastClose = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Close>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Close
+    ref={ref}
+    className={cn(
+      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      className,
+    )}
+    toast-close=""
+    {...props}
+  >
+    <X className="size-4" />
+  </ToastPrimitives.Close>
+));
+ToastClose.displayName = ToastPrimitives.Close.displayName;
+
+const ToastTitle = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Title>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Title
+    ref={ref}
+    className={cn("text-sm font-semibold", className)}
+    {...props}
+  />
+));
+ToastTitle.displayName = ToastPrimitives.Title.displayName;
+
+const ToastDescription = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Description>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Description
+    ref={ref}
+    className={cn("text-sm opacity-90", className)}
+    {...props}
+  />
+));
+ToastDescription.displayName = ToastPrimitives.Description.displayName;
+
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
+
+type ToastActionElement = React.ReactElement<typeof ToastAction>;
+
+export {
+  type ToastProps,
+  type ToastActionElement,
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+};
+
+// File: src/components/ui/button.tsx
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "size-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
+);
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+
+// File: src/components/ui/radio-group.tsx
+"use client"
+
+import * as React from "react"
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
+import { Circle } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const RadioGroup = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Root
+      className={cn("grid gap-2", className)}
+      {...props}
+      ref={ref}
+    />
+  )
+})
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
+
+const RadioGroupItem = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Item
+      ref={ref}
+      className={cn(
+        "aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    >
+      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
+        <Circle className="size-2.5 fill-current text-current" />
+      </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
+  )
+})
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
+
+export { RadioGroup, RadioGroupItem }
+
+// File: src/components/ui/textarea.tsx
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <textarea
+        className={cn(
+          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
+);
+Textarea.displayName = "Textarea";
+
+export { Textarea };
+
+// File: src/components/ui/label.tsx
+"use client";
+
+import * as React from "react";
+import * as LabelPrimitive from "@radix-ui/react-label";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+);
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+));
+Label.displayName = LabelPrimitive.Root.displayName;
+
+export { Label };
+
+// File: src/components/ui/avatar.tsx
+"use client"
+
+import * as React from "react"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+
+import { cn } from "@/lib/utils"
+
+const Avatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      className
+    )}
+    {...props}
+  />
+))
+Avatar.displayName = AvatarPrimitive.Root.displayName
+
+const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Image
+    ref={ref}
+    className={cn("aspect-square h-full w-full", className)}
+    {...props}
+  />
+))
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
+
+const AvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      className
+    )}
+    {...props}
+  />
+))
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+
+export { Avatar, AvatarImage, AvatarFallback }
+
+// File: src/components/ui/dialog.tsx
+"use client";
+
+import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+const Dialog = DialogPrimitive.Root;
+
+const DialogTrigger = DialogPrimitive.Trigger;
+
+const DialogPortal = DialogPrimitive.Portal;
+
+const DialogClose = DialogPrimitive.Close;
+
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <X className="size-4" color="orange" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+));
+DialogContent.displayName = DialogPrimitive.Content.displayName;
+
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className,
+    )}
+    {...props}
+  />
+);
+DialogHeader.displayName = "DialogHeader";
+
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className,
+    )}
+    {...props}
+  />
+);
+DialogFooter.displayName = "DialogFooter";
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogTitle.displayName = DialogPrimitive.Title.displayName;
+
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+));
+DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+};
+
+// File: src/components/ui/tooltip.tsx
+"use client";
+
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+
+import { cn } from "@/lib/utils";
+
+const TooltipProvider = TooltipPrimitive.Provider;
+
+const Tooltip = TooltipPrimitive.Root;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(
+  (
+    {
+      className,
+      sideOffset = 4,
+      ...props
+    }: { className?: string; sideOffset?: number },
+    ref,
+  ) => (
+    <TooltipPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+
+// File: src/components/ui/input.tsx
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        ref={ref}
+        autoSave="off"
+        {...props}
+      />
+    );
+  },
+);
+Input.displayName = "Input";
+
+export { Input };
+
+// File: src/components/forms/TextList.tsx
+import { MdOutlineLibraryAdd } from "react-icons/md";
+import { AiOutlineDelete } from "react-icons/ai";
+import { ChangeEvent } from "react";
+import { Button } from "../ui/button";
+
+function TextList({
+  data,
+  setData,
+}: {
+  data: string[];
+  setData: (event: unknown) => void;
+}) {
+  const changeHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const { value } = e.target;
+    const list = [...data];
+    list[index] = value;
+    setData(list);
+  };
+
+  const addHandler = () => {
+    setData([...data, ""]);
+  };
+
+  const deleteHandler = (index: number) => {
+    const list = [...data];
+    list.splice(index, 1);
+    setData(list);
+  };
+
+  return (
+    <>
+      {data.map((i, index) => (
+        <div className="my-[10px] flex" key={index}>
+          <input
+            className="ml-3 h-8 w-[300px] rounded-sm border border-dashed border-primary/70 px-2 py-1 text-foreground/80 outline-none focus:border-solid"
+            type="text"
+            value={i}
+            onChange={(e) => changeHandler(e, index)}
+          />
+          <button
+            onClick={() => deleteHandler(index)}
+            className="m-0 flex items-center rounded-md border border-destructive bg-background text-destructive"
+          >
+            حذف
+            <AiOutlineDelete />
+          </button>
+        </div>
+      ))}
+      <Button onClick={addHandler} type="button" className="">
+        افزودن
+        <MdOutlineLibraryAdd />
+      </Button>
+    </>
+  );
+}
+
+export default TextList;
+
+// File: src/components/forms/AddProfilePage.tsx
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
+import DatePicker from "react-multi-date-picker";
+import TextList from "./TextList";
+import { Profiles } from "@prisma/client";
+
+const formSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  location: z.string(),
+  phone: z.string(),
+  price: z.number(),
+  realState: z.string(),
+  constructionDate: z.date(),
+  province: z.string(),
+  city: z.string(),
+  category: z.string(),
+  rules: z.array(z.string()),
+  amenities: z.array(z.string()),
+});
+
+export const AddProfilePage = ({ data }: { data?: Profiles }) => {
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: data?.title || "",
+      description: data?.description || "",
+      location: data?.location || "",
+      phone: data?.phone || "",
+      price: data?.price || 0,
+      realState: data?.realState || "",
+      constructionDate: data?.constructionDate || new Date(),
+      province: data?.province || "",
+      city: data?.city || "",
+      category: data?.category || "",
+      rules: data?.rules || [],
+      amenities: data?.amenities || [],
+    },
+  });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (data) {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        body: JSON.stringify({ ...values, id: data.id }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const newData = await res.json();
+      if (newData.error) {
+        toast.error(newData.error);
+      } else {
+        toast.success(newData.message);
+        router.refresh();
+      }
+    } else {
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success(data.message);
+        router.refresh();
+      }
+    }
+  }
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>عنوان آگهی</FormLabel>
+              <FormControl>
+                <Input placeholder="عنوان آگهی" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>توضیحات</FormLabel>
+              <FormControl>
+                <Input placeholder="توضیحات" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="realState"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>توضیحات</FormLabel>
+              <FormControl>
+                <Input placeholder="توضیحات" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>آدرس</FormLabel>
+              <FormControl>
+                <Input placeholder="آدرس" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>شماره تماس</FormLabel>
+              <FormControl>
+                <Input placeholder="شماره تماس" type="phone" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>قیمت(تومان)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="قیمت(تومان)"
+                  value={field.value}
+                  onChange={(e) => {
+                    field.onChange(Number(e.target.value));
+                  }}
+                  type="number"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="province"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>استان</FormLabel>
+              <FormControl>
+                <Input placeholder="استان" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>شهر</FormLabel>
+              <FormControl>
+                <Input placeholder="شهر" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>دسته بندی</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="villa" id="villa" />
+                    <Label htmlFor="villa">ویلا</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="apartment" id="apartment" />
+                    <Label htmlFor="apartment">آپارتمان</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="store" id="store" />
+                    <Label htmlFor="store">مغازه</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="office" id="office" />
+                    <Label htmlFor="office">دفتر</Label>
+                  </div>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="amenities"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>امکانات و قابلیت ها</FormLabel>
+              <FormControl>
+                <TextList
+                  data={field.value}
+                  setData={field.onChange}
+                ></TextList>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="rules"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>امکانات و قابلیت ها</FormLabel>
+              <FormControl>
+                <TextList
+                  data={field.value}
+                  setData={field.onChange}
+                ></TextList>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="constructionDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>شهر</FormLabel>
+              <FormControl>
+                <DatePicker
+                  calendar={persian}
+                  locale={persian_fa}
+                  value={field.value}
+                  onChange={(e) => {
+                    // @ts-expect-error dec
+                    field.onChange(new Date(e));
+                  }}
+                  calendarPosition="bottom-right"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+};
+
+// File: src/lib/utils.ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+// File: src/lib/db.ts
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
+}
+
+export const db = globalThis.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis.prisma = db;
+}
+
+// File: src/providers/NextAuthProvider.tsx
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+import React from "react";
+
+function NextAuthProvider({ children }: { children: React.ReactNode }) {
+  return <SessionProvider>{children}</SessionProvider>;
+}
+
+export default NextAuthProvider;
+
+// File: src/providers/ModalProvider.tsx
+"use client";
+
+import React, { useEffect, useState } from "react";
+import useStore from "@/stores/useStore";
+import { useModal } from "@/stores/useModal";
+
+export const ModalProvider = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const Model = useStore(useModal, (state) => state.modal);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  return <div className="absolute">{Model}</div>;
+};
+
+// File: src/providers/theme-provider.tsx
+"use client";
+
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes/dist/types";
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+}
+
+// File: prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL") // uses connection pooling
+  directUrl    = env("DATABASE_URL") // uses a direct connection
+  relationMode = "prisma"
+}
+
+enum Role {
+  ADMIN_OWNER
+  ADMIN
+  USER
+  GUEST
+}
+
+model Users {
+  id          String     @id @default(cuid())
+  name        String?
+  avatarUrl   String?
+  phoneNumber String     @unique
+  email       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  role        Role       @default(USER)
+  Profile     Profiles[]
+
+  @@index([phoneNumber])
+}
+
+model Profiles {
+  id               String   @id @default(cuid())
+  title            String
+  description      String
+  location         String
+  phone            String
+  realState        String
+  price            Int
+  constructionDate DateTime
+  category         String
+  province         String
+  city             String
+  amenities        String
+  rules            String
+  published        Boolean? @default(false)
+  imagePath        String?
+  userId           String
+  Users            Users    @relation(fields: [userId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([userId])
+}
+

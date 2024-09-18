@@ -4,7 +4,7 @@ import { categories } from "@/constants/strings";
 
 function Sidebar() {
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <div className="flex flex-col">
         <p className="ml-1 flex text-base font-normal text-foreground">
           <HiFilter className="ml-1 text-primary" />

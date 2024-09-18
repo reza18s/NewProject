@@ -21,8 +21,8 @@ function Header({ user }: { user: Promise<Users> }) {
     router.push("/?" + url.toString());
   };
   return (
-    <div className="mt-[20px] hidden h-[50px] justify-center md:flex">
-      <div className="flex w-[1200px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
+    <div className="fixed z-10 flex h-[70px] w-full justify-center bg-background pt-[15px]">
+      <div className="flex w-[1600px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
         <div className="flex w-[300px] items-center">
           <Button
             onClick={() => {
@@ -37,7 +37,7 @@ function Header({ user }: { user: Promise<Users> }) {
           </Button>
           <form className="mr-[20px] flex items-center">
             <input
-              className="ml-2 rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold"
+              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
               onChange={handleSearchQuery}
               type="text"
               placeholder="جستجوی آگهی"

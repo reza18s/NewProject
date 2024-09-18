@@ -4,10 +4,10 @@ import { getSession } from "@/utils/query";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="">
       <Header user={getSession()} />
-      <div className="m-auto max-w-[1200px] p-3">{children}</div>
-    </>
+      <div className="mx-auto p-10">{children}</div>
+    </div>
   );
 }
 

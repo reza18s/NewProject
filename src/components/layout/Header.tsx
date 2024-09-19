@@ -22,8 +22,8 @@ function Header({ user }: { user: Promise<Users> }) {
   };
   return (
     <div className="fixed z-10 flex h-[70px] w-full justify-center bg-background pt-[15px]">
-      <div className="flex w-[1600px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
-        <div className="flex w-[300px] items-center">
+      <div className="flex w-[90%] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
+        <div className="flex w-[150px] items-center md:w-[300px]">
           <Button
             onClick={() => {
               store.setOpen(
@@ -35,7 +35,7 @@ function Header({ user }: { user: Promise<Users> }) {
           >
             تهران
           </Button>
-          <form className="mr-[20px] flex items-center">
+          <form className="mr-[20px] flex w-[400px] items-center">
             <input
               className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
               onChange={handleSearchQuery}
@@ -47,7 +47,7 @@ function Header({ user }: { user: Promise<Users> }) {
             </button>
           </form>
         </div>
-        <div className="mr-[20px] flex flex-1 justify-center">
+        <div className="mr-[20px] flex hidden flex-1 justify-center md:flex">
           <Link href="/" legacyBehavior>
             <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
           </Link>
@@ -55,7 +55,7 @@ function Header({ user }: { user: Promise<Users> }) {
         <div className="flex items-center">
           <h5 className="">021-123456</h5>
           <div className="flex items-center">
-            <button className="mr-2 cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground">
+            <button className="mr-2 hidden cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground md:flex">
               پنل اختصاصی من
             </button>
             <Suspense fallback={<div>Loading...</div>}>

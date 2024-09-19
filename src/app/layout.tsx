@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Layout from "@/components/layout/Layout";
 import { Toaster } from "react-hot-toast";
+import { ModalProvider } from "@/providers/ModalProvider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -35,7 +36,7 @@ export default function RootLayout({
           enableSystem
         >
           <Layout>
-            {/* <ModalProvider></ModalProvider> */}
+            <ModalProvider></ModalProvider>
             {children}
           </Layout>
           <Toaster

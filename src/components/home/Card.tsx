@@ -12,7 +12,7 @@ const AdCard = ({
   profileImg: string;
 }) => {
   return (
-    <div className="m-2 flex h-[120px] w-[95%] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[150px]">
+    <div className="m-2 flex h-[140px] w-[95%] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[150px]">
       <div className="relative h-full w-[150px] shrink-0 overflow-hidden rounded-lg">
         <Image
           src={adImg}
@@ -23,7 +23,7 @@ const AdCard = ({
         />
       </div>
       <div className="flex h-full grow flex-col pr-3">
-        <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold md:text-lg">
+        <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold md:text-lg lg:text-lg">
           {title}
         </h3>
         <p className="m-0 text-sm font-medium text-foreground/60 md:text-base">
@@ -34,7 +34,7 @@ const AdCard = ({
         </p>
         <p className="text-xs font-normal md:text-sm">{"user"}</p>
       </div>
-      <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%] md:mb-[-90px]">
+      <div className="mb-[-80px] size-8 shrink-0 overflow-hidden rounded-[50%] md:mb-[-90px]">
         <Image
           src={profileImg}
           alt="Profiles"

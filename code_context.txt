@@ -947,7 +947,7 @@ import { useData } from "@/stores/useData";
 const AdList = () => {
   const { data } = useData((state) => state);
   return (
-    <div className="flex justify-center">
+    <div className="flex w-full justify-center">
       <div className="grid w-full max-w-[1500px] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {!data || data.length === 0 ? (
           <p className="h-12 rounded-lg bg-destructive/20 px-2 py-3 text-lg text-destructive">
@@ -983,8 +983,8 @@ function BuyResidentialsPage({ data }: { data: Profiles[] }) {
     setData(data);
   }, [data]);
   return (
-    <div className="mt-20 flex">
-      <div className="ml-10 mt-1 flex h-fit w-[220px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50">
+    <div className="mt-10 flex">
+      <div className="ml-10 mt-1 hidden h-fit w-[400px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50 sm:flex">
         <Sidebar />
       </div>
       <div className="flex w-full flex-wrap justify-start">
@@ -1011,7 +1011,7 @@ const AdCard = ({
   profileImg: string;
 }) => {
   return (
-    <div className="m-2 flex h-[150px] w-[300px] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[120px]">
+    <div className="m-2 flex h-[120px] w-[95%] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[150px]">
       <div className="relative h-full w-[150px] shrink-0 overflow-hidden rounded-lg">
         <Image
           src={adImg}
@@ -1021,15 +1021,19 @@ const AdCard = ({
           height={100}
         />
       </div>
-      <div className="flex grow flex-col justify-center pr-3">
-        <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold">
+      <div className="flex h-full grow flex-col pr-3">
+        <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold md:text-lg lg:text-lg">
           {title}
         </h3>
-        <p className="m-0 text-sm font-medium text-foreground/60">{price}</p>
-        <p className="m-0 text-xs font-medium text-foreground/60">{location}</p>
-        <p className="text-xs font-normal">{"user"}</p>
+        <p className="m-0 text-sm font-medium text-foreground/60 md:text-base">
+          {price}
+        </p>
+        <p className="m-0 text-xs font-medium text-foreground/60 md:text-sm">
+          {location}
+        </p>
+        <p className="text-xs font-normal md:text-sm">{"user"}</p>
       </div>
-      <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%]">
+      <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%] md:mb-[-90px]">
         <Image
           src={profileImg}
           alt="Profiles"
@@ -1360,10 +1364,10 @@ import { getSession } from "@/utils/query";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="">
       <Header user={getSession()} />
-      <div className="m-auto max-w-[1200px] p-3">{children}</div>
-    </>
+      <div className="mx-auto p-10">{children}</div>
+    </div>
   );
 }
 
@@ -1443,8 +1447,8 @@ function Header({ user }: { user: Promise<Users> }) {
     router.push("/?" + url.toString());
   };
   return (
-    <div className="mt-[20px] hidden h-[50px] justify-center md:flex">
-      <div className="flex w-[1200px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
+    <div className="fixed z-10 flex h-[70px] w-full justify-center bg-background pt-[15px]">
+      <div className="flex w-[1600px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
         <div className="flex w-[300px] items-center">
           <Button
             onClick={() => {
@@ -1459,7 +1463,7 @@ function Header({ user }: { user: Promise<Users> }) {
           </Button>
           <form className="mr-[20px] flex items-center">
             <input
-              className="ml-2 rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold"
+              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
               onChange={handleSearchQuery}
               type="text"
               placeholder="جستجوی آگهی"
@@ -1510,8 +1514,6 @@ const Avatar = (props: { user: Promise<Users> }) => {
 
 export default Header;
 
-// File: src/components/layout/index.ts
-
 // File: src/components/sidebar/Sidebar.tsx
 import Link from "next/link";
 import { HiFilter } from "react-icons/hi";
@@ -1519,7 +1521,7 @@ import { categories } from "@/constants/strings";
 
 function Sidebar() {
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <div className="flex flex-col">
         <p className="ml-1 flex text-base font-normal text-foreground">
           <HiFilter className="ml-1 text-primary" />

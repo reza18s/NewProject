@@ -21,66 +21,64 @@ import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
 import { Profiles } from "@prisma/client";
-
-const formSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  location: z.string(),
-  phone: z.string(),
-  price: z.number(),
-  realState: z.string(),
-  constructionDate: z.date(),
-  province: z.string(),
-  city: z.string(),
-  category: z.string(),
-  rules: z.array(z.string()),
-  amenities: z.array(z.string()),
-});
-
+import { createProfileObject } from "@/validator";
+import { categories, subcategories } from "@/constants";
+import { useState } from "react";
+import { useToast } from "../ui/use-toast";
 export const AddProfilePage = ({ data }: { data?: Profiles }) => {
-  const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createProfileObject>>({
+    resolver: zodResolver(createProfileObject),
     defaultValues: {
-      title: data?.title || "",
-      description: data?.description || "",
-      location: data?.location || "",
-      phone: data?.phone || "",
+      title: data?.title || "یتبی",
+      description: data?.description || "یسمنب",
+      location: data?.location || "سمبنتیم",
+      phone: data?.phone || "سمینتس",
       price: data?.price || 0,
-      realState: data?.realState || "",
+      realState: data?.realState || "سیمتب",
       constructionDate: data?.constructionDate || new Date(),
-      province: data?.province || "",
-      city: data?.city || "",
-      category: data?.category || "",
-      rules: data?.rules.split("-") || [],
-      amenities: data?.amenities.split("-") || [],
+      province: data?.province || "تبسمیت",
+      tag: data?.tag || "سیتبم",
+      city: data?.city || "مسبتممیس",
+      category: data?.category || "فروش",
+      rules: data?.rules.split("-") || ["بسمیب"],
+      amenities: data?.amenities.split("-") || ["یبسناب"],
     },
   });
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [category, setCategory] = useState<string>("فروش");
+  async function onSubmit(values: z.infer<typeof createProfileObject>) {
     if (data) {
-      const res = await fetch("/api/profile", {
+      const res = await fetch("http://localhost:4000/api/v1/profiles", {
         method: "PATCH",
         body: JSON.stringify({ ...values, id: data.id }),
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
       });
       const newData = await res.json();
       if (newData.error) {
-        toast.error(newData.error);
+        toast(newData.error);
       } else {
-        toast.success(newData.message);
+        toast(newData.message);
         router.refresh();
       }
     } else {
-      const res = await fetch("/api/profile", {
+      const res = await fetch("http://localhost:4000/api/v1/profiles", {
         method: "POST",
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          rules: values.rules.join("-"),
+          amenities: values.amenities.join("-"),
+        }),
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
       });
       const data = await res.json();
+      console.log(data);
       if (data.error) {
-        toast.error(data.error);
+        toast(data.error);
       } else {
-        toast.success(data.message);
+        toast(data.message);
         router.refresh();
       }
     }
@@ -207,26 +205,44 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
               <FormLabel>دسته بندی</FormLabel>
               <FormControl>
                 <RadioGroup
+                  onValueChange={(e) => {
+                    setCategory(e);
+                    field.onChange(e);
+                  }}
+                  defaultValue={field.value}
+                  className="flex"
+                >
+                  {categories.map((value) => (
+                    <div className="flex items-center space-x-2" key={value}>
+                      <RadioGroupItem value={value} id={value} />
+                      <Label htmlFor={value}>{value}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />{" "}
+        <FormField
+          control={form.control}
+          name="tag"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>دسته </FormLabel>
+              <FormControl>
+                <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   className="flex"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="villa" id="villa" />
-                    <Label htmlFor="villa">ویلا</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="apartment" id="apartment" />
-                    <Label htmlFor="apartment">آپارتمان</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="store" id="store" />
-                    <Label htmlFor="store">مغازه</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="office" id="office" />
-                    <Label htmlFor="office">دفتر</Label>
-                  </div>
+                  {//@ts-expect-error the
+                  subcategories[category]?.map((item: string) => (
+                    <div className="flex items-center space-x-2" key={item}>
+                      <RadioGroupItem value={item} id={item} />
+                      <Label htmlFor={item}>{item}</Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </FormControl>
               <FormMessage />

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cd backend & bun  ./backend/src/app.ts & cd .. & next dev",
-    "build": "bun build --target=node backend/src/app.ts --outdir=build & next build",
-    "start": "bun  ./backend/build/app.js &next start",
+    "dev": "next dev",
+    "build": "bun build --target=node backend/src/app.ts --outdir=backend/build & next build",
+    "start": "next start",
     "start:backend": "bun --watch backend/dist/app.js",
     "dev:backend": "bun --watch backend/src/app.ts",
     "lint": "next lint"
@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "input-otp": "^1.2.4",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.381.0",
     "next": "14.2.3",
     "next-auth": "^4.24.7",

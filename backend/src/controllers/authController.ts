@@ -7,27 +7,35 @@ import { Users } from "@prisma/client";
 import { ErrorHandler } from "../utils/ErrorHandler";
 import { IDecoded, IRequest } from "../types";
 export const createToken = (res: Response, statusCode: number, user: Users) => {
-  const token = sign(
-    { id: user.id, phoneNumber: user.phoneNumber },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    },
-  );
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV != "development",
-    expires: new Date(
-      Date.now() + +process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000,
-    ),
-  });
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
-    },
-  });
+  try {
+    const token = sign(
+      { id: user.id, phoneNumber: user.phoneNumber },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      },
+    );
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV != "development",
+      expires: new Date(
+        Date.now() + +process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000,
+      ),
+    });
+
+    res.status(statusCode).json({
+      status: "success",
+      token,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: "failed",
+    });
+  }
 };
 
 export const signup = catchAsync(
@@ -72,6 +80,10 @@ export const protect = catchAsync(
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+    }
+    if (!token && req.headers.cookie) {
+      token = req.headers.cookie.split("=")[1];
+      console.log(token);
     }
     if (!token) {
       return next(

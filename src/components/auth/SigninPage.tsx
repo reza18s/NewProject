@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
 import styles from "./SignupPage.module.css";
 import Loader from "../global/Loader";
+import { useRouter } from "next/navigation";
 
 function SigninPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -30,10 +30,11 @@ function SigninPage() {
           <button
             type="submit"
             onClick={async (e) => {
+              console.log(phoneNumber);
               e.preventDefault();
               setLoading(true);
               const res = await fetch(
-                `${process.env.BACKEND_SERVER_URL}/users/signin`,
+                "http://localhost:4000/api/v1/users/signin",
                 {
                   method: "POST",
                   body: JSON.stringify({
@@ -45,11 +46,11 @@ function SigninPage() {
               );
               const data = await res.json();
               setLoading(false);
-              if (res.ok) {
-                router.push("/");
-              } else {
-                toast.error(data.error);
-              }
+              // if (res.ok) {
+              //   router.push("/");
+              // } else {
+              //   toast.error(data.error);
+              // }
             }}
           >
             ثبت نام

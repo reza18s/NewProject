@@ -51,7 +51,15 @@ export const updateUserObject = z
     avatar: z.string().url("please enter a url").optional(),
   })
   .strict();
-
+export const RealEstateCategorySchema = z.enum([
+  "فروش",
+  "رهن و اجاره",
+  "اجاره بلند مدت",
+  "اجاره کوتاه مدت",
+  "نیاز به خرید",
+  "مشارکت",
+  "پیش فروش",
+]);
 export const createProfileObject = z.object({
   title: z.string(),
   description: z.string(),
@@ -60,25 +68,13 @@ export const createProfileObject = z.object({
   realState: z.string(),
   price: z.number(),
   constructionDate: z.string(),
-  category: z.string(),
+  category: RealEstateCategorySchema,
+  tag: z.string(),
   province: z.string(),
   city: z.string(),
   amenities: z.string(),
   rules: z.string(),
 });
-export const updateProfileObject = z
-  .object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    location: z.string().optional(),
-    phone: z.string().optional(),
-    realState: z.string().optional(),
-    price: z.number().optional(),
-    constructionDate: z.string().optional(),
-    category: z.string().optional(),
-    province: z.string().optional(),
-    city: z.string().optional(),
-    amenities: z.string().optional(),
-    rules: z.string().optional(),
-  })
-  .strict();
+export const updateProfileObject = createProfileObject.extend({
+  id: z.string(),
+});

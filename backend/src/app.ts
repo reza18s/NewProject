@@ -7,23 +7,23 @@ import profilesRouter from "./routes/profileRoutes";
 import cors from "cors";
 
 const app = express();
-app.use(express.json());
 const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
-    if (!origin) {
-      return callback(null, true);
-    }
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) return callback(null, true); // Allow no-origin requests
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true, // Enable this to allow sending cookies and tokens
+  credentials: true, // Allow credentials like cookies, authorization headers, etc.
 };
-
+// Middleware
 app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
 
 configDotenv({ path: "./config.env" });
 app.use(express.static(`${__dirname}/public`));

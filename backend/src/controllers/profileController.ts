@@ -39,6 +39,7 @@ export const getProfile = catchAsync(async (req: Request, res: Response) => {
 });
 export const createProfile = catchAsync(
   async (req: IRequest, res: Response, next: NextFunction) => {
+    console.log(req.body);
     const {
       title,
       description,
@@ -52,6 +53,7 @@ export const createProfile = catchAsync(
       city,
       amenities,
       rules,
+      tag,
     } = createProfileObject.parse(req.body);
 
     const user = await db.users.findUnique({
@@ -60,6 +62,7 @@ export const createProfile = catchAsync(
     if (!user) {
       return next(new ErrorHandler("حساب کاربری یافت نشد", 404));
     }
+    console.log("fuckjk");
 
     const profile = await db.profiles.create({
       data: {
@@ -68,11 +71,12 @@ export const createProfile = catchAsync(
         location,
         phone,
         realState,
-        constructionDate,
+        constructionDate: new Date(constructionDate),
         amenities,
         rules,
         province,
         city,
+        tag,
         category,
         price,
         userId: user.id,

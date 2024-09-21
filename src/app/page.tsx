@@ -9,8 +9,10 @@ async function BuyResidentials({
   if (searchParams) {
     Object.keys(searchParams).map((key) => {
       if (key == "search") {
-        where["title"] = { contains: searchParams[key] };
+        //@ts-expect-error the
+        where.title = { contains: searchParams[key] };
       } else {
+        //@ts-expect-error the
         where[key] = searchParams[key];
       }
     });

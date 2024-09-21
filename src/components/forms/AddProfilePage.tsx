@@ -52,8 +52,8 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
       province: data?.province || "",
       city: data?.city || "",
       category: data?.category || "",
-      rules: data?.rules || [],
-      amenities: data?.amenities || [],
+      rules: data?.rules.split("-") || [],
+      amenities: data?.amenities.split("-") || [],
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {

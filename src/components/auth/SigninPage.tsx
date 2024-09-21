@@ -33,7 +33,7 @@ function SigninPage() {
               e.preventDefault();
               setLoading(true);
               const res = await fetch(
-                "http://localhost:3000/api/v1/users/signin",
+                `${process.env.BACKEND_SERVER_URL}/users/signin`,
                 {
                   method: "POST",
                   body: JSON.stringify({
@@ -46,7 +46,7 @@ function SigninPage() {
               const data = await res.json();
               setLoading(false);
               if (res.ok) {
-                // router.push("/signin");
+                router.push("/");
               } else {
                 toast.error(data.error);
               }

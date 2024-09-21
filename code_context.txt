@@ -63,6 +63,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Layout from "@/components/layout/Layout";
 import { Toaster } from "react-hot-toast";
+import { ModalProvider } from "@/providers/ModalProvider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -92,7 +93,7 @@ export default function RootLayout({
           enableSystem
         >
           <Layout>
-            {/* <ModalProvider></ModalProvider> */}
+            <ModalProvider></ModalProvider>
             {children}
           </Layout>
           <Toaster
@@ -124,31 +125,22 @@ export default function RootLayout({
 // File: src/app/page.tsx
 import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
 import { db } from "@/lib/db";
-import { Profiles } from "@prisma/client";
 async function BuyResidentials({
   searchParams,
 }: {
   searchParams: { category?: string; search?: string };
 }) {
-  let data: Profiles[] = [];
-  if (searchParams.category && searchParams.search) {
-    data = await db.profiles.findMany({
-      where: {
-        title: { contains: searchParams.search },
-        category: searchParams.category,
-      },
+  const where = {};
+  if (searchParams) {
+    Object.keys(searchParams).map((key) => {
+      if (key == "search") {
+        where["title"] = { contains: searchParams[key] };
+      } else {
+        where[key] = searchParams[key];
+      }
     });
-  } else if (searchParams.category) {
-    data = await db.profiles.findMany({
-      where: { category: searchParams.category },
-    });
-  } else if (searchParams.search) {
-    data = await db.profiles.findMany({
-      where: { title: { contains: searchParams.search } },
-    });
-  } else {
-    data = await db.profiles.findMany({});
   }
+  const data = await db.profiles.findMany({ where: where });
 
   if (!data) {
     return <h3>مشکلی پیش آمده است</h3>;
@@ -573,31 +565,6 @@ export const useModal = create<Store>()(
   ),
 );
 
-// File: src/stores/useLocalStore.ts
-/* eslint-disable no-unused-vars */
-// import { create } from "zustand";
-// import { devtools, persist } from "zustand/middleware";
-
-// interface IStore {
-// }
-// export type Actions = {
-// };
-
-// export type Store = IStore & Actions;
-
-// export const defaultInitState: IStore = {
-// };
-
-// export const useLocalStore = create<Store>()(
-//   devtools(
-//     persist(
-//       (set) => (),
-
-//       { name: "board-user" },
-//     ),
-//   ),
-// );
-
 // File: src/stores/useStore.ts
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
@@ -1011,7 +978,7 @@ const AdCard = ({
   profileImg: string;
 }) => {
   return (
-    <div className="m-2 flex h-[120px] w-[95%] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[150px]">
+    <div className="m-2 flex h-[140px] w-[95%] items-center overflow-hidden rounded-lg border border-primary p-3 shadow-sm shadow-foreground md:h-[150px]">
       <div className="relative h-full w-[150px] shrink-0 overflow-hidden rounded-lg">
         <Image
           src={adImg}
@@ -1033,7 +1000,7 @@ const AdCard = ({
         </p>
         <p className="text-xs font-normal md:text-sm">{"user"}</p>
       </div>
-      <div className="mb-[-60px] size-8 shrink-0 overflow-hidden rounded-[50%] md:mb-[-90px]">
+      <div className="mb-[-80px] size-8 shrink-0 overflow-hidden rounded-[50%] md:mb-[-90px]">
         <Image
           src={profileImg}
           alt="Profiles"
@@ -1448,8 +1415,8 @@ function Header({ user }: { user: Promise<Users> }) {
   };
   return (
     <div className="fixed z-10 flex h-[70px] w-full justify-center bg-background pt-[15px]">
-      <div className="flex w-[1600px] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
-        <div className="flex w-[300px] items-center">
+      <div className="flex w-[90%] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
+        <div className="flex w-[150px] items-center md:w-[300px]">
           <Button
             onClick={() => {
               store.setOpen(
@@ -1461,7 +1428,7 @@ function Header({ user }: { user: Promise<Users> }) {
           >
             تهران
           </Button>
-          <form className="mr-[20px] flex items-center">
+          <form className="mr-[20px] flex w-[400px] items-center">
             <input
               className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
               onChange={handleSearchQuery}
@@ -1473,7 +1440,7 @@ function Header({ user }: { user: Promise<Users> }) {
             </button>
           </form>
         </div>
-        <div className="mr-[20px] flex flex-1 justify-center">
+        <div className="mr-[20px] flex hidden flex-1 justify-center md:flex">
           <Link href="/" legacyBehavior>
             <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
           </Link>
@@ -1481,7 +1448,7 @@ function Header({ user }: { user: Promise<Users> }) {
         <div className="flex items-center">
           <h5 className="">021-123456</h5>
           <div className="flex items-center">
-            <button className="mr-2 cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground">
+            <button className="mr-2 hidden cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground md:flex">
               پنل اختصاصی من
             </button>
             <Suspense fallback={<div>Loading...</div>}>

@@ -8,15 +8,18 @@ export const metadata = {
   title: "پنل ادمین املاک | پروژه بوتواستارت",
 };
 
-async function Admin() {
+export default async function Admin() {
+  // Fetch user session on the server side
   const user = await getSession();
+
+  // Redirect based on session and role
   if (!user) {
     redirect("/signin");
-  }
-  if (user?.role !== "ADMIN") {
+  } else if (user?.role !== "ADMIN") {
     redirect("/dashboard");
   }
 
+  // Fetch profiles only if user is an admin
   const profiles = await db.profiles.findMany({ where: { published: false } });
 
   return (
@@ -25,5 +28,3 @@ async function Admin() {
     </DashboardSidebar>
   );
 }
-
-export default Admin;

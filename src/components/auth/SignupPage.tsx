@@ -17,7 +17,7 @@ function SignupPage() {
   ) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("http://localhost:3000/api/v1/users/signup", {
+    const res = await fetch(`${process.env.BACKEND_SERVER_URL}/users/signup`, {
       method: "POST",
       body: JSON.stringify({
         phoneNumber,
@@ -28,7 +28,7 @@ function SignupPage() {
     const data = await res.json();
     setLoading(false);
     if (res.ok) {
-      // router.push("/signin");
+      router.push("/signin");
     } else {
       toast.error(data.error);
     }

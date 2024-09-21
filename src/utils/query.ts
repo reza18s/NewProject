@@ -16,6 +16,7 @@ export const getSession = async () => {
     const data = await response.json();
     return data.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 };

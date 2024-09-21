@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bun --watch dist/app.js",
     "dev": "bun --watch src/app.ts",
-    "build": "tsc -w"
+    "build": "bun build --target=node ./src/app.ts --outdir=build"
   },
   "author": "",
   "license": "ISC",

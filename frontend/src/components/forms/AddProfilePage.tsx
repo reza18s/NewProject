@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
@@ -22,31 +21,31 @@ import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
 import { Profiles } from "@prisma/client";
 import { createProfileObject } from "@/validator";
-import { categories, subcategories } from "@/constants";
 import { useState } from "react";
-import { useToast } from "../ui/use-toast";
+import { categories, categoryTags } from "@/constants";
+import toast from "react-hot-toast";
 export const AddProfilePage = ({ data }: { data?: Profiles }) => {
   const form = useForm<z.infer<typeof createProfileObject>>({
     resolver: zodResolver(createProfileObject),
     defaultValues: {
-      title: data?.title || "یتبی",
-      description: data?.description || "یسمنب",
-      location: data?.location || "سمبنتیم",
-      phone: data?.phone || "سمینتس",
+      title: data?.title || "",
+      description: data?.description || "",
+      location: data?.location || "",
+      phone: data?.phone || "",
       price: data?.price || 0,
-      realState: data?.realState || "سیمتب",
+      realState: data?.realState || "",
       constructionDate: data?.constructionDate || new Date(),
-      province: data?.province || "تبسمیت",
-      tag: data?.tag || "سیتبم",
-      city: data?.city || "مسبتممیس",
-      category: data?.category || "فروش",
-      rules: data?.rules.split("-") || ["بسمیب"],
-      amenities: data?.amenities.split("-") || ["یبسناب"],
+      province: data?.province || "",
+      tag: data?.tag || "",
+      city: data?.city || "",
+      category: data?.category || "",
+      rules: data?.rules.split("-") || [""],
+      amenities: data?.amenities.split("-") || [""],
     },
   });
   const router = useRouter();
-  const { toast } = useToast();
-  const [category, setCategory] = useState<string>("فروش");
+  const [category, setCategory] = useState<string>("SALE");
+
   async function onSubmit(values: z.infer<typeof createProfileObject>) {
     if (data) {
       const res = await fetch("http://localhost:4000/api/v1/profiles", {
@@ -57,9 +56,10 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
       });
       const newData = await res.json();
       if (newData.error) {
-        toast(newData.error);
+        console.log(newData);
+        toast.error(newData.error.message);
       } else {
-        toast(newData.message);
+        toast.success(newData.message);
         router.refresh();
       }
     } else {
@@ -74,11 +74,11 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data);
       if (data.error) {
-        toast(data.error);
+        toast.error(data.error.message);
       } else {
-        toast(data.message);
+        toast.success(data.message);
+
         router.refresh();
       }
     }
@@ -213,9 +213,12 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
                   className="flex"
                 >
                   {categories.map((value) => (
-                    <div className="flex items-center space-x-2" key={value}>
-                      <RadioGroupItem value={value} id={value} />
-                      <Label htmlFor={value}>{value}</Label>
+                    <div
+                      className="flex items-center space-x-2"
+                      key={value.value}
+                    >
+                      <RadioGroupItem value={value.value} id={value.value} />
+                      <Label htmlFor={value.value}>{value.name}</Label>
                     </div>
                   ))}
                 </RadioGroup>
@@ -236,11 +239,13 @@ export const AddProfilePage = ({ data }: { data?: Profiles }) => {
                   defaultValue={field.value}
                   className="flex"
                 >
-                  {//@ts-expect-error the
-                  subcategories[category]?.map((item: string) => (
-                    <div className="flex items-center space-x-2" key={item}>
-                      <RadioGroupItem value={item} id={item} />
-                      <Label htmlFor={item}>{item}</Label>
+                  {categoryTags[category]?.map((item) => (
+                    <div
+                      className="flex items-center space-x-2"
+                      key={item.value}
+                    >
+                      <RadioGroupItem value={item.value} id={item.value} />
+                      <Label htmlFor={item.value}>{item.name}</Label>
                     </div>
                   ))}
                 </RadioGroup>

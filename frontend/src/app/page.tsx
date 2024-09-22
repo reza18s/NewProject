@@ -17,7 +17,7 @@ async function BuyResidentials({
       }
     });
   }
-  const data = await db.profiles.findMany({ where: where });
+  const data = await db.profiles.findMany({ where: { category: "SEAL" } });
 
   if (!data) {
     return <h3>مشکلی پیش آمده است</h3>;

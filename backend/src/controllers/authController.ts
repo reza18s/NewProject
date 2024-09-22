@@ -68,6 +68,10 @@ export const signin = catchAsync(
     const user = await db.users.findUnique({
       where: { phoneNumber },
     });
+    if (!user) {
+      return next(new ErrorHandler("user does not exist", 400));
+    }
+    console.log(user);
     //create Express Password Checker
     createToken(res, 201, user);
   },
@@ -93,6 +97,7 @@ export const protect = catchAsync(
         ),
       );
     }
+    // @ts-expect-error
     const decoded: IDecoded = verify(token, process.env.JWT_SECRET);
     const currentUser = await db.users.findUnique({
       where: { id: decoded.id },

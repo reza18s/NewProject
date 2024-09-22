@@ -68,7 +68,7 @@ export const createProfileObject = z.object({
   realState: z.string(),
   price: z.number(),
   constructionDate: z.string(),
-  category: RealEstateCategorySchema,
+  category: z.string(),
   tag: z.string(),
   province: z.string(),
   city: z.string(),

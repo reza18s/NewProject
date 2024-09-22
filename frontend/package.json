@@ -1,14 +1,11 @@
 {
-  "name": "e-commerce",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "bun build --target=node backend/src/app.ts --outdir=backend/build & next build",
-    "start": "next start",
-    "start:backend": "bun --watch backend/dist/app.js",
-    "dev:backend": "bun --watch backend/src/app.ts",
-    "lint": "next lint"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

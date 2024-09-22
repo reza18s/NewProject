@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { MouseEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast, Toaster } from "react-hot-toast";
 import styles from "./SignupPage.module.css";
 import Loader from "../global/Loader";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -30,7 +30,7 @@ function SignupPage() {
     if (res.ok) {
       router.push("/");
     } else {
-      toast.error(data.error);
+      toast.error(data.error.message);
     }
   };
 
@@ -57,7 +57,6 @@ function SignupPage() {
         حساب کاربری دارید؟
         <Link href="/signin">ورود</Link>
       </p>
-      <Toaster />
     </div>
   );
 }

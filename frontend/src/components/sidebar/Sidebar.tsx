@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { categories, subcategories } from "@/constants";
+import { categories, categoryTags } from "@/constants";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const RealEstateCategory: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("فروش");
-
+  const route = useRouter();
+  const searchParams = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState<string>("SALE");
   return (
     <div className="w-full p-4">
       <h1 className="mb-4 text-center text-xl text-blue-600">
@@ -13,24 +15,30 @@ const RealEstateCategory: React.FC = () => {
       <div className="mb-4 grid grid-cols-3 grid-rows-2 justify-center gap-2">
         {categories.map((category) => (
           <Button
-            key={category}
-            variant={selectedCategory === category ? "default" : "secondary"}
+            key={category.value}
+            variant={
+              selectedCategory === category.value ? "default" : "secondary"
+            }
             className="h-10 w-20 px-4 py-2 text-sm"
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => setSelectedCategory(category.value)}
           >
-            {category}
+            {category.name}
           </Button>
         ))}
       </div>
       <div className="mt-6">
         <ul className="list-none">
-          {subcategories[selectedCategory]?.map(
-            (item: string, index: string) => (
-              <li key={index} className="mb-2 text-right text-lg">
-                {item}
-              </li>
-            ),
-          )}
+          {categoryTags[selectedCategory!]?.map((item) => (
+            <li
+              key={item.value}
+              className="mb-2 text-right text-lg"
+              onClick={() => {
+                route.push(`/?category=${selectedCategory}`);
+              }}
+            >
+              {item.name}
+            </li>
+          ))}
         </ul>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { Profiles } from "@prisma/client";
@@ -19,7 +19,7 @@ function DashboardCard({ data }: { data: Profiles }) {
     });
     const result = await res.json();
     if (result.error) {
-      toast.error(result.error);
+      toast.error(result.error.message);
     } else {
       toast.success(result.message);
       router.refresh();
@@ -45,7 +45,6 @@ function DashboardCard({ data }: { data: Profiles }) {
           <AiOutlineDelete />
         </button>
       </div>
-      <Toaster />
     </div>
   );
 }

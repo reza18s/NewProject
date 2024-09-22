@@ -27,7 +27,50 @@ model Users {
   role        Role       @default(USER)
   Profile     Profiles[]
 
-  @@index([phoneNumber])
+  // Index on unique fields is redundant, so removing the explicit index here
+}
+
+enum Category {
+  SALE // فروش
+  MORTGAGE_AND_RENT // رهن و اجاره
+  LONG_TERM_RENT // اجاره بلند مدت
+  SHORT_TERM_RENT // اجاره کوتاه مدت
+  NEED_TO_BUY // نیاز به خرید
+  PARTNERSHIP // مشارکت
+  PRE_SALE // پیش فروش
+}
+
+enum Tag {
+  RESIDENTIAL_APARTMENT // آپارتمان مسکونی
+  VILLA // خانه و ویلا
+  LAND // زمین و کلنگی
+  OFFICE // دفاتر اداری
+  SHOP // مغازه و تجاری
+  BUILDING_COMPLEX // مستغلات یکجا
+  WAREHOUSE_FACTORY // کارخانه و انبار
+  MINE // انواع معدن
+  GOVERNMENT_CENTER // مراکز دولتی
+  FARM_GREEN_SPACE // کشاورزی و فضای سبز
+  EDUCATION_RECREATION // مراکز آموزشی،تفریحی
+  MEDICAL_CENTER // مراکز بهداشتی و درمانی
+  SHOP_AND_BOOTH // مغازه و غرفه
+  APARTMENT_AND_SUITE // آپارتمان و سویت
+  BEACH_VILLA // ویلا ساحلی
+  FOREST_MOUNTAIN_VILLA // ویلا جنگلی-کوهستانی
+  SWISS_COTTAGE // کلبه سوئیسی
+  TOURISM // بومگردی
+  LUXURY_ACCOMMODATION // اقامتگاه لاکچری
+  EVENT_HALL // تالار و سالن مراسم
+  OFFICE_APARTMENT // آپارتمان اداری
+  SHOP_AND_COMMERCIAL // مغازه و تجاری
+  GOVERNMENT_PROJECT // پروژه های دولتی
+  MASKAN_MEHR_PROJECT // پروژه های مسکن مهر
+  RESIDENTIAL_CONSTRUCTION // مشارکت در ساخت (مسکونی)
+  COMMERCIAL_CONSTRUCTION // مشارکت در ساخت (اداری و تجاری)
+  VILLA_CITY_CONSTRUCTION // مشارکت در ساخت (ویلا سازی و شهرک سازی)
+  CONTRACT_MANAGEMENT // مدیریت پیمان و مشاوره
+  LARGE_GOVERNMENT_PROJECT // پروژه های بزرگ دولتی
+  LAND_AND_OLD_PROPERTY // زمین و کلنگی
 }
 
 model Profiles {
@@ -48,7 +91,7 @@ model Profiles {
   published        Boolean? @default(false)
   imagePath        String?
   userId           String
-  Users            Users    @relation(fields: [userId], references: [id])
+  user             Users    @relation(fields: [userId], references: [id]) // Renamed to user for better clarity
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

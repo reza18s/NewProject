@@ -27,7 +27,7 @@ model Users {
   role        Role       @default(USER)
   Profile     Profiles[]
 
-  @@index([phoneNumber])
+  // Index on unique fields is redundant, so removing the explicit index here
 }
 
 enum Category {
@@ -82,8 +82,8 @@ model Profiles {
   realState        String
   price            Int
   constructionDate DateTime
-  category         Category
-  tag              Tag
+  category         String
+  tag              String
   province         String
   city             String
   amenities        String
@@ -91,7 +91,7 @@ model Profiles {
   published        Boolean? @default(false)
   imagePath        String?
   userId           String
-  Users            Users    @relation(fields: [userId], references: [id])
+  user             Users    @relation(fields: [userId], references: [id]) // Renamed to user for better clarity
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

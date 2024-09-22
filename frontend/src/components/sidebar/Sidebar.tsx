@@ -33,7 +33,7 @@ const RealEstateCategory: React.FC = () => {
               key={item.value}
               className="mb-2 text-right text-lg"
               onClick={() => {
-                route.push(`/?category=${selectedCategory}`);
+                route.push(`/?category=${selectedCategory}&tag=${item.value}`);
               }}
             >
               {item.name}

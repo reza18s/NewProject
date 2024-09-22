@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 async function BuyResidentials({
   searchParams,
 }: {
-  searchParams: { category?: string; search?: string };
+  searchParams: { category?: string; search?: string; tag: string };
 }) {
   const where = {};
   if (searchParams) {
@@ -17,7 +17,7 @@ async function BuyResidentials({
       }
     });
   }
-  const data = await db.profiles.findMany({ where: { category: "SEAL" } });
+  const data = await db.profiles.findMany({ where: where });
 
   if (!data) {
     return <h3>مشکلی پیش آمده است</h3>;

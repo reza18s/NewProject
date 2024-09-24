@@ -6,11 +6,11 @@ import { FiLogOut } from "react-icons/fi";
 function LogoutButton() {
   return (
     <button
-      className="mt-[20px] flex w-full cursor-pointer border-none bg-none text-right text-base text-destructive"
+      className="flex w-full cursor-pointer border-none bg-none text-right text-xl"
       onClick={() => signOut({ callbackUrl: "/" })}
     >
-      <FiLogOut className="ml-2 text-xl text-destructive" />
-      خروج
+      <FiLogOut className="ml-2 mt-1 text-2xl text-destructive" />
+      خروج از حساب کاربری
     </button>
   );
 }

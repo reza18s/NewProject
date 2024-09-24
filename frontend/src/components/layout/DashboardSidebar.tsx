@@ -13,31 +13,36 @@ async function DashboardSidebar({
   role: string;
 }) {
   return (
-    <div className="mt-20 flex justify-between">
-      <div className="ml-[40px] flex h-fit w-[220px] flex-col items-center rounded-md px-[15px] py-[30px] shadow-md shadow-primary/30">
-        <CgProfile className="text-5xl text-primary" />
-        {role === "ADMIN" ? "ادمین" : null}
-        <p className="mt-[30px] text-lg font-normal text-foreground/70">
-          {phoneNumber}
-        </p>
-        <span className="mb-[30px] h-px w-full bg-foreground/50"></span>
-        <Link href="/dashboard" className="mx-2 my-0 w-full font-normal">
-          حساب کاربری
-        </Link>
+    <div className="mt-20 flex h-full justify-between">
+      <div className="ml-[40px] flex h-[650px] h-fit w-[350px] flex-col items-center gap-6 border border-secondary-foreground px-[15px] py-[30px]">
         <Link
           href="/dashboard/my-profiles"
-          className="mx-2 my-0 w-full font-normal"
+          className="mx-2 my-0 -mt-3 w-full text-xl font-normal"
         >
-          آگهی های من
+          پنل اختصاصی و اگهی های من
         </Link>
-        <Link href="/dashboard/add" className="mx-2 my-0 w-full font-normal">
-          ثبت آگهی
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          چت و پیام های من
         </Link>
-        {role === "ADMIN" ? (
-          <Link href="/admin" className="mx-2 my-0 w-full font-normal">
-            در انتظار تایید
-          </Link>
-        ) : null}
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          تنظیمات داشبورد
+        </Link>
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          احراز هویت
+        </Link>
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          شارژ پول
+        </Link>
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          پرداخت و ترانکشهای من
+        </Link>
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          نشان ها
+        </Link>{" "}
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal">
+          بازدید ها
+        </Link>
+        <Link href="" className="mx-2 my-0 w-full text-xl font-normal"></Link>
         <LogoutButton />
       </div>
       <div className="w-full">{children}</div>

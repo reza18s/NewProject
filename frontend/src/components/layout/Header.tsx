@@ -11,6 +11,7 @@ import { useModal } from "@/stores/useModal";
 import React, { Suspense, use } from "react";
 import { ModeToggle } from "../global/mode-toggle";
 import { Users } from "@prisma/client";
+import { ChevronDown } from "lucide-react";
 
 function Header({ user }: { user: Promise<Users> }) {
   const store = useStore(useModal, (state) => state);
@@ -21,33 +22,9 @@ function Header({ user }: { user: Promise<Users> }) {
     router.push("/?" + url.toString());
   };
   return (
-    <div className="fixed z-10 flex h-[70px] w-full justify-center bg-background pt-[15px]">
-      <div className="flex w-[90%] items-center justify-between divide-red-200 rounded-sm bg-accent px-[20px] py-[10px] shadow-md shadow-foreground/10">
-        <div className="flex w-[150px] items-center md:w-[300px]">
-          <Button
-            onClick={() => {
-              store.setOpen(
-                <CustomModal title="" subheading="">
-                  <CityFilter />
-                </CustomModal>,
-              );
-            }}
-          >
-            تهران
-          </Button>
-          <form className="mr-[20px] flex w-[400px] items-center">
-            <input
-              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
-              onChange={handleSearchQuery}
-              type="text"
-              placeholder="جستجوی آگهی"
-            />
-            <button type="submit" className="hidden">
-              جستجو
-            </button>
-          </form>
-        </div>
-        <div className="mr-[20px] flex hidden flex-1 justify-center md:flex">
+    <div className="fixed z-10 flex h-[80px] w-full justify-center bg-background pt-[15px]">
+      <div className="flex w-[90%] items-center justify-between border-b border-border px-[20px] py-[10px]">
+        <div className="mr-[20px] hidden md:flex">
           <Link href="/" legacyBehavior>
             <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
           </Link>
@@ -61,8 +38,48 @@ function Header({ user }: { user: Promise<Users> }) {
             <Suspense fallback={<div>Loading...</div>}>
               <Avatar user={user}></Avatar>
             </Suspense>
-            <ModeToggle></ModeToggle>
           </div>
+        </div>{" "}
+        <div className="flex w-[350px] items-center justify-between">
+          <Button
+            className="rounded-3xl border border-border bg-background px-7 text-base text-secondary-foreground hover:bg-popover-foreground hover:text-background"
+            onClick={() => {
+              store.setOpen(
+                <CustomModal title="Cites" subheading="choose a city">
+                  <CityFilter />
+                </CustomModal>,
+              );
+            }}
+          >
+            تهران
+            <ChevronDown></ChevronDown>
+          </Button>
+          <Button
+            className="rounded-3xl border border-border bg-background text-base text-secondary-foreground hover:bg-popover-foreground hover:text-background"
+            onClick={() => {
+              store.setOpen(
+                <CustomModal title="My Accounts" subheading="choose an account">
+                  <div></div>
+                </CustomModal>,
+              );
+            }}
+          >
+            <Avatar user={user}></Avatar>
+            لیلا شعبانی
+            <ChevronDown></ChevronDown>
+          </Button>
+          {/* <form className="mr-[20px] flex w-[400px] items-center">
+            <input
+              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
+              onChange={handleSearchQuery}
+              type="text"
+              placeholder="جستجوی آگهی"
+            />
+            <button type="submit" className="hidden">
+              جستجو
+            </button>
+          </form> */}
+          <ModeToggle></ModeToggle>
         </div>
       </div>
     </div>

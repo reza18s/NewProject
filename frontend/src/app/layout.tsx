@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
-import "@/style/global.css";
+import "./global.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Layout from "@/components/layout/Layout";

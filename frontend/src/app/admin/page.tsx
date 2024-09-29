@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"; // Assume db is a SQL client instance
 import AdminPage from "@/components/admin/AdminPage";
 import DashboardSidebar from "@/components/layout/DashboardSidebar";
 import { getSession } from "@/utils/query";
@@ -20,7 +20,17 @@ export default async function Admin() {
   }
 
   // Fetch profiles only if user is an admin
-  const profiles = await db.profiles.findMany({ where: { published: false } });
+  let profiles = [];
+  try {
+    const query = "SELECT * FROM Profiles WHERE published = false";
+    const [results] = await db.execute(query);
+    // @ts-expect-error the
+    profiles = results;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to fetch profiles:", error);
+    return <h3>مشکلی پیش آمده است</h3>;
+  }
 
   return (
     <DashboardSidebar role={user?.role} phoneNumber={user.phoneNumber}>

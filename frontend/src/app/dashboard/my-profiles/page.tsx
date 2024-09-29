@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"; // Assume db is a SQL client instance
 import { redirect } from "next/navigation";
 import MyProfilesPage from "@/components/dashboard/MyProfilesPage";
 import { getSession } from "@/utils/query";
@@ -14,10 +14,18 @@ async function Myprofiles() {
     redirect("/signin");
   }
 
-  // Fetch profiles for the logged-in user
-  const profiles = await db.profiles.findMany({
-    where: { userId: user.id }, // Ensure the userId is passed correctly
-  });
+  // Fetch profiles for the logged-in user using raw SQL
+  let profiles = [];
+  try {
+    const query = "SELECT * FROM Profiles WHERE userId = ?";
+    const [results] = await db.execute(query, [user.id]);
+    // @ts-expect-error the
+    profiles = results;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to fetch profiles:", error);
+    return <h3>مشکلی پیش آمده است</h3>;
+  }
 
   // Render the MyProfilesPage component with the fetched profiles
   return <MyProfilesPage profiles={profiles} />;

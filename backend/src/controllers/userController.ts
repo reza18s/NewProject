@@ -18,7 +18,10 @@ export const getAllUsers = catchAsync(
     });
   },
 );
-
+export const getMe = (req: IRequest, res: Response, next: NextFunction) => {
+  req.params.id = req.user.id;
+  next();
+};
 // Get a single user by ID
 export const getUser = catchAsync(
   async (req: IRequest, res: Response, next: NextFunction) => {

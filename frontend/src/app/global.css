@@ -24,17 +24,6 @@ textarea {
   height: 0;
   width: 0;
 }
-/* @font-face {
-  font-family: "YekanBakh";
-  src:
-    url("../../public/fonts/YekanBakh-Bold.woff2") format("woff2"),
-    url("../../public/fonts/YekanBakh-Fat.woff2") format("woff2"),
-    url("../../public/fonts/YekanBakh-Heavy.woff2") format("woff2"),
-    url("../../public/fonts/YekanBakh-Light.woff2") format("woff2"),
-    url("../../public/fonts/YekanBakh-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-} */
 @layer base {
   :root {
     --background: 216 100% 98.04%;

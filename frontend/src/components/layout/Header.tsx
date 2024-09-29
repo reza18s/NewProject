@@ -1,3 +1,5 @@
+/* eslint-disable tailwindcss/classnames-order */
+/* eslint-disable tailwindcss/no-custom-classname */
 "use client";
 import Link from "next/link";
 import { FaUserAlt } from "react-icons/fa";
@@ -29,18 +31,7 @@ function Header({ user }: { user: Promise<Users> }) {
             <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
           </Link>
         </div>
-        <div className="flex items-center">
-          <h5 className="">021-123456</h5>
-          <div className="flex items-center">
-            <button className="mr-2 hidden cursor-pointer rounded-sm border-none bg-primary p-2 font-['YekanBakh'] text-xs text-primary-foreground md:flex">
-              پنل اختصاصی من
-            </button>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Avatar user={user}></Avatar>
-            </Suspense>
-          </div>
-        </div>{" "}
-        <div className="flex w-[350px] items-center justify-between">
+        <div className="flex w-[350px] items-center justify-end">
           <Button
             className="rounded-3xl border border-border bg-background px-7 text-base text-secondary-foreground hover:bg-popover-foreground hover:text-background"
             onClick={() => {
@@ -54,7 +45,7 @@ function Header({ user }: { user: Promise<Users> }) {
             تهران
             <ChevronDown></ChevronDown>
           </Button>
-          <Button
+          {/* <Button
             className="rounded-3xl border border-border bg-background text-base text-secondary-foreground hover:bg-popover-foreground hover:text-background"
             onClick={() => {
               store.setOpen(
@@ -66,8 +57,8 @@ function Header({ user }: { user: Promise<Users> }) {
           >
             <Avatar user={user}></Avatar>
             لیلا شعبانی
-            <ChevronDown></ChevronDown>
-          </Button>
+            <ChevronDown></ChevronDown> 
+          </Button>*/}
           {/* <form className="mr-[20px] flex w-[400px] items-center">
             <input
               className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
@@ -79,6 +70,12 @@ function Header({ user }: { user: Promise<Users> }) {
               جستجو
             </button>
           </form> */}
+
+          <div className="flex items-center">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Avatar user={user}></Avatar>
+            </Suspense>
+          </div>
           <ModeToggle></ModeToggle>
         </div>
       </div>

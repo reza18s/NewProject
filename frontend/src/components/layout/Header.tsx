@@ -12,10 +12,10 @@ import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
 import React, { Suspense, use } from "react";
 import { ModeToggle } from "../global/mode-toggle";
-import { Users } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
+import { IUser } from "@/types";
 
-function Header({ user }: { user: Promise<Users> }) {
+function Header({ user }: { user: Promise<IUser> }) {
   const store = useStore(useModal, (state) => state);
   const router = useRouter();
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ function Header({ user }: { user: Promise<Users> }) {
     </div>
   );
 }
-const Avatar = (props: { user: Promise<Users> }) => {
+const Avatar = (props: { user: Promise<IUser> }) => {
   const user = use(props.user);
   // console.log(user);
   return user ? (

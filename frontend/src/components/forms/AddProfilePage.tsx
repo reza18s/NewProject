@@ -19,12 +19,12 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import DatePicker from "react-multi-date-picker";
 import TextList from "./TextList";
-import { Profiles } from "@prisma/client";
 import { createProfileObject } from "@/validator";
 import { useState } from "react";
 import { categories, categoryTags } from "@/constants";
 import toast from "react-hot-toast";
-export const AddProfilePage = ({ data }: { data?: Profiles }) => {
+import { IProfiles } from "@/types";
+export const AddProfilePage = ({ data }: { data?: IProfiles }) => {
   const form = useForm<z.infer<typeof createProfileObject>>({
     resolver: zodResolver(createProfileObject),
     defaultValues: {

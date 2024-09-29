@@ -1,7 +1,7 @@
+import { IProfiles } from "@/types";
 import DashboardCard from "./DashboardCard";
-import { Profiles } from "@prisma/client";
 
-function MyProfilesPage({ profiles }: { profiles: Profiles[] }) {
+function MyProfilesPage({ profiles }: { profiles: IProfiles[] }) {
   return (
     <div>
       {profiles.length ? null : (

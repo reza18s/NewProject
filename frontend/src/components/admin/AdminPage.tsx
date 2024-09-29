@@ -1,7 +1,7 @@
+import { IProfiles } from "@/types";
 import AdminCard from "./AdminCard";
-import { Profiles } from "@prisma/client";
 
-function AdminPage({ profiles }: { profiles: Profiles[] }) {
+function AdminPage({ profiles }: { profiles: IProfiles[] }) {
   return (
     <div>
       {profiles.length ? null : (

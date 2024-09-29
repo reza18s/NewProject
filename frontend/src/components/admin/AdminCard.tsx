@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { sp } from "@/utils/replaceNumber";
-import { Profiles } from "@prisma/client";
+import { IProfiles } from "@/types";
 
 function AdminCard({
   data: { id, title, description, location, price },
 }: {
-  data: Profiles;
+  data: IProfiles;
 }) {
   const router = useRouter();
 

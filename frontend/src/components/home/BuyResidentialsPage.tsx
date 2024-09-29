@@ -1,10 +1,10 @@
 "use client";
+import { IProfiles } from "@/types";
 import Sidebar from "../sidebar/Sidebar";
 import AdList from "./AdList";
 import { useData } from "@/stores/useData";
 import { useEffect } from "react";
-import { Profiles } from "@prisma/client";
-function BuyResidentialsPage({ data }: { data: Profiles[] }) {
+function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   const { setData } = useData((state) => state);
   useEffect(() => {
     setData(data);

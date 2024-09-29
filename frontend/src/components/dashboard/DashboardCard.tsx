@@ -1,12 +1,12 @@
 "use client";
 
+import { IProfiles } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
-import { Profiles } from "@prisma/client";
 
-function DashboardCard({ data }: { data: Profiles }) {
+function DashboardCard({ data }: { data: IProfiles }) {
   const router = useRouter();
 
   const editHandler = () => {

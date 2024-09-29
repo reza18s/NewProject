@@ -1,14 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import { Profiles } from "@prisma/client";
 import Link from "next/link";
+import { IProfiles } from "@/types";
 
 const AdCard = ({
   data: { title, location, price, id },
   profileImg,
   adImg,
 }: {
-  data: Profiles;
+  data: IProfiles;
   adImg: string;
   profileImg: string;
 }) => {

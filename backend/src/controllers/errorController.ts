@@ -1,3 +1,4 @@
+// File: src/controllers/errorController.ts
 import { NextFunction, Request, Response } from "express";
 import { IError } from "../types";
 

@@ -1,60 +1,41 @@
+// File: src/controllers/userController.ts
 import { Response, NextFunction } from "express";
 import { catchAsync } from "../utils/catchAsync";
 import { ErrorHandler } from "../utils/ErrorHandler";
 import { IRequest } from "../types";
 import { db } from "../utils/db";
-import { getAll, getOne } from "./handelFactory";
 
-// const filterObj = (obj, ...allowedFields: string[]): object => {
-//   const newObj = {};
-//   Object.keys(obj).forEach(
-//     (el) => allowedFields.includes(el) && (newObj[el] = obj[el]),
-//   );
-//   return newObj;
-// };
+// Get all users
+export const getAllUsers = catchAsync(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const [rows] = await db.execute("SELECT * FROM Users");
+    res.status(200).json({
+      status: "success",
+      results: rows.length,
+      data: {
+        users: rows,
+      },
+    });
+  },
+);
 
-// export const updateMyUser = catchAsync(
-//   async (req: IRequest, res: Response, next: NextFunction) => {
-//     if (req.body.password || req.body.passwordConfirm) {
-//       return next(
-//         new ErrorHandler(
-//           "This route is not for password updates. Please use /updateMyPassword.",
-//           400,
-//         ),
-//       );
-//     }
-//     const filterReq = filterObj(req.body, "name", "email");
+// Get a single user by ID
+export const getUser = catchAsync(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const userId = req.params.id;
+    const [rows] = await db.execute("SELECT * FROM Users WHERE id = ?", [
+      userId,
+    ]);
 
-//     const currentUser = await User.findByIdAndUpdate(req.user._id, filterReq, {
-//       new: true,
-//       runValidators: true,
-//     });
+    if (rows.length === 0) {
+      return next(new ErrorHandler("No user found with that ID", 404));
+    }
 
-//     res.status(201).json({
-//       status: "success",
-//       data: {
-//         user: currentUser,
-//       },
-//     });
-//   },
-// );
-
-// export const DelMyUser = catchAsync(
-//   async (req: IRequest, res: Response, next: NextFunction) => {
-//     await User.findByIdAndUpdate(req.user._id, { active: false });
-//     res.status(204).json({
-//       status: "success",
-//       data: {
-//         user: null,
-//       },
-//     });
-//   },
-// );
-export const getMe = (req: IRequest, res: Response, next: NextFunction) => {
-  req.params.id = req.user.id;
-  next();
-};
-export const getUsers = getAll(db.users);
-export const getUser = getOne(db.users);
-// export const updateUser = updateOne(User);
-// export const deleteUser = delOne(User);
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: rows[0],
+      },
+    });
+  },
+);

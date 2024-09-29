@@ -75,6 +75,18 @@ export const createProfileObject = z.object({
   amenities: z.string(),
   rules: z.string(),
 });
-export const updateProfileObject = createProfileObject.extend({
-  id: z.string(),
+export const updateProfileObject = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  location: z.string().optional(),
+  phone: z.string().optional(),
+  realState: z.string().optional(),
+  price: z.number().optional(),
+  constructionDate: z.string().optional(),
+  category: z.string().optional(),
+  tag: z.string().optional(),
+  province: z.string().optional(),
+  city: z.string().optional(),
+  amenities: z.string().optional(),
+  rules: z.string().optional(),
 });

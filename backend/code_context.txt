@@ -8,23 +8,24 @@ import profilesRouter from "./routes/profileRoutes";
 import cors from "cors";
 
 const app = express();
-app.use(express.json());
-const allowedOrigins = ["http://localhost:3001", "http://localhost:3001"];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) return callback(null, true); // Allow no-origin requests
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true, // This is required to allow credentials (cookies, etc.) to be sent
+  credentials: true, // Allow credentials like cookies, authorization headers, etc.
 };
-
 // Middleware
 app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
+
 configDotenv({ path: "./config.env" });
 app.use(express.static(`${__dirname}/public`));
 
@@ -280,6 +281,7 @@ export const getProfile = catchAsync(async (req: Request, res: Response) => {
 });
 export const createProfile = catchAsync(
   async (req: IRequest, res: Response, next: NextFunction) => {
+    console.log(req.body);
     const {
       title,
       description,
@@ -293,6 +295,7 @@ export const createProfile = catchAsync(
       city,
       amenities,
       rules,
+      tag,
     } = createProfileObject.parse(req.body);
 
     const user = await db.users.findUnique({
@@ -301,6 +304,7 @@ export const createProfile = catchAsync(
     if (!user) {
       return next(new ErrorHandler("حساب کاربری یافت نشد", 404));
     }
+    console.log("fuckjk");
 
     const profile = await db.profiles.create({
       data: {
@@ -309,11 +313,12 @@ export const createProfile = catchAsync(
         location,
         phone,
         realState,
-        constructionDate,
+        constructionDate: new Date(constructionDate),
         amenities,
         rules,
         province,
         city,
+        tag,
         category,
         price,
         userId: user.id,
@@ -432,27 +437,35 @@ import { Users } from "@prisma/client";
 import { ErrorHandler } from "../utils/ErrorHandler";
 import { IDecoded, IRequest } from "../types";
 export const createToken = (res: Response, statusCode: number, user: Users) => {
-  const token = sign(
-    { id: user.id, phoneNumber: user.phoneNumber },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    },
-  );
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV != "development",
-    expires: new Date(
-      Date.now() + +process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000,
-    ),
-  });
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
-    },
-  });
+  try {
+    const token = sign(
+      { id: user.id, phoneNumber: user.phoneNumber },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      },
+    );
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV != "development",
+      expires: new Date(
+        Date.now() + +process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000,
+      ),
+    });
+
+    res.status(statusCode).json({
+      status: "success",
+      token,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: "failed",
+    });
+  }
 };
 
 export const signup = catchAsync(
@@ -485,6 +498,10 @@ export const signin = catchAsync(
     const user = await db.users.findUnique({
       where: { phoneNumber },
     });
+    if (!user) {
+      return next(new ErrorHandler("user does not exist", 400));
+    }
+    console.log(user);
     //create Express Password Checker
     createToken(res, 201, user);
   },
@@ -498,6 +515,10 @@ export const protect = catchAsync(
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
+    if (!token && req.headers.cookie) {
+      token = req.headers.cookie.split("=")[1];
+      console.log(token);
+    }
     if (!token) {
       return next(
         new ErrorHandler(
@@ -506,6 +527,7 @@ export const protect = catchAsync(
         ),
       );
     }
+    // @ts-expect-error
     const decoded: IDecoded = verify(token, process.env.JWT_SECRET);
     const currentUser = await db.users.findUnique({
       where: { id: decoded.id },
@@ -578,7 +600,15 @@ export const updateUserObject = z
     avatar: z.string().url("please enter a url").optional(),
   })
   .strict();
-
+export const RealEstateCategorySchema = z.enum([
+  "فروش",
+  "رهن و اجاره",
+  "اجاره بلند مدت",
+  "اجاره کوتاه مدت",
+  "نیاز به خرید",
+  "مشارکت",
+  "پیش فروش",
+]);
 export const createProfileObject = z.object({
   title: z.string(),
   description: z.string(),
@@ -588,27 +618,15 @@ export const createProfileObject = z.object({
   price: z.number(),
   constructionDate: z.string(),
   category: z.string(),
+  tag: z.string(),
   province: z.string(),
   city: z.string(),
   amenities: z.string(),
   rules: z.string(),
 });
-export const updateProfileObject = z
-  .object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    location: z.string().optional(),
-    phone: z.string().optional(),
-    realState: z.string().optional(),
-    price: z.number().optional(),
-    constructionDate: z.string().optional(),
-    category: z.string().optional(),
-    province: z.string().optional(),
-    city: z.string().optional(),
-    amenities: z.string().optional(),
-    rules: z.string().optional(),
-  })
-  .strict();
+export const updateProfileObject = createProfileObject.extend({
+  id: z.string(),
+});
 
 // File: src/routes/userRoutes.ts
 import express from "express";
@@ -686,7 +704,50 @@ model Users {
   role        Role       @default(USER)
   Profile     Profiles[]
 
-  @@index([phoneNumber])
+  // Index on unique fields is redundant, so removing the explicit index here
+}
+
+enum Category {
+  SALE // فروش
+  MORTGAGE_AND_RENT // رهن و اجاره
+  LONG_TERM_RENT // اجاره بلند مدت
+  SHORT_TERM_RENT // اجاره کوتاه مدت
+  NEED_TO_BUY // نیاز به خرید
+  PARTNERSHIP // مشارکت
+  PRE_SALE // پیش فروش
+}
+
+enum Tag {
+  RESIDENTIAL_APARTMENT // آپارتمان مسکونی
+  VILLA // خانه و ویلا
+  LAND // زمین و کلنگی
+  OFFICE // دفاتر اداری
+  SHOP // مغازه و تجاری
+  BUILDING_COMPLEX // مستغلات یکجا
+  WAREHOUSE_FACTORY // کارخانه و انبار
+  MINE // انواع معدن
+  GOVERNMENT_CENTER // مراکز دولتی
+  FARM_GREEN_SPACE // کشاورزی و فضای سبز
+  EDUCATION_RECREATION // مراکز آموزشی،تفریحی
+  MEDICAL_CENTER // مراکز بهداشتی و درمانی
+  SHOP_AND_BOOTH // مغازه و غرفه
+  APARTMENT_AND_SUITE // آپارتمان و سویت
+  BEACH_VILLA // ویلا ساحلی
+  FOREST_MOUNTAIN_VILLA // ویلا جنگلی-کوهستانی
+  SWISS_COTTAGE // کلبه سوئیسی
+  TOURISM // بومگردی
+  LUXURY_ACCOMMODATION // اقامتگاه لاکچری
+  EVENT_HALL // تالار و سالن مراسم
+  OFFICE_APARTMENT // آپارتمان اداری
+  SHOP_AND_COMMERCIAL // مغازه و تجاری
+  GOVERNMENT_PROJECT // پروژه های دولتی
+  MASKAN_MEHR_PROJECT // پروژه های مسکن مهر
+  RESIDENTIAL_CONSTRUCTION // مشارکت در ساخت (مسکونی)
+  COMMERCIAL_CONSTRUCTION // مشارکت در ساخت (اداری و تجاری)
+  VILLA_CITY_CONSTRUCTION // مشارکت در ساخت (ویلا سازی و شهرک سازی)
+  CONTRACT_MANAGEMENT // مدیریت پیمان و مشاوره
+  LARGE_GOVERNMENT_PROJECT // پروژه های بزرگ دولتی
+  LAND_AND_OLD_PROPERTY // زمین و کلنگی
 }
 
 model Profiles {
@@ -699,6 +760,7 @@ model Profiles {
   price            Int
   constructionDate DateTime
   category         String
+  tag              String
   province         String
   city             String
   amenities        String
@@ -706,7 +768,7 @@ model Profiles {
   published        Boolean? @default(false)
   imagePath        String?
   userId           String
-  Users            Users    @relation(fields: [userId], references: [id])
+  user             Users    @relation(fields: [userId], references: [id]) // Renamed to user for better clarity
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

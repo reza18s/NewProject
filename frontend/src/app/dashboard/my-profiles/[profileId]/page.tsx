@@ -11,7 +11,7 @@ async function Edit({
   try {
     const query = "SELECT * FROM Profiles WHERE id = ?";
     const [results] = await db.execute(query, [profileId]);
-
+    // @ts-expect-error the
     profile = results[0]; // Assuming results is an array
   } catch (error) {
     console.error("Failed to fetch profile:", error);

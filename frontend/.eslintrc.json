@@ -10,8 +10,7 @@
       "jsx": true
     },
     "ecmaVersion": 12,
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
@@ -31,9 +30,8 @@
     "no-floating-decimal": "error",
     "no-sequences": "error",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-unsafe-argument": "off",
-    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/prop-types": "off",
     // Stylistic
     "array-bracket-spacing": "error",
     "computed-property-spacing": ["error", "never"],
@@ -65,7 +63,6 @@
     "no-unused-expressions": "off",
     "no-prototype-builtins": "off",
     // REACT
-    "react/prop-types": "off",
     "react/jsx-uses-react": "off",
     "react/jsx-sort-props": "off",
     "react/react-in-jsx-scope": "off",

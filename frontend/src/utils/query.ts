@@ -2,14 +2,14 @@ import { cookies } from "next/headers";
 
 export const getSession = async () => {
   try {
-    const cookieStore = cookies();
+    const cookieStore = cookies().getAll();
     const response = await fetch(
       `${process.env.BACKEND_SERVER_URL}/users/get-me`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookieStore.get("jwt")?.value}`,
+          Authorization: `Bearer ${cookieStore.find((val) => val.name === "jwt")?.value}`,
         },
       },
     );

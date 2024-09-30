@@ -2,12 +2,14 @@ import { db } from "@/lib/db"; // Assume db is a SQL client instance
 import { redirect } from "next/navigation";
 import MyProfilesPage from "@/components/dashboard/MyProfilesPage";
 import { getSession } from "@/utils/query";
+import { cookies } from "next/headers";
 
 // Mark this page as dynamic because it relies on session data or cookies
 export const dynamic = "force-dynamic";
 
 async function Myprofiles() {
-  const user = await getSession();
+  const cookieStore = cookies().get("jwt");
+  const user = await getSession(cookieStore?.value);
 
   // Redirect if user is not logged in
   if (!user) {

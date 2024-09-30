@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import styles from "./SignupPage.module.css";
+import styles from "./signupPage.module.css";
 import Loader from "../global/Loader";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

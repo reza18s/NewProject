@@ -1,9 +1,11 @@
 import SigninPage from "@/components/auth/SigninPage";
 import { getSession } from "@/utils/query";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 async function Signin() {
-  const user = await getSession();
+  const cookieStore = cookies().get("jwt");
+  const user = await getSession(cookieStore?.value);
   if (user) {
     redirect("/");
   }

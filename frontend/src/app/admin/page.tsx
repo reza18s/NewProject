@@ -3,6 +3,7 @@ import { db } from "@/lib/db"; // Assume db is a SQL client instance
 import AdminPage from "@/components/admin/AdminPage";
 import DashboardSidebar from "@/components/layout/DashboardSidebar";
 import { getSession } from "@/utils/query";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "پنل ادمین املاک | پروژه بوتواستارت",
@@ -10,7 +11,8 @@ export const metadata = {
 
 export default async function Admin() {
   // Fetch user session on the server side
-  const user = await getSession();
+  const cookieStore = cookies().get("jwt");
+  const user = await getSession(cookieStore?.value);
 
   // Redirect based on session and role
   if (!user) {

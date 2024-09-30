@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { MouseEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./SignupPage.module.css";
+import styles from "./signupPage.module.css";
 import Loader from "../global/Loader";
 import toast from "react-hot-toast";
 

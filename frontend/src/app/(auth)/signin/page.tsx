@@ -1,4 +1,4 @@
-import SigninPage from "@/components/auth/SigninPage";
+import SigninPage from "@/components/auth/signinPage";
 import { getSession } from "@/utils/query";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

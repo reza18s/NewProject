@@ -17,7 +17,7 @@ function SignupPage() {
   ) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("http://localhost:4000/api/v1/users/signup", {
+    const res = await fetch("https://bakend.koderamir.ir/api/v1/users/signup", {
       method: "POST",
       body: JSON.stringify({
         phoneNumber,

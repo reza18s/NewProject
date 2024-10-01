@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 export const getSession = async (jwt: string | undefined) => {
   try {
     const response = await fetch(
-      `http://${process.env.BACKEND_SERVER_URL || "localhost:4000/api/v1"}/users/get-me`,
+      `https://${process.env.BACKEND_SERVER_URL || "bakend.koderamir.ir/api/v1"}/users/get-me`,
       {
         method: "GET",
         headers: {

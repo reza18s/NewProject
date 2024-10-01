@@ -48,7 +48,7 @@ export const AddProfilePage = ({ data }: { data?: IProfiles }) => {
 
   async function onSubmit(values: z.infer<typeof createProfileObject>) {
     if (data) {
-      const res = await fetch("http://localhost:4000/api/v1/profiles", {
+      const res = await fetch("https://bakend.koderamir.ir/api/v1/profiles", {
         method: "PATCH",
         body: JSON.stringify({ ...values, id: data.id }),
         headers: { "Content-Type": "application/json" },
@@ -63,7 +63,7 @@ export const AddProfilePage = ({ data }: { data?: IProfiles }) => {
         router.refresh();
       }
     } else {
-      const res = await fetch("http://localhost:4000/api/v1/profiles", {
+      const res = await fetch("https://bakend.koderamir.ir/api/v1/profiles", {
         method: "POST",
         body: JSON.stringify({
           ...values,

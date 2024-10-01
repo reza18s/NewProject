@@ -10,7 +10,7 @@ const RealEstateCategory: React.FC = () => {
   return (
     <div className="w-full p-4">
       <h1 className="mb-4 text-center text-xl text-blue-600">
-        دسته بندی املاک دیا هوم
+        دسته بندی املاک دیبا هوم
       </h1>
       <div className="mb-4 grid grid-cols-3 grid-rows-2 justify-center gap-2">
         {categories.map((category) => (

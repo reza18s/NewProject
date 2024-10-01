@@ -31,14 +31,7 @@ async function BuyResidentials({
   }
 
   try {
-    // Execute the SQL query with conditions
     const [data] = await db.execute(query, queryValues);
-
-    // @ts-expect-error the
-    if (!data || data.length === 0) {
-      return <h3>مشکلی پیش آمده است</h3>;
-    }
-
     // @ts-expect-error the
     return <BuyResidentialsPage data={data} />;
   } catch (error) {

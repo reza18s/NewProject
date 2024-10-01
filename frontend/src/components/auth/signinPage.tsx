@@ -31,24 +31,29 @@ function SigninPage() {
             type="submit"
             onClick={async (e) => {
               e.preventDefault();
-              setLoading(true);
-              const res = await fetch(
-                "http://localhost:4000/api/v1/users/signin",
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    phoneNumber,
-                  }),
-                  credentials: "include",
-                  headers: { "Content-Type": "application/json" },
-                },
-              );
-              const data = await res.json();
-              setLoading(false);
-              if (res.ok) {
-                router.push("/");
-              } else {
-                toast.success(data.error.message);
+              try {
+                setLoading(true);
+                const res = await fetch(
+                  "http://localhost:4000/api/v1/users/signin",
+                  {
+                    method: "POST",
+                    body: JSON.stringify({
+                      phoneNumber,
+                    }),
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                  },
+                );
+                console.log(res.headers.getSetCookie());
+                const data = await res.json();
+                setLoading(false);
+                if (res.ok) {
+                  router.push("/");
+                } else {
+                  toast.success(data.error.message);
+                }
+              } catch (error) {
+                console.log();
               }
             }}
           >

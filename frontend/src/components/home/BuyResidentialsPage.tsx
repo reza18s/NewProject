@@ -10,11 +10,11 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
     setData(data);
   }, [data]);
   return (
-    <div className="mt-10 flex">
-      <div className="ml-10 mt-1 hidden h-fit w-[400px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50 sm:flex">
+    <div className="mt-10 flex flex-col items-center gap-10 md:flex-row md:items-start">
+      <div className="mt-1 h-fit w-[400px] flex-col items-center rounded-lg px-7 py-4 shadow-md shadow-primary/50 sm:flex">
         <Sidebar />
       </div>
-      <div className="flex w-full flex-wrap justify-start">
+      <div className="flex w-full flex-wrap justify-center md:justify-center">
         <AdList />
       </div>
     </div>

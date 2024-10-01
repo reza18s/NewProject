@@ -25,7 +25,7 @@ const AdCard = ({
           />
         </div>
         <div className="flex h-full grow flex-col pr-3">
-          <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-sm font-bold md:text-lg lg:text-lg">
+          <h3 className="flex w-full flex-wrap pb-1 font-['YekanBakh'] text-xs font-bold md:text-lg lg:text-lg">
             {title}
           </h3>
           <p className="m-0 text-sm font-medium text-foreground/60 md:text-base">

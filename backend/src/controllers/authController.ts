@@ -109,7 +109,7 @@ export const signin = catchAsync(
 export const protect = catchAsync(
   async (req: IRequest, res: Response, next: NextFunction) => {
     let token: string | undefined;
-
+    console.log("fff");
     // Get the token from the Authorization header or cookies
     if (
       req.headers.authorization &&

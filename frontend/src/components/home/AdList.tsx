@@ -27,7 +27,7 @@ const AdList = () => {
             <AdCard
               key={data.id}
               data={data}
-              adImg={Images[(Math.random() * 8).toFixed(0)]}
+              adImg={Images[+(Math.random() * 7).toFixed(0)]}
               profileImg={"/image/2.jpg"}
             />
           ))

@@ -3,7 +3,16 @@ import React from "react";
 import AdCard from "./Card";
 import { useData } from "@/stores/useData";
 import { IProfiles } from "@/types";
-
+const Images = [
+  "/image/image1.jpg",
+  "/image/image2.jpg",
+  "/image/image3.jpg",
+  "/image/image4.jpg",
+  "/image/image5.jpg",
+  "/image/image6.jpg",
+  "/image/image7.jpg",
+  "/image/image8.jpg",
+];
 const AdList = () => {
   const { data } = useData((state) => state);
   return (
@@ -18,7 +27,7 @@ const AdList = () => {
             <AdCard
               key={data.id}
               data={data}
-              adImg={"/image/1.jpeg"}
+              adImg={Images[(Math.random() * 8).toFixed(0)]}
               profileImg={"/image/2.jpg"}
             />
           ))

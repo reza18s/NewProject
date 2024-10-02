@@ -1,4 +1,3 @@
-import { withUt } from "uploadthing/tw";
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
 /** @type {import('tailwindcss').Config} */

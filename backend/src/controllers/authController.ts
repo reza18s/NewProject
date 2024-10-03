@@ -21,11 +21,9 @@ export const createToken = (res: Response, statusCode: number, user: any) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
+      sameSite: "none",
       secure: process.env.NODE_ENV !== "development", // Ensure cookies are secure in production
-      expires: new Date(
-        Date.now() +
-          parseInt(process.env.COOKIES_EXPIRES!, 10) * 24 * 60 * 60 * 1000,
-      ),
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
     res.status(statusCode).json({
@@ -109,7 +107,6 @@ export const signin = catchAsync(
 export const protect = catchAsync(
   async (req: IRequest, res: Response, next: NextFunction) => {
     let token: string | undefined;
-    console.log("fff");
     // Get the token from the Authorization header or cookies
     if (
       req.headers.authorization &&

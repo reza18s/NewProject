@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import styles from "./signupPage.module.css";
 import Loader from "../global/Loader";
 import toast from "react-hot-toast";
-
+import axios from "axios";
 function SignupPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,21 +16,30 @@ function SignupPage() {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
     e.preventDefault();
-    setLoading(true);
-    const res = await fetch("https://bakend.koderamir.ir/api/v1/users/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        phoneNumber,
-      }),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (res.ok) {
-      router.push("/");
-    } else {
-      toast.error(data.error.message);
+    try {
+      setLoading(true);
+
+      const res = await axios.post(
+        "/api/v1/users/signup",
+        {
+          phoneNumber,
+        },
+        {
+          withCredentials: true, // Include cookies with the request
+        },
+      );
+      const data = res.data;
+      setLoading(false);
+      if (res.data) {
+        setLoading(false);
+        router.push("/");
+      } else {
+        setLoading(false);
+        toast.error(data.error.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
   };
 

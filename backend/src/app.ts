@@ -7,22 +7,25 @@ import profilesRouter from "./routes/profileRoutes";
 import cors from "cors";
 
 const app = express();
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
-const corsOptions = {
-  origin: (origin: string | undefined, callback: any) => {
-    if (!origin) return callback(null, true); // Allow no-origin requests
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true, // Allow credentials like cookies, authorization headers, etc.
-};
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://koderamir.ir",
+];
 // Middleware
-app.use(cors(corsOptions));
-app.use(express.urlencoded({ extended: true }));
-
+app.use(
+  cors({
+    origin: (origin: string | undefined, callback: any) => {
+      if (!origin) return callback(null, true); // Allow no-origin requests
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 configDotenv({ path: "./config.env" });

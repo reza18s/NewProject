@@ -53420,6 +53420,7 @@ var signin = catchAsync(async (req, res, next) => {
 });
 var protect = catchAsync(async (req, res, next) => {
   let token;
+  console.log("fff");
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.headers.cookie) {

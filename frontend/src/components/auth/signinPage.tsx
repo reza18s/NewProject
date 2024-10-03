@@ -33,17 +33,15 @@ function SigninPage() {
               e.preventDefault();
               try {
                 setLoading(true);
-                const res = await fetch(
-                  "https://bakend.koderamir.ir/api/v1/users/signin",
-                  {
-                    method: "POST",
-                    body: JSON.stringify({
-                      phoneNumber,
-                    }),
-                    credentials: "include",
-                    headers: { "Content-Type": "application/json" },
-                  },
-                );
+                const res = await fetch("/api/v1/users/signin", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    phoneNumber,
+                  }),
+                  credentials: "include",
+                  headers: { "Content-Type": "application/json" },
+                });
+
                 console.log(res.headers.getSetCookie());
                 const data = await res.json();
                 setLoading(false);
@@ -53,6 +51,7 @@ function SigninPage() {
                   toast.success(data.error.message);
                 }
               } catch (error) {
+                setLoading(false);
                 console.log();
               }
             }}

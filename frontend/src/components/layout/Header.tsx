@@ -30,6 +30,18 @@ function Header({ user }: { user: Promise<IUser> }) {
           <Link href="/" legacyBehavior>
             <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
           </Link>
+
+          <form className="mr-[20px] flex w-[400px] items-center">
+            <input
+              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
+              onChange={handleSearchQuery}
+              type="text"
+              placeholder="جستجوی آگهی"
+            />
+            <button type="submit" className="hidden">
+              جستجو
+            </button>
+          </form>
         </div>
         <div className="flex w-[350px] items-center justify-end">
           <Button
@@ -59,17 +71,6 @@ function Header({ user }: { user: Promise<IUser> }) {
             لیلا شعبانی
             <ChevronDown></ChevronDown> 
           </Button>*/}
-          {/* <form className="mr-[20px] flex w-[400px] items-center">
-            <input
-              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
-              onChange={handleSearchQuery}
-              type="text"
-              placeholder="جستجوی آگهی"
-            />
-            <button type="submit" className="hidden">
-              جستجو
-            </button>
-          </form> */}
 
           <div className="flex items-center">
             <Suspense fallback={<div>Loading...</div>}>

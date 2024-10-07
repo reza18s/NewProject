@@ -56,7 +56,7 @@ textarea {
     --radius: 0.5rem;
   }
 
-  .dark {
+  /* .dark {
     --gradient: linear-gradient(to top left, #007adf, #00ecbc);
 
     --background: 220 65% 3.52%;
@@ -87,7 +87,7 @@ textarea {
     --destructive-foreground: 220 10% 97.2%;
 
     --ring: 220 100% 44%;
-  }
+  } */
 }
 /* .dotPattern {
   background-image: radial-gradient(rgb(35, 40, 68) 1px, transparent 1px);

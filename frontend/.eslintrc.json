@@ -23,6 +23,8 @@
   ],
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
+    "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/classnames-order": "off",
     // Possible errors
     "no-console": "warn",
     // Best practices
@@ -30,7 +32,7 @@
     "no-floating-decimal": "error",
     "no-sequences": "error",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "react/prop-types": "off",
     // Stylistic
     "array-bracket-spacing": "error",

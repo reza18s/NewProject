@@ -1,32 +1,20 @@
 "use client";
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+import { Dialog, DialogContent } from "../ui/dialog";
 import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
 
 type Props = {
-  title: string;
-  subheading: string;
   children: React.ReactNode;
   defaultOpen?: boolean;
 };
 
-const CustomModal = ({ children, defaultOpen, subheading, title }: Props) => {
+const CustomModal = ({ children, defaultOpen }: Props) => {
   const model = useStore(useModal, (state) => state);
   return (
     <Dialog open={model.isOpen || defaultOpen} onOpenChange={model.setClose}>
-      <DialogContent className="h-[400px] w-[70%] overflow-scroll rounded-lg bg-card md:h-fit md:max-h-[700px]">
-        <DialogHeader className="pt-8 text-left">
-          <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
-          <DialogDescription>{subheading}</DialogDescription>
-          {children}
-        </DialogHeader>
+      <DialogContent className="h-[600px] w-[70%] max-w-[600px] overflow-scroll rounded-lg bg-card">
+        {children}
       </DialogContent>
     </Dialog>
   );

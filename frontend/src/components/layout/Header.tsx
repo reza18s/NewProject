@@ -1,17 +1,14 @@
-/* eslint-disable tailwindcss/classnames-order */
-/* eslint-disable tailwindcss/no-custom-classname */
 "use client";
 import Link from "next/link";
 import { FaUserAlt } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation.js";
-import CityFilter from "../modals/CityFilter";
+import Filter from "../modals/Filter";
 import { Button } from "../ui/button";
 import CustomModal from "../modals/CustomModal";
 import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
 import React, { Suspense, use } from "react";
-import { ModeToggle } from "../global/mode-toggle";
 import { ChevronDown } from "lucide-react";
 import { IUser } from "@/types";
 
@@ -25,15 +22,16 @@ function Header({ user }: { user: Promise<IUser> }) {
   };
   return (
     <div className="fixed z-10 flex h-[80px] w-full justify-center bg-background pt-[15px]">
-      <div className="flex w-[90%] items-center justify-between border-b border-border px-[20px] py-[10px]">
-        <div className="mr-[20px] hidden md:flex">
-          <Link href="/" legacyBehavior>
-            <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
-          </Link>
-
-          <form className="mr-[20px] flex w-[400px] items-center">
+      <div className="flex w-[90%] items-center justify-between border-b border-border py-[10px]">
+        <div className="flex md:mr-[20px]">
+          <div className="hidden w-10 md:flex">
+            <Link href="/" legacyBehavior>
+              <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
+            </Link>
+          </div>
+          <form className="mr-[20px] flex items-center">
             <input
-              className="ml-2 hidden rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
+              className="ml-2 rounded-3xl border border-foreground/30 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
               onChange={handleSearchQuery}
               type="text"
               placeholder="جستجوی آگهی"
@@ -48,8 +46,8 @@ function Header({ user }: { user: Promise<IUser> }) {
             className="rounded-3xl border border-border bg-background px-7 text-base text-secondary-foreground hover:bg-popover-foreground hover:text-background"
             onClick={() => {
               store.setOpen(
-                <CustomModal title="Cites" subheading="choose a city">
-                  <CityFilter />
+                <CustomModal>
+                  <Filter />
                 </CustomModal>,
               );
             }}
@@ -77,7 +75,6 @@ function Header({ user }: { user: Promise<IUser> }) {
               <Avatar user={user}></Avatar>
             </Suspense>
           </div>
-          <ModeToggle></ModeToggle>
         </div>
       </div>
     </div>

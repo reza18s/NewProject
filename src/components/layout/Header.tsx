@@ -52,7 +52,7 @@ function Header({ user }: { user: Promise<IUser> }) {
               );
             }}
           >
-            تهران
+            استان
             <ChevronDown></ChevronDown>
           </Button>
           {/* <Button

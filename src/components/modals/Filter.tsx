@@ -5,6 +5,9 @@ import { useData } from "@/stores/useData";
 import { ChevronLeft } from "lucide-react";
 import { Input } from "../ui/input";
 import { province } from "@/constants";
+import { DialogFooter } from "../ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Button } from "../ui/button";
 export default function Filter() {
   const store = useStore(useData, (state) => state);
   const [filterType, setFilterType] = useState<
@@ -21,7 +24,7 @@ export default function Filter() {
   const [selectCity, setSelectCity] = useState<string>("صنعتی");
   return (
     <>
-      <div className="my-[20px] flex flex-col gap-3 text-base">
+      <div className="my-[20px] flex flex-col gap-3 text-base text-foreground">
         <div className="flex w-full flex-row items-center justify-center gap-2">
           <button
             className={`${filterType === "province" && "bg-primary"} h-10 w-1/4 border border-gray-600/20 bg-gray-300 text-sm font-medium md:text-lg lg:text-xl`}
@@ -50,7 +53,15 @@ export default function Filter() {
         </div>
         <div className="flex">
           <Input
-            placeholder="جستجوی اگهی"
+            placeholder={
+              filterType === "province"
+                ? "جستجوی استان"
+                : filterType === "city"
+                  ? "جستجوی شهر"
+                  : filterType === "district"
+                    ? "جستجوی منطقه"
+                    : ""
+            }
             className="bg-gray-300"
             onChange={(e) => {
               const val = e.target.value;
@@ -82,7 +93,7 @@ export default function Filter() {
             }}
           ></Input>
         </div>
-        <div className="flex flex-col text-xl">
+        <div className="flex max-h-[380px] flex-col overflow-y-scroll text-xl">
           {filterType === "province"
             ? Provinces.map((key) => (
                 <button
@@ -137,6 +148,18 @@ export default function Filter() {
                   ))
                 : ""}
         </div>
+        <DialogFooter className="mt-3 flex w-full items-center gap-2 sm:space-x-0">
+          <DialogClose className="w-1/2">
+            <Button className="h-8 w-full rounded-none bg-gray-400 text-black">
+              تایید
+            </Button>
+          </DialogClose>
+          <DialogClose className="w-1/2">
+            <Button className="m-0 h-8 w-full rounded-none bg-gray-400 text-black">
+              انضراف
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </div>
     </>
   );

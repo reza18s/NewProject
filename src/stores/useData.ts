@@ -47,19 +47,16 @@ export const useData = create<Store>()(
       let filterData = get().originData.filter((el) => {
         if (
           filter.province[el.province] ||
-          Object.values(get().filters.province).length == 0
+          Object.values(filter.province).length == 0
         ) {
-          if (
-            filter.city[el.city] ||
-            Object.values(get().filters.city).length == 0
-          ) {
+          if (filter.city[el.city] || Object.values(filter.city).length == 0) {
             return el;
           }
         }
       });
-      // @ts-expect-error the
-      if (Object.values(get().filters).every((value) => value === false)) {
+      if (Object.values(filter.province).every((value) => value === false)) {
         filterData = get().originData;
+        console.log(filter, filterData);
       }
       set({ data: filterData, filters: filter });
     },

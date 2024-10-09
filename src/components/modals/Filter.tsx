@@ -22,6 +22,13 @@ export default function Filter() {
   );
   const [selectProvince, setSelectProvince] = useState<string>("البرز");
   const [selectCity, setSelectCity] = useState<string>("صنعتی");
+  const [Filter, setFilter] = useState<{
+    [key: string]: { [key: string]: boolean };
+  }>({
+    province: {},
+    city: {},
+    district: {},
+  });
   return (
     <>
       <div className="my-[20px] flex flex-col gap-3 text-base text-foreground">
@@ -46,7 +53,18 @@ export default function Filter() {
           </button>
           <button
             className="h-10 w-1/4 border border-gray-600/20 bg-gray-300 text-sm font-medium md:text-lg lg:text-xl"
-            onClick={() => setFilterType("province")}
+            onClick={() => {
+              store?.setFilters({
+                province: {},
+                city: {},
+                district: {},
+              });
+              setFilter({
+                province: {},
+                city: {},
+                district: {},
+              });
+            }}
           >
             حذف همه
           </button>
@@ -103,10 +121,10 @@ export default function Filter() {
                     // @ts-expect-error the
                     setCities(Object.keys(province[key]));
                     setSelectProvince(key);
-                    store?.setFilters({
-                      ...store?.filters,
+                    setFilter((prev) => ({
+                      ...prev,
                       province: { [key]: true },
-                    });
+                    }));
                     setFilterType("city");
                   }}
                 >
@@ -125,6 +143,10 @@ export default function Filter() {
                       // @ts-expect-error the
                       setDistrict(Object.keys(province[selectProvince][key]));
                       setSelectCity(key);
+                      setFilter((prev) => ({
+                        ...prev,
+                        city: { [key]: true },
+                      }));
                       setFilterType("district");
                     }}
                   >
@@ -139,6 +161,12 @@ export default function Filter() {
                     <button
                       className="mt-3 h-10 w-full border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
                       key={key}
+                      onClick={() => {
+                        setFilter((prev) => ({
+                          ...prev,
+                          district: { [key]: true },
+                        }));
+                      }}
                     >
                       <div className="flex flex-row justify-between">
                         <div className="">{key}</div>
@@ -150,13 +178,18 @@ export default function Filter() {
         </div>
         <DialogFooter className="mt-3 flex w-full items-center gap-2 sm:space-x-0">
           <DialogClose className="w-1/2">
-            <Button className="h-8 w-full rounded-none bg-gray-400 text-black">
+            <Button
+              className="h-8 w-full rounded-none bg-gray-400 text-black"
+              onClick={() => {
+                store?.setFilters(Filter);
+              }}
+            >
               تایید
             </Button>
           </DialogClose>
           <DialogClose className="w-1/2">
             <Button className="m-0 h-8 w-full rounded-none bg-gray-400 text-black">
-              انضراف
+              انصراف
             </Button>
           </DialogClose>
         </DialogFooter>

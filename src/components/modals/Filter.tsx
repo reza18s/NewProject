@@ -20,6 +20,7 @@ export default function Filter() {
   const [Districts, setDistrict] = useState<string[]>(
     Object.keys(province["البرز"]["صنعتی"]),
   );
+  const [search, setSearch] = useState<string>("");
   const [selectProvince, setSelectProvince] = useState<string>("البرز");
   const [selectCity, setSelectCity] = useState<string>("صنعتی");
   const [Filter, setFilter] = useState<{
@@ -81,8 +82,10 @@ export default function Filter() {
                     : ""
             }
             className="bg-gray-300"
+            value={search}
             onChange={(e) => {
               const val = e.target.value;
+              setSearch(val);
               switch (filterType) {
                 case "province":
                   setProvinces(() => {
@@ -121,6 +124,7 @@ export default function Filter() {
                     // @ts-expect-error the
                     setCities(Object.keys(province[key]));
                     setSelectProvince(key);
+                    setSearch("");
                     setFilter((prev) => ({
                       ...prev,
                       province: { [key]: true },
@@ -143,6 +147,7 @@ export default function Filter() {
                       // @ts-expect-error the
                       setDistrict(Object.keys(province[selectProvince][key]));
                       setSelectCity(key);
+                      setSearch("");
                       setFilter((prev) => ({
                         ...prev,
                         city: { [key]: true },
@@ -162,6 +167,7 @@ export default function Filter() {
                       className="mt-3 h-10 w-full border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
                       key={key}
                       onClick={() => {
+                        setSearch("");
                         setFilter((prev) => ({
                           ...prev,
                           district: { [key]: true },

@@ -32,6 +32,7 @@ export default function Filter() {
     district: {},
   });
   useEffect(() => {
+    // @ts-expect-error the
     setFilter(store?.filters);
   }, [store?.filters]);
   return (

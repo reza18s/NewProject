@@ -24,9 +24,14 @@ function Header({ user }: { user: Promise<IUser> }) {
     <div className="fixed z-10 flex h-[80px] w-full justify-center bg-background pt-[15px]">
       <div className="flex w-[90%] items-center justify-between border-b border-border py-[10px]">
         <div className="flex md:mr-[20px]">
-          <div className="hidden w-10 md:flex">
+          <div className="hidden w-20 pt-4 md:flex">
             <Link href="/" legacyBehavior>
-              <Image src="/image/logo.png" width={70} height={70} alt="Logo" />
+              <Image
+                src="/image/logo1.png"
+                width={150}
+                height={150}
+                alt="Logo"
+              />
             </Link>
           </div>
           <form className="mr-[20px] flex items-center">

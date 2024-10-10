@@ -1,5 +1,5 @@
 "use client"; // components/ModalWithCheckboxes.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import { useData } from "@/stores/useData";
 import { ChevronLeft } from "lucide-react";
@@ -8,6 +8,7 @@ import { province } from "@/constants";
 import { DialogFooter } from "../ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 export default function Filter() {
   const store = useStore(useData, (state) => state);
   const [filterType, setFilterType] = useState<
@@ -30,9 +31,12 @@ export default function Filter() {
     city: {},
     district: {},
   });
+  useEffect(() => {
+    setFilter(store?.filters);
+  }, [store?.filters]);
   return (
     <>
-      <div className="my-[20px] flex flex-col gap-3 text-base text-foreground">
+      <div className="mt-[20px] flex flex-col gap-3 text-base text-foreground">
         <div className="flex w-full flex-row items-center justify-center gap-2">
           <button
             className={`${filterType === "province" && "bg-primary"} h-10 w-1/4 border border-gray-600/20 bg-gray-300 text-sm font-medium md:text-lg lg:text-xl`}
@@ -114,7 +118,7 @@ export default function Filter() {
             }}
           ></Input>
         </div>
-        <div className="flex max-h-[380px] flex-col overflow-y-scroll text-xl">
+        <div className="flex h-96 max-h-[380px] flex-col overflow-y-scroll text-xl">
           {filterType === "province"
             ? Provinces.map((key) => (
                 <button
@@ -127,7 +131,7 @@ export default function Filter() {
                     setSearch("");
                     setFilter((prev) => ({
                       ...prev,
-                      province: { [key]: true },
+                      province: { ...prev.province, [key]: true },
                     }));
                     setFilterType("city");
                   }}
@@ -150,7 +154,7 @@ export default function Filter() {
                       setSearch("");
                       setFilter((prev) => ({
                         ...prev,
-                        city: { [key]: true },
+                        city: { ...prev.city, [key]: true },
                       }));
                       setFilterType("district");
                     }}
@@ -170,19 +174,22 @@ export default function Filter() {
                         setSearch("");
                         setFilter((prev) => ({
                           ...prev,
-                          district: { [key]: true },
+                          district: { ...prev.district, [key]: true },
                         }));
                       }}
                     >
-                      <div className="flex flex-row justify-between">
-                        <div className="">{key}</div>
-                        <ChevronLeft className="mt-1"></ChevronLeft>
+                      <div className="flex flex-row items-center justify-between">
+                        <label htmlFor={key}>{key}</label>
+                        <Checkbox
+                          id={key}
+                          checked={Filter.district[key] || false}
+                        />
                       </div>
                     </button>
                   ))
                 : ""}
         </div>
-        <DialogFooter className="mt-3 flex w-full items-center gap-2 sm:space-x-0">
+        <DialogFooter className="-mt-3 flex w-full items-center gap-2 sm:space-x-0">
           <DialogClose className="w-1/2">
             <Button
               className="h-8 w-full rounded-none bg-gray-400 text-black"

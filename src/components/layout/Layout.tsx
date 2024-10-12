@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 function Layout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies().get("jwt");
   return (
-    <div className="">
+    <div className="relative">
       <Header user={getSession(cookieStore?.value)} />
       <div className="mx-auto p-3 md:p-10">{children}</div>
     </div>

@@ -161,8 +161,24 @@ export default function Filter() {
                     }}
                   >
                     <div className="flex flex-row justify-between">
-                      <div className="">{key}</div>
-                      <ChevronLeft className="mt-1"></ChevronLeft>
+                      {
+                        // @ts-expect-error the
+                        Object.keys(province[selectProvince][key]).length >
+                        0 ? (
+                          <>
+                            <div className="">{key}</div>
+                            <ChevronLeft className="mt-1"></ChevronLeft>
+                          </>
+                        ) : (
+                          <>
+                            <label htmlFor={key}>{key}</label>
+                            <Checkbox
+                              id={key}
+                              checked={Filter.city[key] || false}
+                            />
+                          </>
+                        )
+                      }
                     </div>
                   </button>
                 ))

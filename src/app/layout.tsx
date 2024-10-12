@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import React from "react";
 import "./global.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/providers/theme-provider";
 import Layout from "@/components/layout/Layout";
 import { ModalProvider } from "@/providers/ModalProvider";
 import { Toaster } from "react-hot-toast";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export const metadata: Metadata = {
   title: "Shop",
   description: "",

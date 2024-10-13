@@ -24,6 +24,38 @@ export const categories = [
     value: "PRE_SALE",
   },
 ];
+export const DocumentType = [
+  {
+    name: "سند مالکیت تک برگ",
+    value: "SingleLeafOwnershipDocument",
+  },
+  {
+    name: "قولنامه ای",
+    value: "Promise",
+  },
+  {
+    name: "سند معارض",
+    value: "OppositionDocument",
+  },
+  {
+    name: "دفترچه ای",
+    value: "BookletDocument",
+  },
+];
+export const TransactionTerms = [
+  {
+    name: "تهاتر",
+    value: "Clearing",
+  },
+  {
+    name: "نقد",
+    value: "Cash",
+  },
+  {
+    name: "دارای وام",
+    value: "loan",
+  },
+];
 export const categoryTags: {
   [key: string]: { name: string; value: string }[];
 } = {

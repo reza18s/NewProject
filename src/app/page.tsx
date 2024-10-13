@@ -1,30 +1,46 @@
 import BuyResidentialsPage from "@/components/home/BuyResidentialsPage";
 import { db } from "@/lib/db"; // Assume db is a SQL connection instance
 
-async function BuyResidentials({
-  searchParams,
-}: {
-  searchParams: { category?: string; search?: string; tag: string };
-}) {
-  // Start building the SQL query
+interface SearchParams {
+  category?: string;
+  tag?: string;
+  search?: string;
+  price?: string;
+}
+
+interface BuyResidentialsProps {
+  searchParams: SearchParams;
+}
+
+async function BuyResidentials({ searchParams }: BuyResidentialsProps) {
   let query = "SELECT * FROM Profiles";
-  const queryValues: string[] = [];
+  const queryValues: Array<string | number> = [];
   const conditions: string[] = [];
 
   if (searchParams) {
-    // Build the WHERE conditions dynamically
-    Object.keys(searchParams).forEach((key) => {
-      if (key === "search") {
-        conditions.push("title LIKE ?");
-        queryValues.push(`%${searchParams[key]}%`);
-      } else {
-        conditions.push(`${key} = ?`);
-        // @ts-expect-error the
-        queryValues.push(searchParams[key]!);
+    for (const [key, value] of Object.entries(searchParams)) {
+      if (value) {
+        if (key === "search") {
+          conditions.push("title LIKE ?");
+          queryValues.push(`%${value}%`);
+        } else if (key === "tag" && value.includes("-")) {
+          const tags = value.split("-");
+          const tagConditions = tags.map(() => "tag = ?").join(" OR ");
+          conditions.push(`(${tagConditions})`);
+          queryValues.push(...tags);
+        } else if (key === "price" && value.includes("-")) {
+          const [minPrice, maxPrice] = value.split("-").map(Number);
+          if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+            conditions.push("price BETWEEN ? AND ?");
+            queryValues.push(minPrice, maxPrice);
+          }
+        } else {
+          conditions.push(`${key} = ?`);
+          queryValues.push(value);
+        }
       }
-    });
+    }
 
-    // If we have any conditions, append them to the query
     if (conditions.length) {
       query += ` WHERE ${conditions.join(" AND ")}`;
     }
@@ -35,9 +51,7 @@ async function BuyResidentials({
     // @ts-expect-error the
     return <BuyResidentialsPage data={data} />;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Database query failed: ", error);
-    return <h3>مشکلی پیش آمده است</h3>;
+    return <BuyResidentialsPage data={[]} />;
   }
 }
 

@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { categories, categoryTags } from "@/constants";
-import { useRouter, useSearchParams } from "next/navigation";
+import { categories } from "@/constants";
+import { useRouter } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import CustomModal from "../modals/CustomModal";
+import Filter from "../modals/Filter";
+import { useModal } from "@/stores/useModal";
+import Tags from "./tags";
+import PriceFilter from "./priceFilter";
+import TermsFilter from "./termsFilter";
+import DocumentTypeFilter from "./DocumentTypeFilter";
+import MeterageFilter from "./MeterageFilter";
 
 const RealEstateCategory: React.FC = () => {
   const route = useRouter();
-  const searchParams = useSearchParams();
+  const store = useModal((state) => state);
   const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [tags, setTags] = useState<{ [key: string]: boolean }>({});
   return (
     <div className="w-full">
       <h1 className="mb-4 text-center text-2xl text-blue-600">
@@ -23,66 +32,40 @@ const RealEstateCategory: React.FC = () => {
           <Button
             key={category.value}
             className="h-10 w-full rounded-none border-2 bg-background px-4 py-2 text-sm text-primary"
-            onClick={() => setSelectedCategory(category.value)}
+            onClick={() => {
+              route.push(`/?category=${category.value}`);
+              setTags({});
+              setSelectedCategory(category.value);
+            }}
           >
             {category.name}
           </Button>
         ))}
       </div>
-      {selectedCategory && (
+      {selectedCategory === "SALE" && (
         <Accordion type="single" collapsible>
-          <AccordionItem value="item-0">
-            <AccordionTrigger>دسته ها</AccordionTrigger>
-            <AccordionContent>
-              <div className="mt-6 px-2">
-                <ul className="list-none">
-                  {categoryTags[selectedCategory!]?.map((item) => (
-                    <li
-                      key={item.value}
-                      className="mb-2 text-right text-lg hover:text-primary"
-                      onClick={() => {
-                        route.push(
-                          `/?category=${selectedCategory}&tag=${item.value}`,
-                        );
-                      }}
-                    >
-                      {item.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
+          <Tags
+            selectedCategory={selectedCategory}
+            tags={tags}
+            setTags={setTags}
+          ></Tags>
           <AccordionItem value="item-1">
-            <AccordionTrigger>منطقه /محل</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
+            <AccordionTrigger
+              onClick={() => {
+                store.setOpen(
+                  <CustomModal>
+                    <Filter />
+                  </CustomModal>,
+                );
+              }}
+            >
+              منطقه /محل
+            </AccordionTrigger>
           </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>قیمت</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>متراژ</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger>نوع سند</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-5">
-            <AccordionTrigger>شرایط معامله</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
+          <PriceFilter></PriceFilter>
+
+          <MeterageFilter></MeterageFilter>
+          <TermsFilter></TermsFilter>
         </Accordion>
       )}
       <div className="my-2 h-[4px] border-2 border-gray-400"></div>

@@ -160,7 +160,7 @@ export default function Filter() {
                       setFilterType("district");
                     }}
                   >
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row items-center justify-between">
                       {
                         // @ts-expect-error the
                         Object.keys(province[selectProvince][key]).length >

@@ -1,75 +1,37 @@
-// carousel.tsx
-"use client";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+// ImageCarousel.tsx
+import { FC } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-const Carousel = ({
-  data,
-}: {
-  data: {
-    image: string;
-  }[];
-}) => {
-  // State and Ref initialization
-  const [currentImg, setCurrentImg] = useState(0);
-  const [carouselSize, setCarouselSize] = useState({ width: 0, height: 0 });
-  const carouselRef = useRef(null);
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
-  // useEffect to get the initial carousel size
-  useEffect(() => {
-    const elem = carouselRef.current as unknown as HTMLDivElement;
-    const { width, height } = elem.getBoundingClientRect();
-    if (carouselRef.current) {
-      setCarouselSize({
-        width,
-        height,
-      });
-    }
-  }, []);
+interface ImageCarouselProps {
+  images: string[];
+}
 
+const ImageCarousel: FC<ImageCarouselProps> = ({ images }) => {
   return (
-    <div>
-      {/* Carousel container */}
-      <div className="relative h-60 w-full overflow-hidden rounded-md">
-        {/* Image container */}
-        <div
-          ref={carouselRef}
-          style={{
-            left: -currentImg * carouselSize.width,
-          }}
-          className="absolute flex size-full transition-all duration-300"
-        >
-          {/* Map through data to render images */}
-          {data.map((v, i) => (
-            <div key={i} className="relative size-full shrink-0">
-              <Image
-                className="pointer-events-none"
-                alt={`carousel-image-${i}`}
-                fill
-                src={v.image || "https://random.imagecdn.app/500/500"}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="absolute mt-3 flex justify-center bg-red-500">
-          <button
-            disabled={currentImg === 0}
-            onClick={() => setCurrentImg((prev) => prev - 1)}
-            className={`border px-4 py-2 font-bold ${currentImg === 0 && "opacity-50"}`}
-          >
-            {"<"}
-          </button>
-          <button
-            disabled={currentImg === data.length - 1}
-            onClick={() => setCurrentImg((prev) => prev + 1)}
-            className={`border px-4 py-2 font-bold ${currentImg === data.length - 1 && "opacity-50"}`}
-          >
-            {">"}
-          </button>
-        </div>
-      </div>
-    </div>
+    <Swiper
+      modules={[Navigation, Pagination, Autoplay]}
+      spaceBetween={10}
+      navigation
+      pagination={{ clickable: true }}
+      autoplay={{ delay: 2500, disableOnInteraction: false }}
+      loop
+    >
+      {images.map((image, index) => (
+        <SwiperSlide key={index}>
+          <img
+            className="h-60 w-[1100px] object-cover"
+            src={image}
+            alt={`Slide ${index + 1}`}
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 };
 
-export default Carousel;
+export default ImageCarousel;

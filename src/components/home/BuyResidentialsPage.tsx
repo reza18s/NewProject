@@ -3,25 +3,41 @@ import { IProfiles } from "@/types";
 import Sidebar from "../sidebar/Sidebar";
 import AdList from "./AdList";
 import { useData } from "@/stores/useData";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "react-slideshow-image/dist/styles.css";
 import Carousel from "../global/carousel";
-const DATA = [
-  { image: "/image/image1.jpg" },
-  { image: "/image/image2.jpg" },
-  { image: "/image/image3.jpg" },
-];
+const DATA = ["/image/image1.jpg", "/image/image2.jpg", "/image/image3.jpg"];
 function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   const { setData } = useData((state) => state);
+  const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     setData(data);
   }, [data]);
+
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
   return (
-    <div className="mt-16">
+    <div className="mt-16 w-full">
       <div className="flex h-60 gap-4">
-        <div className="h-full w-full bg-primary"></div>
-        <video height={160} width={400}>
-          <source src="/video1.webm" type="video/webm" />
+        <div className="h-full w-3/5">
+          <Carousel images={DATA} />
+        </div>
+        <video
+          width="100%"
+          ref={videoRef}
+          onClick={handleVideoClick}
+          style={{ cursor: "pointer" }}
+          preload="metadata" // Preload video metadata but not the entire video
+        >
+          <source src={"/video1.webm"} type="video/webm" />
+          Your browser does not support the video tag.
         </video>
       </div>
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-start">

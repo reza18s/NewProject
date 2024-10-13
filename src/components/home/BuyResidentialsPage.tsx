@@ -6,7 +6,7 @@ import { useData } from "@/stores/useData";
 import { useEffect, useRef } from "react";
 import "react-slideshow-image/dist/styles.css";
 import Carousel from "../global/carousel";
-const DATA = ["/image/image1.jpg", "/image/image2.jpg", "/image/image3.jpg"];
+const DATA = ["/image/3.jpg", "/image/1.jpg", "/image/2.jpg"];
 function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   const { setData } = useData((state) => state);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,6 +33,7 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
           width="100%"
           ref={videoRef}
           onClick={handleVideoClick}
+          controls
           style={{ cursor: "pointer" }}
           preload="metadata" // Preload video metadata but not the entire video
         >

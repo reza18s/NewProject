@@ -18,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body
+        className={cn("min-h-screen bg-background font-sans antialiased")}
+        style={{ fontFamily: "CustomFont, sans-serif" }}
+      >
         <Layout>
           <ModalProvider></ModalProvider>
           {children}

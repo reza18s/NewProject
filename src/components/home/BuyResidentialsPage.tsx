@@ -25,8 +25,8 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   };
   return (
     <div className="mt-16 w-full">
-      <div className="flex h-60 gap-4">
-        <div className="h-full w-3/5">
+      <div className="flex h-60 gap-4 px-40">
+        <div className="h-full w-1/2">
           <Carousel images={DATA} />
         </div>
         <video

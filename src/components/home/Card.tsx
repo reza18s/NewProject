@@ -26,12 +26,14 @@ const AdCard = ({
           </div>
 
           <div className="mt-1 flex flex-row justify-between gap-2">
-            <div className="w-full text-xs font-semibold">دماوند</div>
+            <div className="w-full text-xs font-bold">دماوند</div>
             <div className="w-full text-xs font-semibold">تحویل:تخلیه</div>
           </div>
-          <div className="flex flex-row justify-between bg-gray-300 text-center text-[10px] font-semibold text-blue-900">
-            <h3> 300/000/000تومان</h3>
-            <h3>متر: 20/000/000تومان</h3>
+          <div className="mt-1 flex flex-row justify-between gap-2 bg-gray-300 text-primary">
+            <div className="w-full text-xs font-semibold">300/000/000تومان</div>
+            <div className="w-full text-xs font-semibold">
+              متر: 20/000/000تومان
+            </div>
           </div>
           <div className="mt-2 flex h-32 items-center justify-between">
             <div className="mt-auto">
@@ -52,7 +54,7 @@ const AdCard = ({
             </div>
           </div>
         </div>
-        <div className="relative h-full w-[150px] shrink-0 overflow-hidden">
+        <div className="relative h-full w-[200px] shrink-0 overflow-hidden">
           <Image
             src={adImg}
             alt="Ad"

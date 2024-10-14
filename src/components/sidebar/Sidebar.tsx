@@ -14,8 +14,9 @@ import { useModal } from "@/stores/useModal";
 import Tags from "./tags";
 import PriceFilter from "./priceFilter";
 import TermsFilter from "./termsFilter";
-import DocumentTypeFilter from "./DocumentTypeFilter";
 import MeterageFilter from "./MeterageFilter";
+import PropertyEvacuationConditionsFilter from "./PropertyEvacuationConditionsFilter";
+import MortgagePriceFilter from "./mortgagePriceFilter";
 
 const RealEstateCategory: React.FC = () => {
   const route = useRouter();
@@ -42,7 +43,7 @@ const RealEstateCategory: React.FC = () => {
           </Button>
         ))}
       </div>
-      {selectedCategory === "SALE" && (
+      {selectedCategory === "SALE" ? (
         <Accordion type="single" collapsible>
           <Tags
             selectedCategory={selectedCategory}
@@ -67,6 +68,32 @@ const RealEstateCategory: React.FC = () => {
           <MeterageFilter></MeterageFilter>
           <TermsFilter></TermsFilter>
         </Accordion>
+      ) : selectedCategory === "MORTGAGE_AND_RENT" ? (
+        <Accordion type="single" collapsible>
+          <Tags
+            selectedCategory={selectedCategory}
+            tags={tags}
+            setTags={setTags}
+          ></Tags>
+          <AccordionItem value="item-1">
+            <AccordionTrigger
+              onClick={() => {
+                store.setOpen(
+                  <CustomModal>
+                    <Filter />
+                  </CustomModal>,
+                );
+              }}
+            >
+              منطقه /محل
+            </AccordionTrigger>
+          </AccordionItem>
+          <MortgagePriceFilter></MortgagePriceFilter>
+          <MeterageFilter></MeterageFilter>
+          <PropertyEvacuationConditionsFilter />
+        </Accordion>
+      ) : (
+        ""
       )}
       <div className="my-2 h-[4px] border-2 border-gray-400"></div>
       <h2 className="border-2 pr-2 text-lg font-semibold">تبلیغات هوشمند</h2>

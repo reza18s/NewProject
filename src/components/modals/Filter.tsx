@@ -1,5 +1,5 @@
 "use client"; // components/ModalWithCheckboxes.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useStore from "@/stores/useStore";
 import { useData } from "@/stores/useData";
 import { ChevronLeft, X } from "lucide-react";
@@ -15,6 +15,7 @@ export default function Filter() {
     "province" | "city" | "district"
   >("province");
   const [Provinces, setProvinces] = useState<string[]>(Object.keys(province));
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [Cities, setCities] = useState<string[]>(
     Object.keys(province["البرز"]),
   );
@@ -31,6 +32,7 @@ export default function Filter() {
     city: {},
     district: {},
   });
+
   useEffect(() => {
     // @ts-expect-error the
     setFilter(store?.filters);
@@ -119,7 +121,16 @@ export default function Filter() {
             }}
           ></Input>
         </div>
-        <div className="flex max-w-[350px] gap-2 overflow-x-scroll md:max-w-[550px]">
+        <div
+          className="flex max-w-[350px] gap-2 overflow-scroll pl-3 md:max-w-[550px]"
+          ref={scrollContainerRef}
+          onWheel={(event) => {
+            if (scrollContainerRef.current) {
+              // Adjust scroll position based on the wheel delta
+              scrollContainerRef.current.scrollLeft += event.deltaY;
+            }
+          }}
+        >
           {Filter &&
             Object.keys(Filter).map(
               (key1) =>

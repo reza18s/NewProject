@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import { useData } from "@/stores/useData";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 import { Input } from "../ui/input";
 import { province } from "@/constants";
 import { DialogFooter } from "../ui/dialog";
@@ -118,6 +118,32 @@ export default function Filter() {
               }
             }}
           ></Input>
+        </div>
+        <div className="flex gap-2">
+          {Filter &&
+            Object.keys(Filter).map(
+              (key1) =>
+                Filter[key1] &&
+                Object.keys(Filter[key1]).map(
+                  (key) =>
+                    Filter[key1][key] && (
+                      <div
+                        className="flex border border-primary bg-secondary"
+                        key={key}
+                      >
+                        {key}
+                        <X
+                          onClick={() =>
+                            setFilter({
+                              ...Filter,
+                              [key1]: { ...Filter[key1], [key]: false },
+                            })
+                          }
+                        ></X>
+                      </div>
+                    ),
+                ),
+            )}
         </div>
         <div className="flex h-96 max-h-[380px] flex-col overflow-y-scroll text-xl">
           {filterType === "province"

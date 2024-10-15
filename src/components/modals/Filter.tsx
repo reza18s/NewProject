@@ -20,8 +20,7 @@ export default function Filter() {
     Object.keys(province["البرز"]),
   );
   const [Districts, setDistrict] = useState<string[]>(
-    // @ts-expect-error thr
-    Object.keys(province["البرز"]["صنعتی"]),
+    Object.keys(province["البرز"]["آسارا"]),
   );
   const [search, setSearch] = useState<string>("");
   const [selectProvince, setSelectProvince] = useState<string>("البرز");

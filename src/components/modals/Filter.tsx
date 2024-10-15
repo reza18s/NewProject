@@ -119,7 +119,7 @@ export default function Filter() {
             }}
           ></Input>
         </div>
-        <div className="flex gap-2">
+        <div className="flex max-w-[350px] gap-2 overflow-x-scroll md:max-w-[550px]">
           {Filter &&
             Object.keys(Filter).map(
               (key1) =>
@@ -128,7 +128,7 @@ export default function Filter() {
                   (key) =>
                     Filter[key1][key] && (
                       <div
-                        className="flex border border-primary bg-secondary"
+                        className="flex text-nowrap border border-primary bg-secondary"
                         key={key}
                       >
                         {key}

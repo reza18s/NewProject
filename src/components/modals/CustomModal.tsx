@@ -13,7 +13,7 @@ const CustomModal = ({ children, defaultOpen }: Props) => {
   const model = useStore(useModal, (state) => state);
   return (
     <Dialog open={model.isOpen || defaultOpen} onOpenChange={model.setClose}>
-      <DialogContent className="h-[600px] w-[70%] max-w-[600px] overflow-scroll rounded-lg bg-card">
+      <DialogContent className="h-[600px] w-full max-w-[400px] overflow-scroll rounded-lg bg-card md:max-w-[600px]">
         {children}
       </DialogContent>
     </Dialog>

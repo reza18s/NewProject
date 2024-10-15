@@ -88,7 +88,7 @@ export default function Filter() {
                     ? "جستجوی منطقه"
                     : ""
             }
-            className="bg-gray-300"
+            className="h-10 bg-gray-300"
             value={search}
             onChange={(e) => {
               const val = e.target.value;
@@ -160,7 +160,7 @@ export default function Filter() {
           {filterType === "province"
             ? Provinces.map((key) => (
                 <button
-                  className="mt-3 h-10 w-full border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
+                  className="mt-3 h-10 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
                   key={key}
                   onClick={() => {
                     // @ts-expect-error the
@@ -174,7 +174,7 @@ export default function Filter() {
                     setFilterType("city");
                   }}
                 >
-                  <div className="flex flex-row justify-between">
+                  <div className="flex h-8 flex-row justify-between text-lg">
                     <div className="">{key}</div>
                     <ChevronLeft className="mt-1"></ChevronLeft>
                   </div>
@@ -183,7 +183,7 @@ export default function Filter() {
             : filterType === "city"
               ? Cities.map((key) => (
                   <button
-                    className="mt-3 h-10 w-full border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
+                    className="mt-3 h-10 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
                     key={key}
                     onClick={() => {
                       // @ts-expect-error the
@@ -197,7 +197,7 @@ export default function Filter() {
                       setFilterType("district");
                     }}
                   >
-                    <div className="flex flex-row items-center justify-between">
+                    <div className="flex h-8 flex-row items-center justify-between text-lg">
                       {
                         // @ts-expect-error the
                         Object.keys(province[selectProvince][key]).length >
@@ -222,7 +222,7 @@ export default function Filter() {
               : filterType === "district"
                 ? Districts.map((key) => (
                     <button
-                      className="mt-3 h-10 w-full border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
+                      className="mt-3 h-8 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
                       key={key}
                       onClick={() => {
                         setSearch("");
@@ -232,7 +232,7 @@ export default function Filter() {
                         }));
                       }}
                     >
-                      <div className="flex flex-row items-center justify-between">
+                      <div className="flex h-8 flex-row items-center justify-between text-sm">
                         <label htmlFor={key}>{key}</label>
                         <Checkbox
                           id={key}

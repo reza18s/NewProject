@@ -25,21 +25,23 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   };
   return (
     <div className="mt-16 w-full">
-      <div className="flex h-60 gap-4 px-40">
-        <div className="h-full w-1/2">
+      <div className="flex flex-col gap-4 px-10 lg:h-60 lg:flex-row xl:px-40">
+        <div className="size-full lg:w-1/2">
           <Carousel images={DATA} />
         </div>
-        <video
-          width="100%"
-          ref={videoRef}
-          onClick={handleVideoClick}
-          controls
-          style={{ cursor: "pointer" }}
-          preload="metadata" // Preload video metadata but not the entire video
-        >
-          <source src={"/video1.webm"} type="video/webm" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="flex size-full items-center justify-center lg:h-60 lg:w-1/2">
+          <video
+            className="lg:h-60"
+            ref={videoRef}
+            onClick={handleVideoClick}
+            controls
+            style={{ cursor: "pointer" }}
+            preload="metadata" // Preload video metadata but not the entire video
+          >
+            <source src={"/video1.webm"} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-start">
         <div className="mt-1 h-fit w-[400px] flex-col items-center border-2 px-7 py-4 sm:flex">

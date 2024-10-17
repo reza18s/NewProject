@@ -47,11 +47,12 @@ const RealEstateCategory: React.FC = () => {
       {selectedCategory === "SALE" ? (
         <Accordion type="single" collapsible>
           <Tags
+            id="0"
             selectedCategory={selectedCategory}
             tags={tags}
             setTags={setTags}
           ></Tags>
-          <AccordionItem value="item-1">
+          <AccordionItem value="1">
             <AccordionTrigger
               onClick={() => {
                 store.setOpen(
@@ -64,19 +65,21 @@ const RealEstateCategory: React.FC = () => {
               منطقه /محل
             </AccordionTrigger>
           </AccordionItem>
-          <PriceFilter></PriceFilter>
+          <PriceFilter id="2"></PriceFilter>
 
-          <MeterageFilter></MeterageFilter>
-          <TermsFilter></TermsFilter>
+          <AmenitiesFilter id="2"></AmenitiesFilter>
+          <MeterageFilter id="3"></MeterageFilter>
+          <TermsFilter id="4"></TermsFilter>
         </Accordion>
       ) : selectedCategory === "MORTGAGE_AND_RENT" ? (
         <Accordion type="single" collapsible>
           <Tags
+            id="0"
             selectedCategory={selectedCategory}
             tags={tags}
             setTags={setTags}
           ></Tags>
-          <AccordionItem value="item-1">
+          <AccordionItem value="1">
             <AccordionTrigger
               onClick={() => {
                 store.setOpen(
@@ -89,10 +92,10 @@ const RealEstateCategory: React.FC = () => {
               منطقه /محل
             </AccordionTrigger>
           </AccordionItem>
-          <MortgagePriceFilter></MortgagePriceFilter>
-          <MeterageFilter></MeterageFilter>
-          <AmenitiesFilter></AmenitiesFilter>
-          <PropertyEvacuationConditionsFilter />
+          <MortgagePriceFilter id="2"></MortgagePriceFilter>
+          <MeterageFilter id="3"></MeterageFilter>
+          <AmenitiesFilter id="4"></AmenitiesFilter>
+          <PropertyEvacuationConditionsFilter id="5" />
         </Accordion>
       ) : (
         ""

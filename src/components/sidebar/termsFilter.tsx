@@ -8,7 +8,7 @@ import { TransactionTerms } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function TermsFilter() {
+function TermsFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [terms, setTerms] = useState<{ [key: string]: boolean }>({});
@@ -37,7 +37,7 @@ function TermsFilter() {
   };
 
   return (
-    <AccordionItem value="item-5">
+    <AccordionItem value={id}>
       <AccordionTrigger>شرایط معامله</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

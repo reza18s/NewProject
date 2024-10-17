@@ -165,6 +165,13 @@ export default function Filter() {
                     setCities(Object.keys(province[key]));
                     setSelectProvince(key);
                     setSearch("");
+                    setFilter((prev) => ({
+                      ...prev,
+                      province: {
+                        ...prev.province,
+                        [key]: true,
+                      },
+                    }));
                     setFilterType("city");
                   }}
                 >
@@ -185,6 +192,14 @@ export default function Filter() {
                         // @ts-expect-error the
                         setDistrict(Object.keys(province[selectProvince][key]));
                         setSelectCity(key);
+                        setFilter((prev) => ({
+                          ...prev,
+                          province: {
+                            ...prev.province,
+                            [selectProvince]: true,
+                          },
+                          city: { ...prev.city, [key]: true },
+                        }));
                         setSearch("");
                         setFilterType("district");
                       }}
@@ -205,10 +220,6 @@ export default function Filter() {
                         setSearch("");
                         setFilter((prev) => ({
                           ...prev,
-                          province: {
-                            ...prev.province,
-                            [selectProvince]: !prev.province[selectProvince],
-                          },
                           city: { ...prev.city, [key]: !prev.city[key] },
                         }));
                       }}
@@ -231,14 +242,7 @@ export default function Filter() {
                       onClick={() => {
                         setSearch("");
                         setFilter((prev) => ({
-                          province: {
-                            ...prev.province,
-                            [selectProvince]: !prev.province[selectProvince],
-                          },
-                          city: {
-                            ...prev.city,
-                            [selectCity]: !prev.city[selectCity],
-                          },
+                          ...prev,
                           district: {
                             ...prev.district,
                             [key]: !prev.district[key],

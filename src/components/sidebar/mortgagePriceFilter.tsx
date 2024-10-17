@@ -9,7 +9,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function MortgagePriceFilter() {
+function MortgagePriceFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -52,7 +52,7 @@ function MortgagePriceFilter() {
   }, [mortgage, rent, conversionCapability, fullMortgage]);
 
   return (
-    <AccordionItem value="item-price">
+    <AccordionItem value={id}>
       <AccordionTrigger>دکمه قیمت</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

@@ -8,7 +8,7 @@ import { DocumentType } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function DocumentTypeFilter() {
+function DocumentTypeFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [documentType, setDocumentType] = useState<{ [key: string]: boolean }>(
@@ -39,7 +39,7 @@ function DocumentTypeFilter() {
   };
 
   return (
-    <AccordionItem value="item-4">
+    <AccordionItem value={id}>
       <AccordionTrigger>نوع سند</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

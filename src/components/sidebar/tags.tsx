@@ -12,7 +12,9 @@ function Tags({
   selectedCategory,
   tags,
   setTags,
+  id,
 }: {
+  id: string;
   selectedCategory: string;
   tags: { [key: string]: boolean };
   setTags: React.Dispatch<
@@ -48,7 +50,7 @@ function Tags({
   };
 
   return (
-    <AccordionItem value="item-0">
+    <AccordionItem value={id}>
       <AccordionTrigger>دسته ها</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

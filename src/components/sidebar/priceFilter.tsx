@@ -8,7 +8,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function PriceFilter() {
+function PriceFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [minPrice, setMinPrice] = useState<string>();
@@ -29,7 +29,7 @@ function PriceFilter() {
   }, [minPrice, maxPrice]);
 
   return (
-    <AccordionItem value="item-2">
+    <AccordionItem value={id}>
       <AccordionTrigger>قیمت</AccordionTrigger>
       <AccordionContent className="p-2">
         <div className="flex items-center justify-between">

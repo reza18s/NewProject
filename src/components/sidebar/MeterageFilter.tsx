@@ -8,7 +8,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function MeterageFilter() {
+function MeterageFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [minMeterage, setMinMeterage] = useState<number>();
@@ -29,7 +29,7 @@ function MeterageFilter() {
   }, [minMeterage, maxMeterage]);
 
   return (
-    <AccordionItem value="item-3">
+    <AccordionItem value={id}>
       <AccordionTrigger>متراژ</AccordionTrigger>
       <AccordionContent className="p-2">
         <div className="flex items-center justify-between">

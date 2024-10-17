@@ -8,7 +8,7 @@ import { PropertyEvacuationConditions } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function PropertyEvacuationConditionsFilter() {
+function PropertyEvacuationConditionsFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedConditions, setSelectedConditions] = useState<{
@@ -39,7 +39,7 @@ function PropertyEvacuationConditionsFilter() {
   };
 
   return (
-    <AccordionItem value="item-4">
+    <AccordionItem value={id}>
       <AccordionTrigger>شرایط تخلیه ملک</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

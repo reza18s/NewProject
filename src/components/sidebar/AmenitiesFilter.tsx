@@ -8,7 +8,7 @@ import { Amenities } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function AmenitiesFilter() {
+function AmenitiesFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedAmenities, setSelectedAmenities] = useState<{
@@ -39,7 +39,7 @@ function AmenitiesFilter() {
   };
 
   return (
-    <AccordionItem value="item-5">
+    <AccordionItem value={id}>
       <AccordionTrigger>امکانات</AccordionTrigger>
       <AccordionContent>
         <div className="mt-6 px-2">

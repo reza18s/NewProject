@@ -23,6 +23,9 @@ function Header({ user }: { user: Promise<IUser> }) {
     router.push("/?" + url.toString());
   };
   const cities = Object.keys(filters.city).filter((key) => filters.city[key]);
+  const provinces = Object.keys(filters.province).filter(
+    (key) => filters.province[key],
+  );
   return (
     <div className="fixed z-10 flex h-[88px] w-full flex-col justify-center border-b-2 border-gray-300 bg-background">
       <div className="flex h-8 w-full items-center justify-center bg-blue-700 font-semibold">
@@ -81,10 +84,8 @@ function Header({ user }: { user: Promise<IUser> }) {
             }}
           >
             <MdLocationPin className="size-5 pb-1 text-black"></MdLocationPin>
-            {cities.length > 0
-              ? cities.length > 1
-                ? `${cities.length} شهر`
-                : cities[0]
+            {provinces.length > 0
+              ? `${provinces.length > 1 ? `${provinces.length} استان` : provinces[0]} ${cities.length > 0 ? (cities.length > 1 ? `${cities.length} شهر` : cities[0]) : ""}`
               : "لطفا شهر خود را انتخاب کنید"}
           </Button>
         </div>

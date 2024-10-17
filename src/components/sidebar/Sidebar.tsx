@@ -67,9 +67,9 @@ const RealEstateCategory: React.FC = () => {
           </AccordionItem>
           <PriceFilter id="2"></PriceFilter>
 
-          <AmenitiesFilter id="2"></AmenitiesFilter>
-          <MeterageFilter id="3"></MeterageFilter>
-          <TermsFilter id="4"></TermsFilter>
+          <AmenitiesFilter id="3"></AmenitiesFilter>
+          <MeterageFilter id="4"></MeterageFilter>
+          <TermsFilter id="5"></TermsFilter>
         </Accordion>
       ) : selectedCategory === "MORTGAGE_AND_RENT" ? (
         <Accordion type="single" collapsible>

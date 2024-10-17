@@ -17,6 +17,7 @@ import TermsFilter from "./termsFilter";
 import MeterageFilter from "./MeterageFilter";
 import PropertyEvacuationConditionsFilter from "./PropertyEvacuationConditionsFilter";
 import MortgagePriceFilter from "./mortgagePriceFilter";
+import AmenitiesFilter from "./AmenitiesFilter";
 
 const RealEstateCategory: React.FC = () => {
   const route = useRouter();
@@ -90,6 +91,7 @@ const RealEstateCategory: React.FC = () => {
           </AccordionItem>
           <MortgagePriceFilter></MortgagePriceFilter>
           <MeterageFilter></MeterageFilter>
+          <AmenitiesFilter></AmenitiesFilter>
           <PropertyEvacuationConditionsFilter />
         </Accordion>
       ) : (

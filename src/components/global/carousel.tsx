@@ -24,7 +24,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ images }) => {
       {images.map((image, index) => (
         <SwiperSlide key={index}>
           <img
-            className="h-60 w-[1100px] object-cover"
+            className="h-60 w-full object-cover"
             src={image}
             alt={`Slide ${index + 1}`}
           />

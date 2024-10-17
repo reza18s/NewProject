@@ -11,8 +11,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 function MeterageFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [minMeterage, setMinMeterage] = useState<number>(0);
-  const [maxMeterage, setMaxMeterage] = useState<number>(1000);
+  const [minMeterage, setMinMeterage] = useState<number>();
+  const [maxMeterage, setMaxMeterage] = useState<number>();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

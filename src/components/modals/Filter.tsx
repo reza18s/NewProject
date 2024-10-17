@@ -1,6 +1,5 @@
 "use client"; // components/ModalWithCheckboxes.js
 import React, { useEffect, useRef, useState } from "react";
-import useStore from "@/stores/useStore";
 import { useData } from "@/stores/useData";
 import { ChevronLeft, X } from "lucide-react";
 import { Input } from "../ui/input";
@@ -10,7 +9,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 export default function Filter() {
-  const store = useStore(useData, (state) => state);
+  const store = useData((state) => state);
   const [filterType, setFilterType] = useState<
     "province" | "city" | "district"
   >("province");
@@ -34,7 +33,6 @@ export default function Filter() {
   });
 
   useEffect(() => {
-    // @ts-expect-error the
     setFilter(store?.filters);
   }, [store?.filters]);
   return (
@@ -167,10 +165,6 @@ export default function Filter() {
                     setCities(Object.keys(province[key]));
                     setSelectProvince(key);
                     setSearch("");
-                    setFilter((prev) => ({
-                      ...prev,
-                      province: { ...prev.province, [key]: true },
-                    }));
                     setFilterType("city");
                   }}
                 >
@@ -181,44 +175,54 @@ export default function Filter() {
                 </button>
               ))
             : filterType === "city"
-              ? Cities.map((key) => (
-                  <button
-                    className="mt-3 h-10 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
-                    key={key}
-                    onClick={() => {
-                      // @ts-expect-error the
-                      setDistrict(Object.keys(province[selectProvince][key]));
-                      setSelectCity(key);
-                      setSearch("");
-                      setFilter((prev) => ({
-                        ...prev,
-                        city: { ...prev.city, [key]: true },
-                      }));
-                      setFilterType("district");
-                    }}
-                  >
-                    <div className="flex h-8 flex-row items-center justify-between text-lg">
-                      {
+              ? Cities.map((key) =>
+                  // @ts-expect-error the
+                  Object.keys(province[selectProvince][key]).length > 0 ? (
+                    <button
+                      className="mt-3 h-10 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
+                      key={key}
+                      onClick={() => {
                         // @ts-expect-error the
-                        Object.keys(province[selectProvince][key]).length >
-                        0 ? (
-                          <>
-                            <div className="">{key}</div>
-                            <ChevronLeft className="mt-1"></ChevronLeft>
-                          </>
-                        ) : (
-                          <>
-                            <label htmlFor={key}>{key}</label>
-                            <Checkbox
-                              id={key}
-                              checked={Filter.city[key] || false}
-                            />
-                          </>
-                        )
-                      }
-                    </div>
-                  </button>
-                ))
+                        setDistrict(Object.keys(province[selectProvince][key]));
+                        setSelectCity(key);
+                        setSearch("");
+                        setFilterType("district");
+                      }}
+                    >
+                      <div className="flex h-8 flex-row items-center justify-between text-lg">
+                        <div className="">{key}</div>
+                        <ChevronLeft className="mt-1"></ChevronLeft>
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      className="mt-3 h-10 w-full rounded-sm border border-x-2 border-gray-600/20 border-x-gray-600/60 bg-gray-300 px-3 font-medium"
+                      key={key}
+                      onClick={() => {
+                        // @ts-expect-error the
+                        setDistrict(Object.keys(province[selectProvince][key]));
+                        setSelectCity(key);
+                        setSearch("");
+                        setFilter((prev) => ({
+                          ...prev,
+                          province: {
+                            ...prev.province,
+                            [selectProvince]: !prev.province[selectProvince],
+                          },
+                          city: { ...prev.city, [key]: !prev.city[key] },
+                        }));
+                      }}
+                    >
+                      <div className="flex h-8 flex-row items-center justify-between text-lg">
+                        <label htmlFor={key}>{key}</label>
+                        <Checkbox
+                          id={key}
+                          checked={Filter.city[key] || false}
+                        />
+                      </div>
+                    </button>
+                  ),
+                )
               : filterType === "district"
                 ? Districts.map((key) => (
                     <button
@@ -227,8 +231,18 @@ export default function Filter() {
                       onClick={() => {
                         setSearch("");
                         setFilter((prev) => ({
-                          ...prev,
-                          district: { ...prev.district, [key]: true },
+                          province: {
+                            ...prev.province,
+                            [selectProvince]: !prev.province[selectProvince],
+                          },
+                          city: {
+                            ...prev.city,
+                            [selectCity]: !prev.city[selectCity],
+                          },
+                          district: {
+                            ...prev.district,
+                            [key]: !prev.district[key],
+                          },
                         }));
                       }}
                     >

@@ -11,8 +11,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 function PriceFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [minPrice, setMinPrice] = useState<string>("");
-  const [maxPrice, setMaxPrice] = useState<string>("1000000");
+  const [minPrice, setMinPrice] = useState<string>();
+  const [maxPrice, setMaxPrice] = useState<string>();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

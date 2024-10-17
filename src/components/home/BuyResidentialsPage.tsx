@@ -25,13 +25,13 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
   };
   return (
     <div className="mt-16 w-full">
-      <div className="flex flex-col gap-4 px-10 lg:h-60 lg:flex-row xl:px-40">
-        <div className="size-full lg:w-1/2">
+      <div className="ml-7 flex flex-col gap-4 lg:h-60 lg:flex-row">
+        <div className="size-full lg:w-[68%]">
           <Carousel images={DATA} />
         </div>
-        <div className="flex size-full items-center justify-center lg:h-60 lg:w-1/2">
+        <div className="flex size-full justify-end lg:h-60 lg:w-[33%]">
           <video
-            className="lg:h-60"
+            className="w-full lg:h-60"
             ref={videoRef}
             onClick={handleVideoClick}
             controls

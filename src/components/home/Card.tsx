@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IProfiles } from "@/types";
+import { MdLocationPin } from "react-icons/md";
 
 const AdCard = ({
   data,
@@ -26,13 +27,17 @@ const AdCard = ({
           </div>
 
           <div className="mt-1 flex flex-row justify-between gap-2">
-            <div className="w-full text-xs font-bold">دماوند</div>
+            <div className="flex w-full text-xs font-bold">
+              <MdLocationPin className=""></MdLocationPin>دماوند
+            </div>
             <div className="w-full text-xs font-semibold">تحویل:تخلیه</div>
           </div>
           <div className="mt-1 flex flex-row justify-between gap-2 bg-gray-300 text-primary">
-            <div className="w-full text-xs font-semibold">300/000/000تومان</div>
-            <div className="w-full text-xs font-semibold">
-              متر: 20/000/000تومان
+            <div className="w-full pt-1 text-[9px] font-semibold">
+              300/000/000تومان
+            </div>
+            <div className="w-full pt-1 text-[9px] font-semibold">
+              20/000/000تومان
             </div>
           </div>
           <div className="mt-2 flex h-32 items-center justify-between">
@@ -54,7 +59,7 @@ const AdCard = ({
             </div>
           </div>
         </div>
-        <div className="relative h-full w-[200px] shrink-0 overflow-hidden">
+        <div className="relative h-full w-[45%] max-w-52 shrink-0 overflow-hidden">
           <Image
             src={adImg}
             alt="Ad"

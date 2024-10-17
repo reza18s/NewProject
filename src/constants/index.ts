@@ -8,8 +8,8 @@ export const categories = [
     value: "MORTGAGE_AND_RENT",
   },
   {
-    name: "اجاره بلند مدت",
-    value: "LONG_TERM_RENT",
+    name: "اجاره کوتاه مدت",
+    value: "SHORT_TERM_RENT",
   },
   {
     name: "نیاز به خرید",
@@ -40,6 +40,40 @@ export const PropertyEvacuationConditions = [
   {
     name: "تخلیه بیشتر از یک ماه",
     value: "evacuationOverOneMonth",
+  },
+];
+export const Amenities = [
+  {
+    name: "انباری",
+    value: "StorageRoom",
+  },
+  {
+    name: "پارکینگ",
+    value: "Parking",
+  },
+  {
+    name: "آسانسور",
+    value: "Elevator",
+  },
+  {
+    name: "استخر",
+    value: "Pool",
+  },
+  {
+    name: "فضای بازی",
+    value: "PlayArea",
+  },
+  {
+    name: "باشگاه",
+    value: "Gym",
+  },
+  {
+    name: "لابی",
+    value: "Lobby",
+  },
+  {
+    name: "نگهبان",
+    value: "SecurityGuard",
   },
 ];
 export const DocumentType = [

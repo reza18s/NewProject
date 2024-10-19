@@ -14,6 +14,7 @@ function PropertyEvacuationConditionsFilter({ id }: { id: string }) {
   const [selectedConditions, setSelectedConditions] = useState<{
     [key: string]: boolean;
   }>({});
+  const [one, setOne] = useState<boolean>(false);
 
   // Update URL when conditions change
   useEffect(() => {
@@ -27,7 +28,11 @@ function PropertyEvacuationConditionsFilter({ id }: { id: string }) {
     } else {
       params.delete("evacuationConditions");
     }
-    router.push(`?${params.toString()}`);
+    if (one) {
+      router.push(`?${params.toString()}`); // This should correctly update the URL
+    } else {
+      setOne(true);
+    }
   }, [selectedConditions, router, searchParams]);
 
   // Handle checkbox toggle

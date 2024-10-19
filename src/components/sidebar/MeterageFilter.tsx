@@ -11,8 +11,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 function MeterageFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [minMeterage, setMinMeterage] = useState<number>();
-  const [maxMeterage, setMaxMeterage] = useState<number>();
+  const [minMeterage, setMinMeterage] = useState<number>(0);
+  const [maxMeterage, setMaxMeterage] = useState<number>(0);
+  const [one, setOne] = useState<boolean>(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -22,7 +23,11 @@ function MeterageFilter({ id }: { id: string }) {
       } else {
         params.delete("meterage");
       }
-      router.push(`?${params.toString()}`);
+      if (one) {
+        router.push(`?${params.toString()}`); // This should correctly update the URL
+      } else {
+        setOne(true);
+      }
     }, 500);
 
     return () => clearTimeout(timeoutId);

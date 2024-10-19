@@ -30,7 +30,7 @@ function Header({ user }: { user: Promise<IUser> }) {
     <div className="fixed z-10 flex h-[88px] w-full flex-col justify-center border-b-2 border-gray-300 bg-background">
       <div className="flex h-8 w-full items-center justify-center bg-blue-700 font-semibold">
         <h1 className="text-lg text-white">
-          کلید موفقیت در شما املاک و مستغلات
+          کلید موفقیت شما در املاک و مستغلات
         </h1>
       </div>
       <div className="flex h-16 w-full justify-between lg:pl-14 lg:pr-10">

@@ -14,6 +14,7 @@ function AmenitiesFilter({ id }: { id: string }) {
   const [selectedAmenities, setSelectedAmenities] = useState<{
     [key: string]: boolean;
   }>({});
+  const [one, setOne] = useState<boolean>(false);
 
   // Update URL when amenities selection changes
   useEffect(() => {
@@ -27,7 +28,11 @@ function AmenitiesFilter({ id }: { id: string }) {
     } else {
       params.delete("amenities");
     }
-    router.push(`?${params.toString()}`);
+    if (one) {
+      router.push(`?${params.toString()}`); // This should correctly update the URL
+    } else {
+      setOne(true);
+    }
   }, [selectedAmenities, searchParams, router]);
 
   // Handle checkbox toggle

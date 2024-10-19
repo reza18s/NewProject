@@ -19,36 +19,37 @@ function MortgagePriceFilter({ id }: { id: string }) {
   const [conversionCapability, setConversionCapability] =
     useState<boolean>(false);
   const [fullMortgage, setFullMortgage] = useState<boolean>(false);
+  const [one, setOne] = useState<boolean>(false);
 
   // Update URL when filter values change
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-
     if (mortgage) {
       params.set("mortgage", mortgage);
     } else {
       params.delete("mortgage");
     }
-
     if (rent) {
       params.set("rent", rent);
     } else {
       params.delete("rent");
     }
-
     if (conversionCapability) {
       params.set("conversionCapability", "true");
     } else {
       params.delete("conversionCapability");
     }
-
     if (fullMortgage) {
       params.set("fullMortgage", "true");
     } else {
       params.delete("fullMortgage");
     }
-
-    router.push(`?${params.toString()}`);
+    if (one) {
+      router.push(`?${params.toString()}`); // This should correctly update the URL
+    } else {
+      setOne(true);
+    }
   }, [mortgage, rent, conversionCapability, fullMortgage]);
 
   return (

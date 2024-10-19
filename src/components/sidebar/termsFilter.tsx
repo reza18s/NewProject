@@ -12,6 +12,7 @@ function TermsFilter({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [terms, setTerms] = useState<{ [key: string]: boolean }>({});
+  const [one, setOne] = useState<boolean>(false);
 
   // Update URL when terms change
   useEffect(() => {
@@ -25,7 +26,11 @@ function TermsFilter({ id }: { id: string }) {
     } else {
       params.delete("transactionTerms");
     }
-    router.push(`?${params.toString()}`);
+    if (one) {
+      router.push(`?${params.toString()}`); // This should correctly update the URL
+    } else {
+      setOne(true);
+    }
   }, [terms]);
 
   // Handle checkbox toggle

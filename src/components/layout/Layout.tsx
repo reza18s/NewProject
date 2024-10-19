@@ -8,7 +8,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <Header user={getSession(cookieStore?.value)} />
-      <div className="mx-auto p-3 md:p-10">{children}</div>
+      <div className="mx-auto p-3 md:px-10">{children}</div>
     </div>
   );
 }

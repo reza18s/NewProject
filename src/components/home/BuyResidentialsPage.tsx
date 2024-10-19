@@ -24,7 +24,7 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
     }
   };
   return (
-    <div className="mt-16 w-full">
+    <div className="mt-24 w-full">
       <div className="flex flex-col gap-4 lg:ml-7 lg:h-60 lg:flex-row">
         <div className="size-full lg:w-[68%]">
           <Carousel images={DATA} />

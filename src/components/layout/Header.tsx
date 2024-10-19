@@ -36,15 +36,15 @@ function Header({ user }: { user: Promise<IUser> }) {
           href="/signup"
           className="mr-5 h-6 bg-background px-2 text-base font-semibold text-primary"
         >
-          تبت نام کنید
+          ثبت نام کنید
         </Link>
         <Link href="/" className="mx-3">
           <Home></Home>
         </Link>
       </div>
-      <div className="flex h-16 w-full justify-between lg:pl-14 lg:pr-10">
-        <div className="flex md:mr-[20px]">
-          <div className="-mt-5 hidden size-32 md:flex">
+      <div className="flex h-16 w-full justify-between px-2 md:flex-row xl:pl-14 xl:pr-10">
+        <div className="flex">
+          <div className="-mt-5 hidden size-32 lg:flex">
             <Link href="/" legacyBehavior>
               <Image
                 src="/image/logo1.png"
@@ -54,7 +54,7 @@ function Header({ user }: { user: Promise<IUser> }) {
               />
             </Link>
           </div>
-          <form className="mr-[20px] flex items-center">
+          <form className="flex items-center lg:mr-[20px]">
             <div className="overflow-hidden bg-sky-400 py-[2px]">
               <div className="mx-[-2px] flex h-8 overflow-hidden rounded-3xl bg-black bg-primary">
                 <button
@@ -73,7 +73,7 @@ function Header({ user }: { user: Promise<IUser> }) {
             </div>
           </form>
         </div>
-        <div className="flex items-center justify-center text-lg font-semibold">
+        <div className="hidden items-center justify-center text-nowrap text-lg font-semibold lg:flex">
           021-091017240
         </div>
         <div className="flex w-[400px] items-center justify-end">
@@ -83,7 +83,7 @@ function Header({ user }: { user: Promise<IUser> }) {
             </Suspense>
           </div>{" "}
           <Button
-            className="flex items-end gap-2 border border-gray-300 bg-background px-2 text-[14px] font-medium text-gray-600 hover:bg-popover-foreground hover:text-background"
+            className="hidden items-end gap-2 border border-gray-300 bg-background px-2 text-sm font-medium text-gray-600 hover:bg-popover-foreground hover:text-background sm:flex lg:text-base"
             onClick={() => {
               store.setOpen(
                 <CustomModal>
@@ -106,7 +106,7 @@ const Avatar = (props: { user: Promise<IUser> }) => {
   const user = use(props.user);
   // console.log(user);
   return (
-    <div className="ml-3 flex items-center rounded-lg border border-gray-300 px-3 py-2">
+    <div className="ml-3 flex items-center text-nowrap rounded-lg border border-gray-300 px-3 py-2 text-sm lg:text-base">
       <MdLocationPin className=""></MdLocationPin>
       {user ? (
         <Link href="/dashboard">پنل من</Link>

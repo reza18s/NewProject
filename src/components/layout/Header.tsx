@@ -29,12 +29,12 @@ function Header({ user }: { user: Promise<IUser> }) {
   return (
     <div className="z-10 flex h-[100px] w-full flex-col justify-center border-b-2 border-gray-300 bg-background">
       <div className="flex h-9 w-full items-center justify-center bg-blue-700 font-semibold">
-        <h1 className="text-lg text-white">
+        <h1 className="text-sm text-white md:text-lg">
           کلید موفقیت شما در املاک و مستغلات
         </h1>
         <Link
           href="/signup"
-          className="mr-5 h-6 bg-background px-2 text-base font-semibold text-primary"
+          className="mr-5 h-6 bg-background px-2 text-sm font-semibold text-primary md:text-base"
         >
           ثبت نام کنید
         </Link>

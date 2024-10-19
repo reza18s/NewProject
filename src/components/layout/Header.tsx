@@ -106,15 +106,17 @@ const Avatar = (props: { user: Promise<IUser> }) => {
   const user = use(props.user);
   // console.log(user);
   return (
-    <div className="ml-3 flex items-center text-nowrap rounded-lg border border-gray-300 px-3 py-2 text-sm lg:text-base">
+    <div className="flex items-center text-nowrap rounded-lg border border-gray-300 px-3 py-2 text-xs sm:text-sm md:ml-3 lg:text-base">
       {user ? (
         <>
           <MdLocationPin className=""></MdLocationPin>
-          <Link href="/dashboard">پنل من</Link>
+          <Link href="/dashboard" className="h-8">
+            پنل من
+          </Link>
         </>
       ) : (
         <>
-          <Link href="/signin" className="text-nowrap text-xs">
+          <Link href="/signin" className="h-5 text-nowrap">
             ورود / ثبت نام
           </Link>
         </>

@@ -15,7 +15,7 @@ const AdCard = ({
 }) => {
   return (
     <Link href={`/profile/${data.id}`}>
-      <div className="m-2 flex h-[170px] w-[95%] items-center gap-2 overflow-hidden rounded-lg p-3 md:h-[170px]">
+      <div className="m-2 flex h-[170px] w-[95%] items-center gap-2 overflow-hidden border-b border-gray-300 p-3 md:h-[170px]">
         <div className="flex h-full grow flex-col">
           <h1 className="h-6 w-full text-sm font-bold text-primary">
             {data.title}
@@ -60,6 +60,17 @@ const AdCard = ({
           </div>
         </div>
         <div className="relative h-full w-[45%] max-w-52 shrink-0 overflow-hidden rounded-sm border-2 border-gray-500">
+          <div className="absolute flex w-full justify-end gap-1">
+            <div className="h-4 w-11 text-nowrap bg-gray-300 pt-1 text-center text-[7px] font-bold text-blue-800">
+              قابل تبدیل
+            </div>
+            <div className="h-4 w-11 text-nowrap bg-gray-300 pt-1 text-center text-[7px] font-bold text-blue-800">
+              سه ساعت پیش
+            </div>
+            <div className="h-4 w-11 text-nowrap bg-gray-300 pt-1 text-center text-[7px] font-bold text-blue-800">
+              بازدید:40نفر
+            </div>
+          </div>
           <Image
             src={adImg}
             alt="Ad"

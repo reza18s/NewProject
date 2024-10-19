@@ -106,7 +106,7 @@ const Avatar = (props: { user: Promise<IUser> }) => {
   const user = use(props.user);
   // console.log(user);
   return (
-    <div className="flex min-w-20 items-center text-nowrap rounded-lg border border-gray-300 px-3 py-2 text-xs sm:text-sm md:ml-3 lg:text-base">
+    <div className="flex min-w-20 items-center text-nowrap rounded-lg border border-gray-300 px-3 py-2 text-[9px] sm:text-sm md:ml-3 lg:text-base">
       {user ? (
         <>
           <MdLocationPin className=""></MdLocationPin>

@@ -114,7 +114,9 @@ const Avatar = (props: { user: Promise<IUser> }) => {
         </>
       ) : (
         <>
-          <Link href="/signin">ورود / ثبت نام</Link>
+          <Link href="/signin" className="text-nowrap text-xs">
+            ورود / ثبت نام
+          </Link>
         </>
       )}
     </div>

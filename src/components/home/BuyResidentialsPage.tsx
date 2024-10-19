@@ -43,8 +43,8 @@ function BuyResidentialsPage({ data }: { data: IProfiles[] }) {
           </video>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-10 md:flex-row md:items-start">
-        <div className="mt-1 h-fit w-[400px] flex-col items-center border-2 px-7 py-4 sm:flex">
+      <div className="flex flex-col items-center gap-5 md:flex-row md:items-start">
+        <div className="mt-1 h-fit w-full max-w-[300px] flex-col items-center border-2 px-7 py-4 sm:flex">
           <Sidebar />
         </div>
         <div className="flex w-full flex-wrap justify-center md:justify-center">

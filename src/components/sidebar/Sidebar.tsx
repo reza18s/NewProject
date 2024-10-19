@@ -30,12 +30,12 @@ const RealEstateCategory: React.FC = () => {
       <Accordion type="single" collapsible>
         <AccordionItem value={"1"} className="border-none">
           <AccordionTrigger className="[&>svg]:hidden">
-            <h1 className="mb-4 text-center text-2xl text-blue-600">
+            <h1 className="w-full text-center text-lg text-blue-600 md:text-2xl">
               دسته بندی املاک دیبا هوم
             </h1>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="mb-4 grid grid-cols-3 grid-rows-2 justify-center gap-2">
+            <div className="my-4 grid grid-cols-3 grid-rows-2 justify-center gap-2">
               {categories.map((category) => (
                 <Button
                   key={category.value}

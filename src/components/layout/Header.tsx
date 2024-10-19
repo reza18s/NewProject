@@ -8,7 +8,7 @@ import CustomModal from "../modals/CustomModal";
 import { useStore } from "zustand";
 import { useModal } from "@/stores/useModal";
 import React, { Suspense, use } from "react";
-import { Search } from "lucide-react";
+import { Home, Search } from "lucide-react";
 import { IUser } from "@/types";
 import { MdLocationPin, MdMyLocation } from "react-icons/md";
 import { useData } from "@/stores/useData";
@@ -27,11 +27,20 @@ function Header({ user }: { user: Promise<IUser> }) {
     (key) => filters.province[key],
   );
   return (
-    <div className="fixed z-10 flex h-[88px] w-full flex-col justify-center border-b-2 border-gray-300 bg-background">
-      <div className="flex h-8 w-full items-center justify-center bg-blue-700 font-semibold">
+    <div className="fixed z-10 flex h-[100px] w-full flex-col justify-center border-b-2 border-gray-300 bg-background">
+      <div className="flex h-9 w-full items-center justify-center bg-blue-700 font-semibold">
         <h1 className="text-lg text-white">
           کلید موفقیت شما در املاک و مستغلات
         </h1>
+        <Link
+          href="/signup"
+          className="mr-5 h-6 bg-background px-2 text-base font-semibold text-primary"
+        >
+          تبت نام کنید
+        </Link>
+        <Link href="/" className="mx-3">
+          <Home></Home>
+        </Link>
       </div>
       <div className="flex h-16 w-full justify-between lg:pl-14 lg:pr-10">
         <div className="flex md:mr-[20px]">

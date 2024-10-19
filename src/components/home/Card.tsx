@@ -59,7 +59,7 @@ const AdCard = ({
             </div>
           </div>
         </div>
-        <div className="relative h-full w-[45%] max-w-52 shrink-0 overflow-hidden">
+        <div className="relative h-full w-[45%] max-w-52 shrink-0 overflow-hidden rounded-sm border-2 border-gray-500">
           <Image
             src={adImg}
             alt="Ad"

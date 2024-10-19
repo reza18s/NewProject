@@ -43,7 +43,7 @@ function Header({ user }: { user: Promise<IUser> }) {
         </Link>
       </div>
       <div className="flex h-16 w-full justify-between px-2 md:flex-row xl:pl-14 xl:pr-10">
-        <div className="flex">
+        <div className="flex w-full max-w-[600px]">
           <div className="-mt-5 hidden size-32 lg:flex">
             <Link href="/" legacyBehavior>
               <Image
@@ -54,8 +54,8 @@ function Header({ user }: { user: Promise<IUser> }) {
               />
             </Link>
           </div>
-          <form className="flex items-center lg:mr-[20px]">
-            <div className="overflow-hidden bg-sky-400 py-[2px]">
+          <form className="flex w-full items-center lg:mr-[20px]">
+            <div className="w-full max-w-96 overflow-hidden bg-sky-400 py-[2px]">
               <div className="mx-[-2px] flex h-8 overflow-hidden rounded-3xl bg-black bg-primary">
                 <button
                   type="submit"
@@ -64,7 +64,7 @@ function Header({ user }: { user: Promise<IUser> }) {
                   <Search className="stroke-teal-50"></Search>
                 </button>
                 <input
-                  className="w-80 rounded-none border-0 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
+                  className="w-full rounded-none border-0 bg-card p-2 font-['YekanBakh'] font-bold sm:flex"
                   onChange={handleSearchQuery}
                   type="text"
                   placeholder="ملک مورد نظر خود را بیان کنید "
@@ -76,7 +76,7 @@ function Header({ user }: { user: Promise<IUser> }) {
         <div className="hidden items-center justify-center text-nowrap text-lg font-semibold lg:flex">
           021-091017240
         </div>
-        <div className="flex w-[400px] items-center justify-end">
+        <div className="flex max-w-[400px] items-center justify-end">
           <div className="flex items-center">
             <Suspense fallback={<div>Loading...</div>}>
               <Avatar user={user}></Avatar>

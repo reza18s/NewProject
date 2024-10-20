@@ -15,7 +15,7 @@ const AdCard = ({
 }) => {
   return (
     <Link href={`/profile/${data.id}`}>
-      <div className="m-2 flex h-[170px] w-[95%] items-center gap-2 overflow-hidden border-b border-gray-300 p-3 md:h-[170px]">
+      <div className="m-2 flex h-[170px] w-[95%] items-center gap-2 overflow-hidden rounded-sm border border-gray-300 p-3 md:h-[170px]">
         <div className="flex h-full grow flex-col">
           <h1 className="h-6 w-full text-sm font-bold text-primary">
             {data.title}

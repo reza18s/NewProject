@@ -30,7 +30,7 @@ const RealEstateCategory: React.FC = () => {
       <Accordion type="single" collapsible>
         <AccordionItem value={"1"} className="border-none">
           <AccordionTrigger className="[&>svg]:hidden">
-            <h1 className="w-full text-center text-lg text-blue-600 md:text-2xl">
+            <h1 className="w-full text-nowrap text-center text-lg text-blue-600 md:text-xl">
               دسته بندی املاک دیبا هوم
             </h1>
           </AccordionTrigger>
